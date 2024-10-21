@@ -2,6 +2,7 @@ import { Item } from "./item";
 import { User } from "./user";
 
 export class Reservation {
+    private id?: number;
     private date: Date;
     private user: User;
     private items: Array<Item>;
@@ -22,5 +23,8 @@ export class Reservation {
     }
     getItems(){
         return this.items;
+    }
+    getId(){
+        return this.id;
     }
 }

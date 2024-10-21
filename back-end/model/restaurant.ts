@@ -6,7 +6,8 @@ export class Restaurant {
     private address: string;
     private users: Array<User>;
 
-    constructor(Restaurant: {name: string, address: string}){
+    constructor(Restaurant: {name: string, address: string, id? : number}){
+        this.id = Restaurant.id;
         this.name = Restaurant.name;
         this.address = Restaurant.address;
         this.users = new Array<User>;
@@ -20,6 +21,9 @@ export class Restaurant {
     }
     getUsers(): Array<User>{
         return this.users;
+    }
+    getId() {
+        return this.id;
     }
     addUser(user:User){
         if(!this.users.includes(user)){
