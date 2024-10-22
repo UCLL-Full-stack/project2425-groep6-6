@@ -3,7 +3,7 @@ import { Reservation } from "./reservation";
 import { Restaurant } from "./restaurant";
 
 export class User {
-
+    private id?: number;
     private username: string;
     private password: string;
     private role: Role;
@@ -12,7 +12,8 @@ export class User {
     private restaurants: Array<Restaurant>;
     private reservations: Array<Reservation>;
 
-    constructor(User: { username: string, password: string, firstname: string, lastname: string, role: Role}){
+    constructor(User: { id?: number, username: string, password: string, firstname: string, lastname: string, role: Role}){
+        this.id = User.id;
         this.username = User.username;
         this.password = User.password;
         this.firstname = User.firstname;
@@ -20,6 +21,9 @@ export class User {
         this.role = User.role;
         this.restaurants = [];
         this.reservations = [];
+    }
+    getId() {
+        return this.id;
     }
     getUsername(): string{
         return this.username;

@@ -25,8 +25,16 @@ const getAllRestaurants = () => {
     }
 }
 
+const createRestaurant = (restaurant: Restaurant) => {
+    try {
+        restaurants.push(restaurant);
+    } catch(error){
+        throw new Error('Database error. See server log for details.')
+    }
+}
 
 export default {
     getRestaurantById,
-    getAllRestaurants
+    getAllRestaurants,
+    createRestaurant
 };

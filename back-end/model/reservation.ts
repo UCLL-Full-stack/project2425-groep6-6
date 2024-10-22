@@ -7,7 +7,8 @@ export class Reservation {
     private user: User;
     private items: Array<Item>;
 
-    constructor(Reservation: { date: Date, user: User }){
+    constructor(Reservation: { id?:number, date: Date, user: User }){
+        this.id = Reservation.id;
         this.date = Reservation.date;
         this.user = Reservation.user;
         this.items = []
