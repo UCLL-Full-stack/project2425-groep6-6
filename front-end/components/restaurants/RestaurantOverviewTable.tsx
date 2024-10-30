@@ -21,12 +21,11 @@ const RestaurantOverviewTable: React.FC<Props> = ({ restaurants, selectRestauran
             {restaurants.map((restaurant) => (
               <tr
                 key={restaurant.id}
-                onClick={() => selectRestaurant(restaurant)}
+                onClick={() => selectRestaurant(restaurant)} 
                 role="button"
               >
                 <td>{restaurant.name}</td>
                 <td>{restaurant.address}</td>
-
               </tr>
             ))}
           </tbody>

@@ -2,11 +2,12 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Restaurant } from "@types";
 import RestaurantOverviewTable from "@components/restaurants/RestaurantOverviewTable";
+import RestaurantDetails from "@components/restaurants/RestaurantDetails"; // Make sure this import is correct
 import RestaurantService from "@services/restaurantService";
 import Header from "@components/header";
 
 const Restaurants: React.FC = () => {
-    const [restaurants, setRestaurants] = useState<Array<Restaurant>>();
+    const [restaurants, setRestaurants] = useState<Array<Restaurant>>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
 
     const getRestaurants = async () => {
@@ -31,15 +32,16 @@ const Restaurants: React.FC = () => {
                 <h1>Restaurants</h1>
                 <section>
                     <h2>Restaurant Overview</h2>
-                    {restaurants && (
-                        <RestaurantOverviewTable restaurants={restaurants} selectRestaurant={setSelectedRestaurant} />
-                    )}
+                    <RestaurantOverviewTable 
+                        restaurants={restaurants} 
+                        selectRestaurant={setSelectedRestaurant} 
+                    />
                 </section>
 
                 {selectedRestaurant && (
                     <section>
                         <h2>Details of {selectedRestaurant.name}</h2>
-                        {/* Add detailed information*/}
+                        <RestaurantDetails restaurant={selectedRestaurant} />
                     </section>
                 )}
             </main>
@@ -48,9 +50,3 @@ const Restaurants: React.FC = () => {
 };
 
 export default Restaurants;
-
-   
-
-
-
-   

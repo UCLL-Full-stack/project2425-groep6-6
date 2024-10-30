@@ -8,6 +8,7 @@ const restaurants = [
     })
 ];
 
+
 const getRestaurantById = (id: number): Restaurant | null => {
     try {
         return restaurants.find((restaurant) => restaurant.getId() === id) || null;
@@ -28,6 +29,7 @@ const getAllRestaurants = () => {
 const createRestaurant = (restaurant: Restaurant) => {
     try {
         restaurants.push(restaurant);
+
     } catch(error){
         throw new Error('Database error. See server log for details.')
     }

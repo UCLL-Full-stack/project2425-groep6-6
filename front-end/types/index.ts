@@ -16,3 +16,10 @@ export type User = {
   password?: string;
   role?: string;
 };
+
+export type Item = {
+  id: number; 
+  name: string;
+  price: number;
+  category: string; // "Food" or "Drink"
+};
