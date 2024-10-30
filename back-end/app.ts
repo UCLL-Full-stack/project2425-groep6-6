@@ -6,6 +6,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import restaurantDb from './repository/restaurant.db';
 import { restaurantRouter } from './controller/restaurants.routes';
+import { reservationRouter } from './controller/reservations.routes';
+import { itemRouter } from './controller/item.routes';
 
 const app = express();
 dotenv.config();
@@ -18,9 +20,31 @@ app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
+
+const swaggerOpts = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Courses API',
+            version: '1.0.0',
+        },
+    },
+    apis: ['./controller/*.routes.ts'],
+};
+const swaggerSpec = swaggerJSDoc(swaggerOpts);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.listen(port || 3000, () => {
     console.log(`Back-end is running on port ${port}.`);
 });
 app.get('/restaurants', restaurantRouter);
 app.get('/restaurants/:id', restaurantRouter);
+app.get('/reservations', reservationRouter);
+app.get('/reservations/:id', reservationRouter);
+app.post('/reservations/:id', reservationRouter);
+app.get('/items', itemRouter);
+app.get('/items/:id', itemRouter);
+app.get('/items/food', itemRouter);
+app.get('/items/drinks', itemRouter);
+
 

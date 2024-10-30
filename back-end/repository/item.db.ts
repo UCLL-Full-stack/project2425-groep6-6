@@ -17,21 +17,52 @@ const items = [
         name: 'Cola',
         category: 'drinks',
         price: 2
+    }),
+    new Item({
+        id: 3,
+        name: 'Cola Zero',
+        category: 'drinks',
+        price: 2
+    }),
+    new Item({
+        id: 4,
+        name: 'Pepsi',
+        category: 'drinks',
+        price: 2
+    }),
+    new Item({
+        id: 5,
+        name: 'Ice-tea',
+        category: 'drinks',
+        price: 2
+    }),new Item({
+        id: 6,
+        name: 'Boterham met confituur',
+        category: 'food',
+        price: 2
+    })
+    ,
+    new Item({
+        id: 7,
+        name: 'Boterham met choco',
+        category: 'food',
+        price: 40
     })
 ];
 
-const getFood = (): Item | null => {
+const getFood = (): Item[] | null => {
     try {
-        return items.find((item) => item.getCategory() === 'food') || null;
+
+        return items.filter((item) => item.getCategory() === 'food') || null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
     }
 }
 
-const getDrinks = (): Item | null => {
+const getDrinks = (): Item[] | null => {
     try {
-        return items.find((item) => item.getCategory() === 'drinks') || null;
+        return items.filter((item) => item.getCategory() === 'drinks') || null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');

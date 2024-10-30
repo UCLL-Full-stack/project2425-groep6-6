@@ -1,11 +1,35 @@
+import { Item } from "../model/item";
+import { User } from "../model/user";
+
 type Role = 'admin' | 'chef' | 'bartender' | 'customer';
-export { Role };
+export { Role, Category, RestaurantDTO, ReservationDTO, ReservationInput};
 
 type Category = 'drinks' | 'food';
-export {Category};
 
 type ItemDTO = {
     id?: number;
     name?: string;
     //rest toevoegen maar DTOS komen hier
 }
+
+type RestaurantDTO = {
+    id?: number;
+    name?: string;
+    address?: string; 
+    users?: Array<User>;
+}
+
+type ReservationDTO = {
+    id?: number;
+    date: Date;
+    user: User;      
+    items: Array<Item>;    
+};
+
+
+type ReservationInput = {
+    id?: number;
+    date: string;
+    userId: number;      
+    items: Array<Item>;    
+};

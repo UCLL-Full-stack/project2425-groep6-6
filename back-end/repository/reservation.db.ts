@@ -30,7 +30,7 @@ const getReservationById = (id: number): Reservation | null => {
 }
 
 
-const getAllReservations = () => {
+const getAllReservations = (): Reservation[] => {
     try {
         return reservations;
     } catch(error){
@@ -52,6 +52,7 @@ const addItemsToReservation = (id: number, items: Item[]) => {
 const createReservation = (reservation: Reservation) => {
     try {
         reservations.push(reservation);
+        return reservation;
     } catch(error){
         throw new Error('Database error. See server log for details.')
     }

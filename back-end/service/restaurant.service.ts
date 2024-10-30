@@ -1,5 +1,6 @@
 import { Restaurant } from "../model/restaurant";
 import restaurantDb from "../repository/restaurant.db";
+import { RestaurantDTO } from "../types";
 
 const getRestaurantById = (id: number): Restaurant | null => {
     try{
@@ -20,7 +21,22 @@ const getAllRestaurants = (): Restaurant[] | null => {
     } catch(error){
         throw new Error('There are no restaurants.')
     }
+}
 
+
+const convertToDTO = (restaurant: Restaurant): RestaurantDTO => {
+    try {
+        const restaurantDTO: RestaurantDTO = {
+            id: restaurant.getId(),
+            name: restaurant.getName(),
+            address: restaurant.getAddress(),
+            users: restaurant.getUsers()
+        }
+        return restaurantDTO;
+    } catch(error){
+        throw new Error("Converting to DTO error");
+    }
+    
 }
 
 export default { 
