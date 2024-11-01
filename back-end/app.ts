@@ -8,6 +8,7 @@ import restaurantDb from './repository/restaurant.db';
 import { restaurantRouter } from './controller/restaurants.routes';
 import { reservationRouter } from './controller/reservations.routes';
 import { itemRouter } from './controller/item.routes';
+import { userRouter } from './controller/user.routes';
 
 const app = express();
 dotenv.config();
@@ -46,5 +47,9 @@ app.get('/items', itemRouter);
 app.get('/items/:id', itemRouter);
 app.get('/items/food', itemRouter);
 app.get('/items/drinks', itemRouter);
-
-
+app.get('/users', userRouter);
+app.get('/users/admins', userRouter);
+app.get('/users/chefs', userRouter);
+app.get('/users/bartenders', userRouter);
+app.get('/users/customers', userRouter);
+app.get('/users/:id', userRouter);

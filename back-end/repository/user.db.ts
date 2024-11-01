@@ -55,7 +55,7 @@ const getUserById = (id: number): User | null => {
 
 const getChefs = () => {
     try {
-        return users.find((user) => user.getRole() === 'chef') || null;
+        return users.filter((user) => user.getRole() === 'chef') || null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
@@ -64,7 +64,7 @@ const getChefs = () => {
 
 const getCustomers = () => {
     try {
-        return users.find((user) => user.getRole() === 'customer') || null;
+        return users.filter((user) => user.getRole() === 'customer') || null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
@@ -73,7 +73,7 @@ const getCustomers = () => {
 
 const getAdmins = () => {
     try {
-        return users.find((user) => user.getRole() === 'admin') || null;
+        return users.filter((user) => user.getRole() === 'admin') || null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
@@ -82,7 +82,7 @@ const getAdmins = () => {
 
 const getBartenders = () => {
     try {
-        return users.find((user) => user.getRole() === 'bartenders') || null;
+        return users.filter((user) => user.getRole() === 'bartender') || null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
