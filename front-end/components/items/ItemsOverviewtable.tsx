@@ -22,8 +22,8 @@ const ItemOverviewTable: React.FC<Props> = ({ items }) => {
             {items.map((item) => (
               <tr key={item.id}>
                 <td>{item.name}</td>
-                <td>${item.price.toFixed(2)}</td> {}
-              </tr>
+                <td>${(item.price ?? 0).toFixed(2)}</td>
+                </tr>
             ))}
           </tbody>
         </table>

@@ -18,8 +18,8 @@ export type User = {
 };
 
 export type Item = {
-  id: number; 
+  id?: number; 
   name: string;
   price: number;
-  category: string; // "Food" or "Drink"
+  category: string; // "Food" or "Drinks"
 };
