@@ -48,11 +48,11 @@ const getDrinks = (): Item[] | null => {
 
 const createItem = (category: string, name: string, price: number) => {
     try{
-    if (category == 'food') {
+    if (category === 'food') {
         const item = new Item({name: name, category: category, price: price})
         itemDb.createItem(item)
     } 
-    else if (category == 'drinks') {
+    else if (category === 'drinks') {
         const item = new Item({name: name, category: category, price: price})
         itemDb.createItem(item)
     } else {
@@ -61,7 +61,7 @@ const createItem = (category: string, name: string, price: number) => {
     }
     }
     catch(error){
-        throw new Error('Creating item failed')
+        throw new Error('Creating item failed: ' + error)
     }
 }
 

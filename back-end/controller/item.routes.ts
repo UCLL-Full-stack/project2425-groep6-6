@@ -28,7 +28,7 @@ import { error } from 'console';
 import restaurantService from '../service/restaurant.service';
 import reservationDb from '../repository/reservation.db';
 import reservationsService from '../service/reservations.service';
-import { ReservationDTO, ReservationInput } from '../types';
+import { ItemInput, ReservationDTO, ReservationInput } from '../types';
 import itemService from '../service/item.service';
 
 const itemRouter = express.Router();
@@ -120,6 +120,37 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
     
 });
 
+
+/**
+ * @swagger
+ * /items:
+ *   post:
+ *     summary: Create a new item.
+ *     requestBody:
+ *       description: item data needed to create a item.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/app/itemInput'
+ *     responses:
+ *       200:
+ *         description: item created successfully.
+ *       400:
+ *         description: Bad request due to invalid input data.
+ */
+itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const item: ItemInput = req.body;
+        
+        itemService.createItem(item.category, item.name, item.price);
+        console.log(item);
+        return res.status(200).json({ message: 'Item created successfully' });
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+
+    }
+});
 
 
 

@@ -47,6 +47,8 @@ app.get('/items', itemRouter);
 app.get('/items/:id', itemRouter);
 app.get('/items/food', itemRouter);
 app.get('/items/drinks', itemRouter);
+app.post('/items', itemRouter);
+
 app.get('/users', userRouter);
 app.get('/users/admins', userRouter);
 app.get('/users/chefs', userRouter);
