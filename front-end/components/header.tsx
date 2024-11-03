@@ -17,6 +17,9 @@ const Header: React.FC = () => {
         Restaurants
         </Link>
     
+        <Link href ="/menu" className="nav-link px-4 fs-5 text-white">
+        Menu
+        </Link>
       </nav>
     </header>
   );
