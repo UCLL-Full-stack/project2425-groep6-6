@@ -1,59 +1,54 @@
 import { Item } from "@types";
 
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/items`;
+
 const getMenuItems = async () => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/items`, { 
+    return fetch(API_URL, { 
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-  };
+};
 
-  const getFoodItems = async () => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/items/food`, { 
+const getFoodItems = async () => {
+    return fetch(`${API_URL}/food`, { 
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
 };
 
 const getDrinkItems = async () => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/items/drinks`, { 
+    return fetch(`${API_URL}/drinks`, { 
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
 };
 
 
-
 const addItem = async (item: Item, type: 'food' | 'drinks') => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/items`; 
-  const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          name: item.name,
-          category: type,  
-          price: item.price,
-      }),
-  });
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: item.name,
+            category: type,  
+            price: item.price,
+        }),
+    });
 
-  if (!response.ok) {
-      throw new Error('Failed to add item');
-  }
+    if (!response.ok) {
+        throw new Error('Failed to add item');
+    }
 
-  return response.json();
+    return response.json();
 };
 
-
-
-
-  
-  const MenuService = {
+const MenuService = {
     getMenuItems,
     getFoodItems,
     getDrinkItems,
     addItem,
-  };
-  
-  export default MenuService;
-  
+};
+
+export default MenuService;
