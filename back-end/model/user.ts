@@ -13,6 +13,8 @@ export class User {
     private reservations: Array<Reservation>;
 
     constructor(User: { id?: number, username: string, password: string, firstname: string, lastname: string, role: Role}){
+        this.validate(User.username, User.password, User.firstname, User.lastname, User.role, User.id);
+
         this.id = User.id;
         this.username = User.username;
         this.password = User.password;
@@ -22,6 +24,44 @@ export class User {
         this.restaurants = [];
         this.reservations = [];
     }
+
+
+    private validate(
+        username: string,
+        password: string,
+        firstname: string,
+        lastname: string,
+        role: Role,
+        id?: number
+    ): boolean {
+        if (id !== undefined && (!Number.isInteger(id) || id <= 0)) {
+            throw new Error("ID, if provided, must be a positive integer.");
+        }
+
+        if (typeof username !== 'string' || username.trim().length === 0) {
+            throw new Error("Username must be a non-empty string.");
+        }
+
+        if (typeof password !== 'string' || password.trim().length === 0) {
+            throw new Error("Password must be a non-empty string.");
+        }
+
+        if (typeof firstname !== 'string' || firstname.trim().length === 0) {
+            throw new Error("Firstname must be a non-empty string.");
+        }
+
+        if (typeof lastname !== 'string' || lastname.trim().length === 0) {
+            throw new Error("Lastname must be a non-empty string.");
+        }
+
+        if (role !== 'admin' && role !== 'chef' && role !== 'bartender' && role !== 'customer') {
+            throw new Error("Role must be a valid Role instance.");
+        }
+
+        return true; 
+    }
+
+
     getId() {
         return this.id;
     }
