@@ -14,7 +14,7 @@ export type User = {
   email?: string;
   username?: string;
   password?: string;
-  role?: string;
+  role?: 'admin' | 'cook' | 'bartender' | 'user'; 
 };
 
 export type Item = {

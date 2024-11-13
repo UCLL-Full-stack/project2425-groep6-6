@@ -4,13 +4,13 @@ import Header from "@components/header";
 import MenuService from "@services/menuService";
 import ItemOverviewTable from "@components/items/ItemsOverviewtable";
 import { Item } from "@types";
-import { useRouter } from "next/router"; // Voeg deze import toe
+import { useRouter } from "next/router"; // Import the router for navigation
 
 const Menu: React.FC = () => {
     const [foodItems, setFoodItems] = useState<Array<Item>>([]);
     const [drinkItems, setDrinkItems] = useState<Array<Item>>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const router = useRouter(); // Voeg deze regel toe
+    const router = useRouter();
 
     const fetchMenuItems = async () => {
         try {
@@ -30,6 +30,9 @@ const Menu: React.FC = () => {
     useEffect(() => {
         fetchMenuItems();
     }, []);
+
+    // Retrieve user role from sessionStorage
+    const role = sessionStorage.getItem("role");
 
     return (
         <>
@@ -55,18 +58,24 @@ const Menu: React.FC = () => {
                             <h2>Drink Items</h2>
                             <ItemOverviewTable items={drinkItems} />
                         </section>
-                        
-                        <button 
-                            onClick={() => router.push('/menu/addFoodItem')}
-                        >
-                            Add New Food Item
-                        </button>
 
-                        <button 
-                            onClick={() => router.push('/menu/addDrinkItem')}
-                        >
-                            Add New Drink Item
-                        </button>
+                        {/* Show "Add New Food Item" button only if user is a cook */}
+                        {role === 'cook' && (
+                            <button 
+                                onClick={() => router.push('/menu/addFoodItem')}
+                            >
+                                Add New Food Item
+                            </button>
+                        )}
+
+                        {/* Show "Add New Drink Item" button only if user is a barman */}
+                        {role === 'barman' && (
+                            <button 
+                                onClick={() => router.push('/menu/addDrinkItem')}
+                            >
+                                Add New Drink Item
+                            </button>
+                        )}
                     </>
                 )}
             </main>

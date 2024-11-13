@@ -8,7 +8,7 @@ const Home: React.FC = () => {
     <>
       <Head>
         <title>Home</title>
-        <meta name="description" content="Courses app" />
+        <meta name="description" content="Restaurants app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -26,9 +26,7 @@ const Home: React.FC = () => {
         </span>
 
         <div className={styles.description}>
-          <p>
-            This is our Restaurants app.
-          </p>
+          <p>This is our restaurant app.</p>
         </div>
       </main>
     </>
