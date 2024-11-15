@@ -18,8 +18,13 @@ export type User = {
 };
 
 export type Item = {
-  id?: number; 
+  id: number; 
   name: string;
   price: number;
   category: string; // "Food" or "Drinks"
+};
+
+export type StatusMessage = {
+  message: string;
+  type: "error" | "success";
 };

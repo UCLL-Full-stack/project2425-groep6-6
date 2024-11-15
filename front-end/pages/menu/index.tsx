@@ -1,86 +1,101 @@
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import Header from "@components/header"; 
-import MenuService from "@services/menuService";
-import ItemOverviewTable from "@components/items/ItemsOverviewtable";
-import { Item } from "@types";
-import { useRouter } from "next/router"; // Import the router for navigation
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Item } from '@types';
+import ItemOverviewTable from '@components/items/ItemsOverviewtable';
+import MenuService from '@services/menuService';
+import Header from '@components/header';
+import Head from 'next/head';
+import Link from 'next/link';
 
 const Menu: React.FC = () => {
-    const [foodItems, setFoodItems] = useState<Array<Item>>([]);
-    const [drinkItems, setDrinkItems] = useState<Array<Item>>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const router = useRouter();
+  const [foodItems, setFoodItems] = useState<Array<Item>>([]);
+  const [drinkItems, setDrinkItems] = useState<Array<Item>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [order, setOrder] = useState<{ [key: number]: number }>({});
+  const router = useRouter();
 
-    const fetchMenuItems = async () => {
-        try {
-            const [foodResponse, drinkResponse] = await Promise.all([
-                MenuService.getFoodItems(),
-                MenuService.getDrinkItems()
-            ]);
-            setFoodItems(await foodResponse.json());
-            setDrinkItems(await drinkResponse.json());
-        } catch (error) {
-            console.error("Error fetching menu items:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  // Haal menu-items op via de MenuService
+  const fetchMenuItems = async () => {
+    try {
+      const [foodResponse, drinkResponse] = await Promise.all([
+        MenuService.getFoodItems(),
+        MenuService.getDrinkItems(),
+      ]);
+      setFoodItems(await foodResponse.json());
+      setDrinkItems(await drinkResponse.json());
+    } catch (error) {
+      console.error("Error fetching menu items:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        fetchMenuItems();
-    }, []);
+  useEffect(() => {
+    fetchMenuItems();
+  }, []);
 
-    // Retrieve user role from sessionStorage
-    const role = sessionStorage.getItem("role");
+  const handleQuantityChange = (id: number, quantity: number) => {
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      [id]: quantity,
+    }));
+  };
 
-    return (
-        <>
-            <Head>
-                <title>Menu</title>
-                <meta name="description" content="Restaurant Menu" />
-            </Head>
+  const handleOrder = () => {
+    router.push({
+      pathname: '/order',
+      query: { order: JSON.stringify(order) },
+    });
+  };
 
-            <Header />
+  const isLoggedIn = typeof window !== 'undefined' && sessionStorage.getItem('username') !== null;
 
-            <main className="d-flex flex-column justify-content-center align-items-center">
-                <h1>Menu</h1>
-                
-                {loading ? (
-                    <p>Loading menu items...</p>
-                ) : (
-                    <>
-                        <section>
-                            <h2>Food Items</h2>
-                            <ItemOverviewTable items={foodItems} />
-                        </section>
-                        <section>
-                            <h2>Drink Items</h2>
-                            <ItemOverviewTable items={drinkItems} />
-                        </section>
+  return (
+    <>
+      <Head>
+        <title>Menu</title>
+        <meta name="description" content="Restaurant Menu" />
+      </Head>
+      <Header />
 
-                        {/* Show "Add New Food Item" button only if user is a cook */}
-                        {role === 'cook' && (
-                            <button 
-                                onClick={() => router.push('/menu/addFoodItem')}
-                            >
-                                Add New Food Item
-                            </button>
-                        )}
+      <main className="d-flex flex-column justify-content-center align-items-center">
+        <h1>Menu</h1>
+        {!isLoggedIn && (
+        <p className="alert alert-warning"> If you want to order, please{' '}
+        <Link href="/login">
+         login
+        </Link> </p>
+)}
 
-                        {/* Show "Add New Drink Item" button only if user is a barman */}
-                        {role === 'barman' && (
-                            <button 
-                                onClick={() => router.push('/menu/addDrinkItem')}
-                            >
-                                Add New Drink Item
-                            </button>
-                        )}
-                    </>
-                )}
-            </main>
-        </>
-    );
+        {loading ? (
+          <p>Loading menu items...</p>
+        ) : (
+          <>
+            <section>
+              <h2>Food Items</h2>
+              <ItemOverviewTable 
+                items={foodItems} 
+                onQuantityChange={handleQuantityChange} 
+                order={order} 
+              />
+            </section>
+            <section>
+              <h2>Drink Items</h2>
+              <ItemOverviewTable 
+                items={drinkItems} 
+                onQuantityChange={handleQuantityChange} 
+                order={order} 
+              />
+            </section>
+            {/* De "Order" knop wordt alleen weergegeven als de gebruiker ingelogd is */}
+            {isLoggedIn && (
+              <button onClick={handleOrder} className="btn btn-primary">Order</button>
+            )}
+          </>
+        )}
+      </main>
+    </>
+  );
 };
 
 export default Menu;
