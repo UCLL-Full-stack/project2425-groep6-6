@@ -71,15 +71,15 @@ const Menu: React.FC = () => {
           <p>Loading menu items...</p>
         ) : (
           <>
-            <section>
-              <h2>Food Items</h2>
+             <section>
+             <h2>Food Items</h2>
               <ItemOverviewTable 
                 items={foodItems} 
                 onQuantityChange={handleQuantityChange} 
                 order={order} 
               />
-            </section>
-            <section>
+
+
               <h2>Drink Items</h2>
               <ItemOverviewTable 
                 items={drinkItems} 
@@ -93,6 +93,21 @@ const Menu: React.FC = () => {
             )}
           </>
         )}
+
+          {isLoggedIn && sessionStorage.getItem("role")== "cook" && (
+          <div>
+          <Link href="/menu/addFoodItem">
+          Add Food Item
+          </Link>
+          </div>)}
+          {isLoggedIn && sessionStorage.getItem("role")== "barman" && (
+          <div>
+          <Link href="/menu/adddrinkItem">
+          Add Drink Item
+          </Link>
+          </div>)}
+
+
       </main>
     </>
   );
