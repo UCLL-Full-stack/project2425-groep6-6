@@ -12,7 +12,7 @@ export class User {
     private restaurants: Array<Restaurant>;
     private reservations: Array<Reservation>;
 
-    constructor(User: { id?: number, username: string, password: string, firstname: string, lastname: string, role: Role}){
+    constructor(User: { id?: number, username: string, password: string, firstname: string, lastname: string, role: Role, restaurants?: Restaurant[], reservations?: Reservation[]}){
         this.validate(User.username, User.password, User.firstname, User.lastname, User.role, User.id);
 
         this.id = User.id;
@@ -23,6 +23,13 @@ export class User {
         this.role = User.role;
         this.restaurants = [];
         this.reservations = [];
+        if(User.reservations){
+            this.reservations = User.reservations
+        }
+        if(User.restaurants){
+            this.restaurants = User.restaurants;
+        }
+        
     }
 
 
@@ -96,6 +103,29 @@ export class User {
         if(!this.reservations.includes(reservation)){
             this.reservations.push(reservation);
         }
+    }
+
+
+    static from({
+        id,
+        username,
+        password,
+        role,
+        firstname,
+        lastname,
+        restaurants,
+        reservations,
+    }: UserPrisma /*& { restaurants: RestaurantPrisma[]; reservations: ReservationPrisma[] }*/) {
+        return new User({
+            id,
+            username,
+            password,
+            role,
+            firstname,
+            lastname,
+            //restaurants: restaurants.map((restaurant: Restaurant) => Restaurant.from(restaurant)),
+            //reservations: reservations.map((reservation: Reservation) => Reservation.from(reservation)),
+        });
     }
     
 }

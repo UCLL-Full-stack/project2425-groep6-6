@@ -1,5 +1,6 @@
 import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
+import database from "./database";
 
 const users = [
     new User({
@@ -96,6 +97,15 @@ const getAllUsers = () => {
         throw new Error('Database error. See server log for details.')
     }
 }
+
+const getAllUsers2 = async (): Promise<User[]> => {
+    const result = await database.user.findMany({
+        include: {},
+    })
+    return result.map((result) => User.from(result));
+}
+
+
 
 const createUser = (user: User) => {
     try {
