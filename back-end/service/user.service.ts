@@ -74,6 +74,16 @@ const createUser = (username: string, firstname: string, lastname: string, passw
     }
 }
 
+const userLogin = (username: string,  password: string): User => {
+    try{
+        
+        return userDb.userLogin(username, password);
+        
+    } catch(error){
+        throw new Error('Wrong Credentials')
+    }
+}
+
 
 export default{createUser,
     getAdmins,
@@ -81,5 +91,6 @@ export default{createUser,
     getCustomers,
     getBartenders, 
     getAllUsers,
-    getUserById
+    getUserById,
+    userLogin
 }

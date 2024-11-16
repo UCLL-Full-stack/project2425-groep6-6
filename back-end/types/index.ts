@@ -2,7 +2,7 @@ import { Item } from "../model/item";
 import { User } from "../model/user";
 
 type Role = 'admin' | 'chef' | 'bartender' | 'customer';
-export { Role, Category, RestaurantDTO, ReservationDTO, ReservationInput, ItemInput};
+export { Role, Category, RestaurantDTO, ReservationDTO, ReservationInput, ItemInput, LoginInput};
 
 type Category = 'drinks' | 'food';
 
@@ -39,4 +39,10 @@ type ItemInput = {
     name: string;
     category: string;
     price: number;
+}
+
+type LoginInput = {
+    
+    username: string;
+   password: string;
 }

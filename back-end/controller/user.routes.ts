@@ -29,7 +29,7 @@ import { error } from 'console';
 import restaurantService from '../service/restaurant.service';
 import reservationDb from '../repository/reservation.db';
 import reservationsService from '../service/reservations.service';
-import { ReservationDTO, ReservationInput } from '../types';
+import { LoginInput, ReservationDTO, ReservationInput } from '../types';
 import userService from '../service/user.service';
 
 const userRouter = express.Router();
@@ -159,6 +159,38 @@ userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunct
     try{
         const user = userService.getUserById(id);
         return res.status(200).json(user);
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+    }
+    
+});
+
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Log a user in.
+ *     requestBody:
+ *       description: Username and password.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: ''
+ *     responses:
+ *       200:
+ *         description: User logged in successfully.
+ *       400:
+ *         description: Bad request due to invalid input data.
+ *       404:
+ *          description: User does not exist/Credentials are wrong. 
+ */
+userRouter.post('/users', async (req: Request, res: Response, next: NextFunction) => {
+    const userinput: LoginInput = req.body;
+    try{
+        
+        return userService.userLogin(userinput.username, userinput.password);
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }

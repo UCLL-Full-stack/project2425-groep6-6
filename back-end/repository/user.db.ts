@@ -105,6 +105,20 @@ const createUser = (user: User) => {
     }
 }
 
+const userLogin = (username: string, password: string) => {
+    try {
+        const user = users.find(user => user.getUsername() === username);
+        if(user){
+            if(user.getPassword() === password){
+                return user;
+            }
+        }     
+        throw new Error('Wrong Credentials');
+    } catch(error){
+        throw new Error('Wrong Credentials');
+    }
+}
+
 export default {
     getAdmins,
     getAllUsers,
@@ -112,5 +126,6 @@ export default {
     getUserById,
     getBartenders,
     getChefs,
-    createUser
+    createUser,
+    userLogin
 };

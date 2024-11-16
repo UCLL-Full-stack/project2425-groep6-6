@@ -97,5 +97,5 @@ export class User {
             this.reservations.push(reservation);
         }
     }
-
+    
 }
