@@ -90,15 +90,15 @@ const getBartenders = () => {
     }
 }
 
-const getAllUsers = () => {
-    try {
-        return users;
-    } catch(error){
-        throw new Error('Database error. See server log for details.')
-    }
-}
+// const getAllUsers = () => {
+//     try {
+//         return users;
+//     } catch(error){
+//         throw new Error('Database error. See server log for details.')
+//     }
+// }
 
-const getAllUsers2 = async (): Promise<User[]> => {
+const getAllUsers = async (): Promise<User[]> => {
     const result = await database.user.findMany({
         include: {},
     })

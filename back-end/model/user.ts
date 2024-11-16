@@ -1,6 +1,11 @@
+import { Prisma } from "@prisma/client";
 import { Role } from "../types";
 import { Reservation } from "./reservation";
 import { Restaurant } from "./restaurant";
+import{
+    
+    User as UserPrisma
+} from '@prisma/client'
 
 export class User {
     private id?: number;
@@ -113,14 +118,15 @@ export class User {
         role,
         firstname,
         lastname,
-        restaurants,
-        reservations,
+        //restaurants,
+        //reservations,
     }: UserPrisma /*& { restaurants: RestaurantPrisma[]; reservations: ReservationPrisma[] }*/) {
         return new User({
             id,
             username,
             password,
-            role,
+            role: 'admin',
+            //role,
             firstname,
             lastname,
             //restaurants: restaurants.map((restaurant: Restaurant) => Restaurant.from(restaurant)),
