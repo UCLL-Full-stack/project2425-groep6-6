@@ -6,6 +6,7 @@ import{
     
     User as UserPrisma
 } from '@prisma/client'
+import { error } from "console";
 
 export class User {
     private id?: number;
@@ -18,7 +19,8 @@ export class User {
     private reservations: Array<Reservation>;
 
     constructor(User: { id?: number, username: string, password: string, firstname: string, lastname: string, role: Role, restaurants?: Restaurant[], reservations?: Reservation[]}){
-        this.validate(User.username, User.password, User.firstname, User.lastname, User.role, User.id);
+
+        this.validate(User.username, User.password, User.firstname, User.lastname, User.role, User.id)
 
         this.id = User.id;
         this.username = User.username;
@@ -35,6 +37,7 @@ export class User {
             this.restaurants = User.restaurants;
         }
         
+        
     }
 
 
@@ -43,7 +46,7 @@ export class User {
         password: string,
         firstname: string,
         lastname: string,
-        role: Role,
+        role: string,
         id?: number
     ): boolean {
         if (id !== undefined && (!Number.isInteger(id) || id <= 0)) {
@@ -121,17 +124,19 @@ export class User {
         //restaurants,
         //reservations,
     }: UserPrisma /*& { restaurants: RestaurantPrisma[]; reservations: ReservationPrisma[] }*/) {
+       
         return new User({
             id,
             username,
             password,
-            role: 'admin',
+            role: "chef",
             //role,
             firstname,
             lastname,
             //restaurants: restaurants.map((restaurant: Restaurant) => Restaurant.from(restaurant)),
             //reservations: reservations.map((reservation: Reservation) => Reservation.from(reservation)),
         });
+    
     }
     
 }

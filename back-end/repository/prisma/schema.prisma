@@ -45,14 +45,14 @@ model Restaurant {
 }
 
 enum Role {
-  ADMIN
-  USER
-  GUEST
+  admin
+  user
+  chef
+  bartender
 }
 
 enum Category {
-  FOOD
-  DRINK
-  OTHER
+  food
+  drinks
 }
 

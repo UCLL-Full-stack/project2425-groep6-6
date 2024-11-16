@@ -99,9 +99,7 @@ const getBartenders = () => {
 // }
 
 const getAllUsers = async (): Promise<User[]> => {
-    const result = await database.user.findMany({
-        include: {},
-    })
+    const result = await database.user.findMany();
     return result.map((result) => User.from(result));
 }
 

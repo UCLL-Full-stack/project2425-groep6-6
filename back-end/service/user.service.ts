@@ -14,7 +14,7 @@ const getUserById = (id: number): User | null => {
     }
 }
 
-const getAllUsers = (): Promise<User[]> | null => {
+const getAllUsers = async (): Promise<User[]> => {
     try{
         const users = userDb.getAllUsers();
         return users;

@@ -48,7 +48,7 @@ const userRouter = express.Router();
  */
 userRouter.get('/users', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(userService.getAllUsers());
+        res.status(200).json( await userService.getAllUsers());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
