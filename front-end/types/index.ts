@@ -28,3 +28,16 @@ export type StatusMessage = {
   message: string;
   type: "error" | "success";
 };
+
+export type Reservation = {
+  id: number;
+  date: string; 
+  user: User; 
+  items: Array<{
+    item: Item; 
+    quantity: number; 
+  }>;
+};
+
+
+

@@ -105,7 +105,7 @@ reservationRouter.post('/reservations', async (req: Request, res: Response, next
         const reservationInput: ReservationInput = req.body;
         
         reservationsService.createReservation(reservationInput.date, reservationInput.userId, reservationInput.items);
-        return res.status(200).json({ message: 'Schedule created successfully' });
+        return res.status(200).json({ message: 'reservation created successfully' });
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
 

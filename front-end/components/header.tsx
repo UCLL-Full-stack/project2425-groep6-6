@@ -4,15 +4,18 @@ import { useEffect, useState } from 'react';
 
 const Header: React.FC = () => {
   const [username, setUsername] = useState<string | null>(null);
-  const [isClient, setIsClient] = useState<boolean>(false);
+  const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsClient(true);
       const storedUsername = sessionStorage.getItem('username');
+      const storedRole = sessionStorage.getItem('role');
       if (storedUsername) {
         setUsername(storedUsername);
+      }
+      if (storedRole) {
+        setRole(storedRole);
       }
     }
   }, []);
@@ -21,13 +24,13 @@ const Header: React.FC = () => {
     if (typeof window !== "undefined") {
       sessionStorage.clear();
       setUsername(null);
+      setRole(null);
       router.push('/');
     }
   };
 
   return (
     <header className="p-3 mb-3 border-bottom bg-dark bg-gradient d-flex align-items-center justify-content-between">
-      
       <nav className="nav justify-content-center flex-grow-1">
         <Link href="/" className="nav-link px-4 fs-5 text-white">
           Home
@@ -40,6 +43,12 @@ const Header: React.FC = () => {
         <Link href="/menu" className="nav-link px-4 fs-5 text-white">
           Menu
         </Link>
+
+        {role && (role === 'cook' || role === 'barman') && (
+          <Link href="/order/reservations" className="nav-link px-4 fs-5 text-white">
+            Reservations
+          </Link>
+        )}
 
         {username && (
           <button
@@ -58,9 +67,7 @@ const Header: React.FC = () => {
       </nav>
 
       <div className="d-flex align-items-center text-white ms-auto">
-        {username && (
-          <span className="fs-5">{username}</span>
-        )}
+        {username && <span className="fs-5">{username}</span>}
       </div>
     </header>
   );
