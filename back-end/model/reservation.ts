@@ -1,5 +1,8 @@
+import userDb from "../repository/user.db";
 import { Item } from "./item";
 import { User } from "./user";
+import {Reservation as ReservationPrisma} from  '@prisma/client'
+
 
 export class Reservation {
     private id?: number;
@@ -53,4 +56,14 @@ export class Reservation {
     getId(){
         return this.id;
     }
+
+    static async from(reservationPrisma: ReservationPrisma): Promise<Reservation> {
+        const user = await userDb.getUserById(reservationPrisma.userId);
+        return new Reservation({
+          id: reservationPrisma.id,
+          date: reservationPrisma.date,
+          user: user
+
+        });
+      }
 }

@@ -10,9 +10,6 @@
  *      User:
  *          type: object
  *          properties:
- *            id:
- *              type: number
- *              format: int64
  *            username:
  *              type: string
  *              description: username of user.

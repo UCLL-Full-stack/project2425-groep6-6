@@ -1,4 +1,6 @@
 import { User } from "./user";
+import {Restaurant as RestaurantPrisma} from  '@prisma/client'
+
 
 export class Restaurant {
     private id?: number;
@@ -6,13 +8,13 @@ export class Restaurant {
     private address: string;
     private users: Array<User>;
 
-    constructor(Restaurant: {name: string, address: string, id? : number}){
+    constructor(Restaurant: {name: string, address: string, id? : number, users: User[]}){
         this.validate(Restaurant.name, Restaurant.address, Restaurant.id);
 
         this.id = Restaurant.id;
         this.name = Restaurant.name;
         this.address = Restaurant.address;
-        this.users = new Array<User>;
+        this.users = Restaurant.users;
     }
 
 
@@ -51,4 +53,20 @@ export class Restaurant {
             this.users.push(user);
         }
     }
+
+
+
+
+
+    static async from(restaurantPrisma: RestaurantPrisma): Promise<Restaurant> {
+
+        return new Restaurant({
+          id: restaurantPrisma.id,
+          name: restaurantPrisma.name,
+          address: restaurantPrisma.address,
+          users: []
+        
+
+        });
+      }
 }

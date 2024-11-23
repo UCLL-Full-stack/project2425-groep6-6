@@ -1,39 +1,57 @@
 import { Restaurant } from "../model/restaurant";
+import { RestaurantInput } from "../types";
+import database from "./database";
 
-const restaurants = [
-    new Restaurant({
-        id: 1,
-        name: 'GiJo',
-        address: 'Diestsestraat 27, Leuven'
-    })
+const restaurants: Restaurant[] = [
+    // new Restaurant({
+    //     id: 1,
+    //     name: 'GiJo',
+    //     address: 'Diestsestraat 27, Leuven'
+    // })
 ];
 
 
-const getRestaurantById = (id: number): Restaurant | null => {
+const getRestaurantById = async (id: number): Promise<Restaurant>  => {
+    const result = await database.restaurant.findUnique({
+        where: {
+            id: id,
+        },
+    });
+
+    if (!result) {
+        throw new Error(`Restaurant with id ${id} not found`);
+    }
+
+    return Restaurant.from(result);
+}
+
+const getAllRestaurants = async ()=> {
+    const result = await database.restaurant.findMany({
+        include: {
+            users: true
+        }
+    });
+    return result.map((result) => Restaurant.from(result));
+}
+
+
+
+const createRestaurant = async (restaurant: RestaurantInput) => {
     try {
-        return restaurants.find((restaurant) => restaurant.getId() === id) || null;
+        const result = await database.restaurant.create({
+            data: {
+                name: restaurant.name,
+                address: restaurant.address
+                
+            },
+        });
+        
+        return Restaurant.from(result);
     } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
+        throw new Error('Database error. Failed to create restaurant. See server log for details. ' + error);
     }
 }
 
-const getAllRestaurants = () => {
-    try {
-        return restaurants;
-    } catch(error){
-        throw new Error('Database error. See server log for details.')
-    }
-}
-
-const createRestaurant = (restaurant: Restaurant) => {
-    try {
-        restaurants.push(restaurant);
-
-    } catch(error){
-        throw new Error('Database error. See server log for details.')
-    }
-}
 
 export default {
     getRestaurantById,

@@ -10,19 +10,17 @@
  *      Restaurant:
  *          type: object
  *          properties:
- *            id:
- *              type: number
- *              format: int64
  *            name:
  *              type: string
  *              description: Restaurant name.
- *            adress:
+ *            address:
  *              type: string
  *              description: Restaurant expertise.
  */
 import express, { NextFunction, Request, Response } from 'express';
 import { error } from 'console';
 import restaurantService from '../service/restaurant.service';
+import { RestaurantInput } from '../types';
 
 const restaurantRouter = express.Router();
 
@@ -68,12 +66,45 @@ restaurantRouter.get('/restaurants', async (req: Request, res: Response, next: N
 restaurantRouter.get('/restaurants/:id', async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10); 
     try{
-        const restaurant = restaurantService.getRestaurantById(id);
+        const restaurant = await restaurantService.getRestaurantById(id);
         return res.status(200).json(restaurant);
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
     
+});
+
+
+
+
+/**
+ * @swagger
+ * /restaurant:
+ *   post:
+ *     summary: Create a new restaurant.
+ *     requestBody:
+ *       description: item data needed to create a restaurant
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Restaurant'
+ *     responses:
+ *       200:
+ *         description: restaurant created successfully.
+ *       400:
+ *         description: Bad request due to invalid input data.
+ */
+restaurantRouter.post('/restaurant', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const restaurant: RestaurantInput = req.body;
+        
+        
+        return res.status(200).json(await restaurantService.createRestaurant(restaurant));
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+
+    }
 });
 
 

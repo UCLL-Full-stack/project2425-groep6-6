@@ -130,7 +130,6 @@ export class User {
             username,
             password,
             role: role,
-            //role,
             firstname,
             lastname,
             //restaurants: restaurants.map((restaurant: Restaurant) => Restaurant.from(restaurant)),

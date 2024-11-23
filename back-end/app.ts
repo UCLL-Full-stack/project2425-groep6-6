@@ -57,3 +57,4 @@ app.get('/users/customers', userRouter);
 app.get('/users/:id', userRouter);
 app.post('/login', userRouter);
 app.post('/users', userRouter);
+app.post('/restaurant', restaurantRouter);

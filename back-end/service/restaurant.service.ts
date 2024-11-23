@@ -1,8 +1,8 @@
 import { Restaurant } from "../model/restaurant";
 import restaurantDb from "../repository/restaurant.db";
-import { RestaurantDTO } from "../types";
+import { RestaurantDTO, RestaurantInput } from "../types";
 
-const getRestaurantById = (id: number): Restaurant | null => {
+const getRestaurantById = (id: number): Promise<Restaurant> => {
     try{
         const restaurant = restaurantDb.getRestaurantById(id);
         if (restaurant){
@@ -14,7 +14,7 @@ const getRestaurantById = (id: number): Restaurant | null => {
     }
 }
 
-const getAllRestaurants = (): Restaurant[] | null => {
+const getAllRestaurants = () => {
     try{
         const restaurants = restaurantDb.getAllRestaurants();
         return restaurants;
@@ -24,22 +24,16 @@ const getAllRestaurants = (): Restaurant[] | null => {
 }
 
 
-const convertToDTO = (restaurant: Restaurant): RestaurantDTO => {
-    try {
-        const restaurantDTO: RestaurantDTO = {
-            id: restaurant.getId(),
-            name: restaurant.getName(),
-            address: restaurant.getAddress(),
-            users: restaurant.getUsers()
-        }
-        return restaurantDTO;
-    } catch(error){
-        throw new Error("Converting to DTO error");
+const createRestaurant = (restaurant: RestaurantInput) => {
+    try{
+        return restaurantDb.createRestaurant(restaurant)
+    }catch(error){
+        throw new Error("Creation of object failed.")
     }
-    
 }
 
 export default { 
     getRestaurantById,
-    getAllRestaurants
+    getAllRestaurants,
+    createRestaurant
  };
