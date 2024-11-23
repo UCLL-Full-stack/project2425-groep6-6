@@ -11,13 +11,13 @@ export class Item{
     private price: number;
     private reservations: Array<Reservation>
 
-    constructor(Item: {id?: number, name: string, category: Category, price: number}){
+    constructor(Item: {id?: number, name: string, category: Category, price: number, reservations: Array<Reservation>}){
         this.validate( Item.name, Item.category, Item.price, Item.id);
         this.id = Item.id;
         this.category = Item.category;
         this.name = Item.name;
         this.price = Item.price;
-        this.reservations = [];
+        this.reservations = Item.reservations;
     }
 
     validate(name: string, category: Category, price: number, id?: number): boolean {
@@ -63,6 +63,7 @@ export class Item{
           name: itemPrisma.name,
           category: itemPrisma.category as Category,  
           price: itemPrisma.price,
+          reservations: []
         });
       }
 

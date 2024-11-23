@@ -47,7 +47,7 @@ const itemRouter = express.Router();
  */
 itemRouter.get('/items', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(itemService.getAllItems());
+        res.status(200).json(await itemService.getAllItems());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -66,7 +66,7 @@ itemRouter.get('/items', async (req: Request, res: Response, next: NextFunction)
  */
 itemRouter.get('/items/food', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(itemService.getFood());
+        res.status(200).json(await itemService.getFood());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -86,7 +86,7 @@ itemRouter.get('/items/food', async (req: Request, res: Response, next: NextFunc
  */
 itemRouter.get('/items/drinks', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(itemService.getDrinks());
+        res.status(200).json(await itemService.getDrinks());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -112,7 +112,7 @@ itemRouter.get('/items/drinks', async (req: Request, res: Response, next: NextFu
 itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10); 
     try{
-        const item = itemService.getItemById(id);
+        const item = await itemService.getItemById(id);
         return res.status(200).json(item);
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
@@ -132,7 +132,7 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/app/itemInput'
+ *             $ref: '#/components/schemas/Item'
  *     responses:
  *       200:
  *         description: item created successfully.
@@ -143,9 +143,8 @@ itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction
     try {
         const item: ItemInput = req.body;
         
-        itemService.createItem(item.category, item.name, item.price);
-        console.log(item);
-        return res.status(200).json({ message: 'Item created successfully' });
+        
+        return res.status(200).json(await itemService.createItem(item));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
 

@@ -37,7 +37,7 @@ type ReservationInput = {
 type ItemInput = {
     id?: number;
     name: string;
-    category: string;
+    category: Category;
     price: number;
 }
 

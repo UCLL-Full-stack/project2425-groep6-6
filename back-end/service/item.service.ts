@@ -5,9 +5,9 @@ import itemDb from "../repository/item.db";
 import reservationDb from "../repository/reservation.db";
 import restaurantDb from "../repository/restaurant.db";
 import userDb from "../repository/user.db";
-import { ReservationDTO } from "../types";
+import { ItemInput, ReservationDTO } from "../types";
 
-const getItemById = (id: number): Item | null => {
+const getItemById = (id: number): Promise<Item | null> => {
     try{
         const item = itemDb.getItemById(id);
         if (item){
@@ -19,7 +19,7 @@ const getItemById = (id: number): Item | null => {
     }
 }
 
-const getAllItems = (): Item[] | null => {
+const getAllItems = (): Promise<Item[]> => {
     try{
         const items = itemDb.getAllItems();
         return items;
@@ -28,7 +28,7 @@ const getAllItems = (): Item[] | null => {
     }
 }
 
-const getFood = (): Item[] | null => {
+const getFood = (): Promise<Item[]> => {
     try{
         const items = itemDb.getFood();
         return items;
@@ -37,7 +37,7 @@ const getFood = (): Item[] | null => {
     }
 }
 
-const getDrinks = (): Item[] | null => {
+const getDrinks = (): Promise<Item[]> => {
     try{
         const items = itemDb.getDrinks();
         return items;
@@ -46,17 +46,15 @@ const getDrinks = (): Item[] | null => {
     }
 }
 
-const createItem = (category: string, name: string, price: number) => {
+const createItem = ({category, name, price}: ItemInput): Promise<Item> => {
     try{
     if (category === 'food') {
-        const item = new Item({name: name, category: category, price: price})
-        itemDb.createItem(item)
+        return itemDb.createItem({category, name, price})
     } 
     else if (category === 'drinks') {
-        const item = new Item({name: name, category: category, price: price})
-        itemDb.createItem(item)
+        return itemDb.createItem({category, name, price})
     } else {
-        throw new Error('Category is not a category')
+        throw new Error('Category is not a category (drinks, food)')
 
     }
     }
