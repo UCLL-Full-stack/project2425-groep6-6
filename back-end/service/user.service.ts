@@ -1,8 +1,8 @@
 import { User } from "../model/user";
 import userDb from "../repository/user.db";
-import { Role, UserInput } from "../types";
+import { LoginInput, Role, UserInput } from "../types";
 
-const getUserById = (id: number): Promise<User | null> => {
+const getUserById = (id: number): Promise<User> => {
     try{
         const user = userDb.getUserById(id);
         return user;
@@ -72,7 +72,7 @@ const createUser = ({ username, firstname, lastname, password, role }: UserInput
     }
 }
 
-const userLogin = (username: string,  password: string): User => {
+const userLogin = ({ username, password }: LoginInput): Promise<User> => {
     try{
         
         return userDb.userLogin(username, password);

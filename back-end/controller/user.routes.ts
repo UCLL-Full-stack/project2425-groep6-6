@@ -201,8 +201,8 @@ userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunct
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     const userinput: LoginInput = req.body;
     try{
-        
-        return userService.userLogin(userinput.username, userinput.password);
+    
+        return res.status(200).json(await userService.userLogin(userinput));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -232,9 +232,8 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
 userRouter.post('/users', async (req: Request, res: Response, next: NextFunction) => {
     const userinput: UserInput = req.body;
     try{
-        
         userService.createUser(userinput);
-        return res.status(200).json("User succesfully created");
+        return res.status(200).json("user created succesfully");
 
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });

@@ -166,9 +166,9 @@ const getAllUsers = async (): Promise<User[]> => {
 //     }
 // }
 
-const createUser = async (user: UserInput): Promise<null> => {
+const createUser = async (user: UserInput): Promise<User> => {
     try {
-        await database.user.create({
+        const result = await database.user.create({
             data: {
                 username: user.username,
                 firstname: user.firstname,
@@ -178,26 +178,43 @@ const createUser = async (user: UserInput): Promise<null> => {
             },
         });
         
-        return null;
+        return User.from(result);
     } catch (error) {
         throw new Error('Database error. Failed to create user. See server log for details.');
     }
 }
 
 
-const userLogin = (username: string, password: string) => {
+// const userLogin = (username: string, password: string) => {
+//     try {
+
+//         const user = users.find(user => user.getUsername() === username);
+//         if(user){
+//             if(user.getPassword() === password){
+//                 return user;
+//             }
+//         }     
+//         throw new Error('Wrong Credentials');
+//     } catch(error){
+//         throw new Error('Wrong Credentials');
+//     }
+// }
+
+const userLogin = async (username: string, password: string): Promise<User> => {
     try {
-        const user = users.find(user => user.getUsername() === username);
-        if(user){
-            if(user.getPassword() === password){
-                return user;
-            }
-        }     
+        const user = await database.user.findUnique({
+            where: { username: username },
+        });
+
+        if (user && user.password === password) {
+            return User.from(user); 
+        }
+
         throw new Error('Wrong Credentials');
-    } catch(error){
+    } catch (error) {
         throw new Error('Wrong Credentials');
     }
-}
+};
 
 export default {
     getAdmins,
