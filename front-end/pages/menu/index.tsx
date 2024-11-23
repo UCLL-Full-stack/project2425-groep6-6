@@ -21,14 +21,21 @@ const Menu: React.FC = () => {
         MenuService.getFoodItems(),
         MenuService.getDrinkItems(),
       ]);
-      setFoodItems(await foodResponse.json());
-      setDrinkItems(await drinkResponse.json());
+      const foodData = await foodResponse.json();
+      const drinkData = await drinkResponse.json();
+  
+      console.log("Food Items: ", foodData);
+      console.log("Drink Items: ", drinkData);
+  
+      setFoodItems(foodData);
+      setDrinkItems(drinkData);
     } catch (error) {
       console.error("Error fetching menu items:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchMenuItems();
@@ -79,7 +86,6 @@ const Menu: React.FC = () => {
                 order={order} 
               />
 
-
               <h2>Drink Items</h2>
               <ItemOverviewTable 
                 items={drinkItems} 
@@ -87,7 +93,6 @@ const Menu: React.FC = () => {
                 order={order} 
               />
             </section>
-            {/* De "Order" knop wordt alleen weergegeven als de gebruiker ingelogd is */}
             {isLoggedIn && (
               <button onClick={handleOrder} className="btn btn-primary">Order</button>
             )}
@@ -102,7 +107,7 @@ const Menu: React.FC = () => {
           </div>)}
           {isLoggedIn && sessionStorage.getItem("role")== "barman" && (
           <div>
-          <Link href="/menu/adddrinkItem">
+          <Link href="/menu/addDrinkItem">
           Add Drink Item
           </Link>
           </div>)}

@@ -1,6 +1,8 @@
 import { ca } from "date-fns/locale";
 import { Category } from "../types";
 import { Reservation } from "./reservation";
+import {Item as itemsPrisma} from  '@prisma/client'
+
 
 export class Item{
     private id?: number;
@@ -54,5 +56,14 @@ export class Item{
         return this.reservations;
     }
 
+
+    static from(itemPrisma: itemsPrisma): Item {
+        return new Item({
+          id: itemPrisma.id,
+          name: itemPrisma.name,
+          category: itemPrisma.category as Category,  
+          price: itemPrisma.price,
+        });
+      }
 
 }
