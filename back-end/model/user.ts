@@ -129,7 +129,7 @@ export class User {
             id,
             username,
             password,
-            role: "chef",
+            role: role,
             //role,
             firstname,
             lastname,

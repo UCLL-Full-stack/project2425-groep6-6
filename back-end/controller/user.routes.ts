@@ -22,6 +22,18 @@
  *            lastname:
  *              type: string
  *              description: lastname of user.
+ *            password:
+ *              type: string
+ *            role:
+ *              type: string
+ *              description: chef, bartender, admin, customer
+ *      Login:
+ *          type: object
+ *          properties:
+ *            username:
+ *              type: string
+ *            password:
+ *              type: string
  *              
  */
 import express, { NextFunction, Request, Response } from 'express';
@@ -29,7 +41,7 @@ import { error } from 'console';
 import restaurantService from '../service/restaurant.service';
 import reservationDb from '../repository/reservation.db';
 import reservationsService from '../service/reservations.service';
-import { LoginInput, ReservationDTO, ReservationInput } from '../types';
+import { UserInput, LoginInput, ReservationDTO, ReservationInput } from '../types';
 import userService from '../service/user.service';
 
 const userRouter = express.Router();
@@ -67,7 +79,7 @@ userRouter.get('/users', async (req: Request, res: Response, next: NextFunction)
  */
 userRouter.get('/users/chefs', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(userService.getChefs());
+        res.status(200).json(await userService.getChefs());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -86,7 +98,7 @@ userRouter.get('/users/chefs', async (req: Request, res: Response, next: NextFun
  */
 userRouter.get('/users/customers', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(userService.getCustomers());
+        res.status(200).json(await userService.getCustomers());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -105,7 +117,7 @@ userRouter.get('/users/customers', async (req: Request, res: Response, next: Nex
  */
 userRouter.get('/users/bartenders', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(userService.getBartenders());
+        res.status(200).json(await userService.getBartenders());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -124,7 +136,7 @@ userRouter.get('/users/bartenders', async (req: Request, res: Response, next: Ne
  */
 userRouter.get('/users/admins', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(userService.getAdmins());
+        res.status(200).json(await userService.getAdmins());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -157,8 +169,40 @@ userRouter.get('/users/admins', async (req: Request, res: Response, next: NextFu
 userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10); 
     try{
-        const user = userService.getUserById(id);
+        const user = await userService.getUserById(id);
         return res.status(200).json(user);
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+    }
+    
+});
+
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Log a user in.
+ *     requestBody:
+ *       description: Username and password.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Login'
+ *     responses:
+ *       200:
+ *         description: User logged in successfully.
+ *       400:
+ *         description: Bad request due to invalid input data.
+ *       404:
+ *          description: User does not exist/Credentials are wrong. 
+ */
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    const userinput: LoginInput = req.body;
+    try{
+        
+        return userService.userLogin(userinput.username, userinput.password);
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -170,27 +214,28 @@ userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /users:
  *   post:
- *     summary: Log a user in.
+ *     summary: Create a user
  *     requestBody:
- *       description: Username and password.
+ *       description: Create a user 
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: ''
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
- *         description: User logged in successfully.
+ *         description: User created successfully.
  *       400:
  *         description: Bad request due to invalid input data.
- *       404:
- *          description: User does not exist/Credentials are wrong. 
+ *        
  */
 userRouter.post('/users', async (req: Request, res: Response, next: NextFunction) => {
-    const userinput: LoginInput = req.body;
+    const userinput: UserInput = req.body;
     try{
         
-        return userService.userLogin(userinput.username, userinput.password);
+        userService.createUser(userinput);
+        return res.status(200).json("User succesfully created");
+
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }

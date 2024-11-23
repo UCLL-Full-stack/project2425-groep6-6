@@ -1,5 +1,6 @@
 import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
+import { UserInput } from "../types";
 import database from "./database";
 
 const users = [
@@ -45,49 +46,101 @@ const users = [
     })
 ];
 
-const getUserById = (id: number): User | null => {
-    try {
-        return users.find((user) => user.getId() === id) || null;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
+// const getUserById = (id: number): User | null => {
+//     try {
+//         return users.find((user) => user.getId() === id) || null;
+//     } catch (error) {
+//         console.error(error);
+//         throw new Error('Database error. See server log for details.');
+//     }
+// }
+
+const getUserById = async (id: number): Promise<User> => {
+    const result = await database.user.findUnique({
+        where: {
+            id: id,
+        },
+    });
+
+    if (!result) {
+        throw new Error(`User with id ${id} not found`);
     }
+
+    return User.from(result);
+};
+    
+
+// const getChefs = () => {
+//     try {
+//         return users.filter((user) => user.getRole() === 'chef') || null;
+//     } catch (error) {
+//         console.error(error);
+//         throw new Error('Database error. See server log for details.');
+//     }
+// }
+
+
+const getChefs = async (): Promise<User[]> => {
+    const result = await database.user.findMany({
+        where: {
+            role: "chef",
+        },
+    });
+    return result.map((result) => User.from(result));
+};
+
+// const getCustomers = () => {
+//     try {
+//         return users.filter((user) => user.getRole() === 'customer') || null;
+//     } catch (error) {
+//         console.error(error);
+//         throw new Error('Database error. See server log for details.');
+//     }
+// }
+
+const getCustomers = async (): Promise<User[]> => {
+    const result = await database.user.findMany({
+        where: {
+            role: "customer",
+        },
+    });
+    return result.map((result) => User.from(result));
 }
 
-const getChefs = () => {
-    try {
-        return users.filter((user) => user.getRole() === 'chef') || null;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
-    }
+// const getAdmins = () => {
+//     try {
+//         return users.filter((user) => user.getRole() === 'admin') || null;
+//     } catch (error) {
+//         console.error(error);
+//         throw new Error('Database error. See server log for details.');
+//     }
+// }
+
+const getAdmins = async (): Promise<User[]> => {
+    const result = await database.user.findMany({
+        where: {
+            role: "admin",
+        },
+    });
+    return result.map((result) => User.from(result));
 }
 
-const getCustomers = () => {
-    try {
-        return users.filter((user) => user.getRole() === 'customer') || null;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
-    }
-}
+// const getBartenders = () => {
+//     try {
+//         return users.filter((user) => user.getRole() === 'bartender') || null;
+//     } catch (error) {
+//         console.error(error);
+//         throw new Error('Database error. See server log for details.');
+//     }
+// }
 
-const getAdmins = () => {
-    try {
-        return users.filter((user) => user.getRole() === 'admin') || null;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
-    }
-}
-
-const getBartenders = () => {
-    try {
-        return users.filter((user) => user.getRole() === 'bartender') || null;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Database error. See server log for details.');
-    }
+const getBartenders = async (): Promise<User[]> => {
+    const result = await database.user.findMany({
+        where: {
+            role: "bartender",
+        },
+    });
+    return result.map((result) => User.from(result));
 }
 
 // const getAllUsers = () => {
@@ -105,13 +158,32 @@ const getAllUsers = async (): Promise<User[]> => {
 
 
 
-const createUser = (user: User) => {
+// const createUser = (user: User) => {
+//     try {
+//         users.push(user);
+//     } catch(error){
+//         throw new Error('Database error. See server log for details.')
+//     }
+// }
+
+const createUser = async (user: UserInput): Promise<null> => {
     try {
-        users.push(user);
-    } catch(error){
-        throw new Error('Database error. See server log for details.')
+        await database.user.create({
+            data: {
+                username: user.username,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                password: user.password,
+                role: user.role,
+            },
+        });
+        
+        return null;
+    } catch (error) {
+        throw new Error('Database error. Failed to create user. See server log for details.');
     }
 }
+
 
 const userLogin = (username: string, password: string) => {
     try {

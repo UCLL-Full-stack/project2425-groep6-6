@@ -39,8 +39,8 @@ const addItemsToReservation = (id: number, items: Item[]) => {
     }
 }
 
-const createReservation = (date: string, userId: number, items: Array<Item>): ReservationDTO => {
-    const user = userDb.getUserById(userId);
+const createReservation = async (date: string, userId: number, items: Array<Item>): Promise<ReservationDTO> => {
+    const user = await userDb.getUserById(userId);
     if (user){
         const reservation = reservationDb.createReservation( new Reservation ({
             date: new Date(date),

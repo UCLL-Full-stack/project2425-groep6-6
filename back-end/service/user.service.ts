@@ -1,14 +1,12 @@
 import { User } from "../model/user";
 import userDb from "../repository/user.db";
-import { Role } from "../types";
+import { Role, UserInput } from "../types";
 
-const getUserById = (id: number): User | null => {
+const getUserById = (id: number): Promise<User | null> => {
     try{
         const user = userDb.getUserById(id);
-        if (user){
-            return user;
-        } 
-        throw new Error
+        return user;
+         
     } catch(error){
         throw new Error('User with id ' + id + ' does not exist.')
     }
@@ -23,7 +21,7 @@ const getAllUsers = async (): Promise<User[]> => {
     }
 }
 
-const getCustomers = (): User[] | null => {
+const getCustomers = (): Promise <User[]> | null => {
     try{
         const customers = userDb.getCustomers();
         return customers;
@@ -32,7 +30,7 @@ const getCustomers = (): User[] | null => {
     }
 }
 
-const getChefs = (): User[] | null => {
+const getChefs = (): Promise<User[]> | null => {
     try{
         const chefs = userDb.getChefs();
         return chefs;
@@ -41,7 +39,7 @@ const getChefs = (): User[] | null => {
     }
 }
 
-const getBartenders = (): User[] | null => {
+const getBartenders = (): Promise <User[]> | null => {
     try{
         const bartender = userDb.getBartenders();
         return bartender;
@@ -50,7 +48,7 @@ const getBartenders = (): User[] | null => {
     }
 }
 
-const getAdmins = (): User[] | null => {
+const getAdmins = (): Promise <User[]> | null => {
     try{
         const admins = userDb.getAdmins();
         return admins;
@@ -59,18 +57,18 @@ const getAdmins = (): User[] | null => {
     }
 }
 
-const createUser = (username: string, firstname: string, lastname: string, password: string, role: string) => {
+const createUser = ({ username, firstname, lastname, password, role }: UserInput ) => {
     try{
         if(role === 'admin' || role === 'customer' || role === 'chef' || role === 'bartender'){
-            const user = new User({username, password, firstname, lastname, role})
-            userDb.createUser(user);
+            
+            userDb.createUser({ username, firstname, lastname, password, role });
         } 
         else {
             throw new Error('The role was not found.')
         }
-        
+        return null
     } catch(error){
-        throw new Error('There are no admins found.')
+        throw new Error('Creation of user failed')
     }
 }
 

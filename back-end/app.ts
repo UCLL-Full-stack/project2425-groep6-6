@@ -55,3 +55,5 @@ app.get('/users/chefs', userRouter);
 app.get('/users/bartenders', userRouter);
 app.get('/users/customers', userRouter);
 app.get('/users/:id', userRouter);
+app.post('/login', userRouter);
+app.post('/users', userRouter);

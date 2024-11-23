@@ -46,7 +46,7 @@ model Restaurant {
 
 enum Role {
   admin
-  user
+  customer
   chef
   bartender
 }
