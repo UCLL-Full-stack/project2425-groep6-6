@@ -10,9 +10,6 @@
  *      Reservation:
  *          type: object
  *          properties:
- *            id:
- *              type: number
- *              format: int64
  *            date:
  *              type: Date
  *              description: Reservation date.
@@ -44,7 +41,7 @@ const reservationRouter = express.Router();
  */
 reservationRouter.get('/reservations', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json(reservationsService.getAllReservations());
+        res.status(200).json(await reservationsService.getAllReservations());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -70,7 +67,7 @@ reservationRouter.get('/reservations', async (req: Request, res: Response, next:
 reservationRouter.get('/reservations/:id', async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10); 
     try{
-        const reservation = reservationsService.getReservationById(id);
+        const reservation = await reservationsService.getReservationById(id);
         return res.status(200).json(reservation);
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
@@ -79,7 +76,6 @@ reservationRouter.get('/reservations/:id', async (req: Request, res: Response, n
 });
 
 
-//HIJ VINDT DE PARAMETERS NIET OM DE BODY MEE TE GEVEN => FIX ZOEKEN WANT FILE NOT FOUND/type
 /**
  * @swagger
  * /reservations:
@@ -91,7 +87,7 @@ reservationRouter.get('/reservations/:id', async (req: Request, res: Response, n
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/app/ReservationInput'
+ *             $ref: '#/components/schemas/Reservation'
  *     responses:
  *       200:
  *         description: Reservation created successfully.
@@ -104,8 +100,7 @@ reservationRouter.post('/reservations', async (req: Request, res: Response, next
     try {
         const reservationInput: ReservationInput = req.body;
         
-        reservationsService.createReservation(reservationInput.date, reservationInput.userId, reservationInput.items);
-        return res.status(200).json({ message: 'reservation created successfully' });
+        return res.status(200).json(await reservationsService.createReservation(reservationInput));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
 

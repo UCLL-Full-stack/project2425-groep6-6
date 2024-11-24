@@ -4,9 +4,9 @@ import { Restaurant } from "../model/restaurant";
 import reservationDb from "../repository/reservation.db";
 import restaurantDb from "../repository/restaurant.db";
 import userDb from "../repository/user.db";
-import { ReservationDTO } from "../types";
+import { ReservationDTO, ReservationInput } from "../types";
 
-const getReservationById = (id: number): Reservation | null => {
+const getReservationById = (id: number): Promise<Reservation>  => {
     try{
         const reservation = reservationDb.getReservationById(id);
         if (reservation){
@@ -18,13 +18,9 @@ const getReservationById = (id: number): Reservation | null => {
     }
 }
 
-const getAllReservations = (): Reservation[] | null => {
+const getAllReservations = () => {
     try{
         const reservations = reservationDb.getAllReservations();
-        const reservationsDTO = [];
-        reservations.forEach(reservation => {
-            reservationsDTO.push(convertToDTO(reservation));
-        });
         return reservations;
     } catch(error){
         throw new Error('There are no restaurants.')
@@ -39,17 +35,11 @@ const addItemsToReservation = (id: number, items: Item[]) => {
     }
 }
 
-const createReservation = async (date: string, userId: number, items: Array<Item>): Promise<ReservationDTO> => {
-    const user = await userDb.getUserById(userId);
-    if (user){
-        const reservation = reservationDb.createReservation( new Reservation ({
-            date: new Date(date),
-            user: user
-        }));
-        return convertToDTO(reservation);
-
-    } else {
-        throw new Error('User with id ' + userId + ' does not exist');
+const createReservation = async (reservationInput: ReservationInput): Promise<Reservation> => {
+    try{
+        return reservationDb.createReservation(reservationInput);
+    }catch(error){
+        throw new Error("Creation of object failed.")
     }
 
 }

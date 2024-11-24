@@ -40,11 +40,12 @@ restaurantRouter.get('/restaurants', async (req: Request, res: Response, next: N
     
 
     try{
-        res.status(200).json(restaurantService.getAllRestaurants());
+        res.status(200).json(await restaurantService.getAllRestaurants());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
 });
+
 
 /**
  * @swagger

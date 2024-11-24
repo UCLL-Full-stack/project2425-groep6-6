@@ -58,12 +58,17 @@ export class Restaurant {
 
 
 
-    static async from(restaurantPrisma: RestaurantPrisma): Promise<Restaurant> {
+    static async from({
+        id,
+        name,
+        address
+        
+    }: RestaurantPrisma): Promise<Restaurant> {
 
         return new Restaurant({
-          id: restaurantPrisma.id,
-          name: restaurantPrisma.name,
-          address: restaurantPrisma.address,
+          id: id,
+          name: name,
+          address: address,
           users: []
         
 
