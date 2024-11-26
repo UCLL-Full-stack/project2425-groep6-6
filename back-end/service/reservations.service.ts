@@ -18,7 +18,7 @@ const getReservationById = (id: number): Promise<Reservation>  => {
     }
 }
 
-const getAllReservations = () => {
+    const getAllReservations = (): Promise<Reservation[]> => {
     try{
         const reservations = reservationDb.getAllReservations();
         return reservations;

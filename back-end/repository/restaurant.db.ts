@@ -25,11 +25,11 @@ const getRestaurantById = async (id: number): Promise<Restaurant>  => {
     return Restaurant.from(result);
 }
 
-const getAllRestaurants = async () => {
+const getAllRestaurants = async (): Promise<Restaurant[]> => {
     
     const result = await database.restaurant.findMany();
-    return result.map((result) => Restaurant.from(result));
-    
+    const restaurants = await Promise.all(result.map((r) => Restaurant.from(r)));
+    return restaurants;    
 }
 
 

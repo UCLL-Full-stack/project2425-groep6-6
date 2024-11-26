@@ -37,9 +37,10 @@ const getReservationById = async (id: number): Promise<Reservation> => {
 }
 
 
-const getAllReservations = async () => {
+const getAllReservations = async (): Promise<Reservation[]> => {
     const result = await database.reservation.findMany();
-    return result.map((result) => Reservation.from(result));
+    const reservations = await Promise.all(result.map((r) => Reservation.from(r)));
+    return reservations
 }
 
 const addItemsToReservation = (id: number, items: Item[]) => {
@@ -65,7 +66,7 @@ const createReservation = async (reservation: ReservationInput) => {
         
         return Reservation.from(result);
     } catch (error) {
-        throw new Error('Database error. Failed to create restaurant. See server log for details. ' + error);
+        throw new Error('Database error. Failed to create reservation. See server log for details. ' + error);
     }
 }
 

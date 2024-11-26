@@ -14,7 +14,7 @@ const getRestaurantById = (id: number): Promise<Restaurant> => {
     }
 }
 
-const getAllRestaurants = () => {
+const getAllRestaurants = (): Promise<Restaurant[]> => {
     try{
         const restaurants = restaurantDb.getAllRestaurants();
         return restaurants;
