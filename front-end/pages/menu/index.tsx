@@ -14,7 +14,6 @@ const Menu: React.FC = () => {
   const [order, setOrder] = useState<{ [key: number]: number }>({});
   const router = useRouter();
 
-  // Haal menu-items op via de MenuService
   const fetchMenuItems = async () => {
     try {
       const [foodResponse, drinkResponse] = await Promise.all([
@@ -99,13 +98,13 @@ const Menu: React.FC = () => {
           </>
         )}
 
-          {isLoggedIn && sessionStorage.getItem("role")== "cook" && (
+          {isLoggedIn && sessionStorage.getItem("role")== "chef" && (
           <div>
           <Link href="/menu/addFoodItem">
           Add Food Item
           </Link>
           </div>)}
-          {isLoggedIn && sessionStorage.getItem("role")== "barman" && (
+          {isLoggedIn && sessionStorage.getItem("role")== "bartender" && (
           <div>
           <Link href="/menu/addDrinkItem">
           Add Drink Item
