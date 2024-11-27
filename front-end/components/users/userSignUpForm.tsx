@@ -47,7 +47,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
       )}
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        {/* Formulierinvoer velden */}
         <div>
           <label htmlFor="username" className="block mb-2 text-sm font-medium">
             Username

@@ -1,9 +1,10 @@
-// pages/admin.tsx
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Header from "@components/header";
 import SignupForm from "@components/users/userSignUpForm"; 
+import styles from "/styles/userLoginForm.module.css"; 
+
 
 const AdminPage: React.FC = () => {
   const router = useRouter();
@@ -29,15 +30,16 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    <>
-      <Head>
+    
+    <><Head>
         <title>Admin Dashboard</title>
       </Head>
       <Header />
+    <div className={styles.container}>
+      
       <div>
         <h1>Admin Dashboard</h1>
-        <p>Welkom, admin! Je hebt toegang tot het admin-dashboard.</p>
-        
+        <p>Welcome, admin! You have access to the admin dashboard.</p>       
         <div>
           <button onClick={() => handleRoleSelection('admin')}>Add Admin</button>
           <button onClick={() => handleRoleSelection('chef')}>Add Chef</button>
@@ -46,6 +48,9 @@ const AdminPage: React.FC = () => {
 
         {selectedRole && <SignupForm role={selectedRole} />}
       </div>
+    </div>
+
+     
     </>
   );
 };
