@@ -1,11 +1,8 @@
 import Head from "next/head";
 import Header from "@components/header";
-import UserLoginForm from "@components/users/UserLoginForm";
-import { useRouter } from "next/router";
-
+import UserSignUpform from "@components/users/userSignUpForm";
 
 const Login: React.FC = () => {
-
     return (
         <>
             <Head>
@@ -14,7 +11,7 @@ const Login: React.FC = () => {
             <Header />
             <main >
             <section className="p-6 min-h-screen flex flex-col items-center">
-            <UserLoginForm />
+            <UserSignUpform role="customer" />
             </section>
             
             </main>

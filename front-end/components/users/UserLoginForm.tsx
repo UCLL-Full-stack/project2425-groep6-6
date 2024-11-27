@@ -2,6 +2,7 @@ import { StatusMessage } from "@types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "/styles/userLoginForm.module.css";
+import LoginService from "@services/loginService";
 
 const UserLoginForm: React.FC = () => {
   const router = useRouter();
@@ -14,49 +15,43 @@ const UserLoginForm: React.FC = () => {
     setNameError("");
   };
 
-  const validate = (): boolean => {
-    if (!name || !password) {
-      setNameError("Username and password are required.");
+  const validate = async (): Promise<boolean> => {
+    try {
+      const response = await LoginService.login(name, password);
+
+      sessionStorage.setItem("username", response.username);
+      sessionStorage.setItem("role", response.role);
+
+      return true;
+    } catch (error: any) {
+      setNameError(error.message || "An unknown error occurred.");
       return false;
     }
-
-    if (
-      (name === "barman" && password === "barman123") ||
-      (name === "cook" && password === "cook123") ||
-      (name === "user" && password === "user123")
-    ) {
-      return true;
-    }
-
-    setNameError("Invalid username or password.");
-    return false;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     clearErrors();
 
-    if (!validate()) {
+    const isValid = await validate();
+
+    if (!isValid) {
       return;
     }
-
-    const roles: { [key: string]: string } = {
-      barman: "barman",
-      cook: "cook",
-      user: "user",
-    };
-
-    sessionStorage.setItem("username", name);
-    sessionStorage.setItem("role", roles[name]);
-
-    setStatusMessages([{
-      message: "Login successful. Redirecting to homepage...",
-      type: "success"
-    }]);
+    setStatusMessages([
+      {
+        message: "Login successful. Redirecting to homepage...",
+        type: "success",
+      },
+    ]);
 
     setTimeout(() => {
       router.push("/");
     }, 2000);
+  };
+
+  const navigateToSignup = () => {
+    router.push("/signup");
   };
 
   return (
@@ -68,7 +63,9 @@ const UserLoginForm: React.FC = () => {
           {statusMessages.map(({ message, type }, index) => (
             <div
               key={index}
-              className={`${styles.statusMessage} ${type === "error" ? styles.error : styles.success}`}
+              className={`${styles.statusMessage} ${
+                type === "error" ? styles.error : styles.success
+              }`}
             >
               {message}
             </div>
@@ -91,7 +88,10 @@ const UserLoginForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="passwordInput" className="block mb-2 text-sm font-medium">
+          <label
+            htmlFor="passwordInput"
+            className="block mb-2 text-sm font-medium"
+          >
             Password:
           </label>
           <input
@@ -103,17 +103,21 @@ const UserLoginForm: React.FC = () => {
           />
         </div>
 
-        {nameError && (
-          <p className={styles.errorText}>{nameError}</p>
-        )}
+        {nameError && <p className={styles.errorText}>{nameError}</p>}
 
-        <button
-          type="submit"
-          className={styles.button}
-        >
+        <button type="submit" className={styles.button}>
           Login
         </button>
       </form>
+
+      <div className="mt-4 flex justify-center">
+        <button
+          onClick={navigateToSignup}
+          className="px-4 py-2 bg-blue-500 text-black rounded hover:bg-blue-600 transition"
+        >
+          Don't have an account? Sign up
+        </button>
+      </div>
     </div>
   );
 };

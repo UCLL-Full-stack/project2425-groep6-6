@@ -44,9 +44,14 @@ const Header: React.FC = () => {
           Menu
         </Link>
 
-        {role && (role === 'cook' || role === 'barman') && (
+        {role && (role === 'chef' || role === 'bartender') && (
           <Link href="/order/reservations" className="nav-link px-4 fs-5 text-white">
             Reservations
+          </Link>
+        )}
+          {role && (role === 'admin' ) && (
+          <Link href="/admin" className="nav-link px-4 fs-5 text-white">
+            Admin
           </Link>
         )}
 
