@@ -21,7 +21,7 @@ export type Item = {
   id: number; 
   name: string;
   price: number;
-  category: string; // "Food" or "Drinks"
+  category: string; // "food" or "drinks"
 };
 
 export type StatusMessage = {

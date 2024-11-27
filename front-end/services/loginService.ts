@@ -46,6 +46,9 @@ const signup = async (userData: {
     if (response.status === 400) {
       throw new Error("Invalid input data");
     }
+    if (response.status === 409) {
+      throw new Error("User already exists");
+    }
     throw new Error("Failed to create user");
   }
 

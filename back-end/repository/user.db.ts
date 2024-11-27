@@ -166,23 +166,35 @@ const getAllUsers = async (): Promise<User[]> => {
 //     }
 // }
 
-const createUser = async (user: UserInput): Promise<User> => {
+const createUser = async (user: UserInput): Promise<User | null> => {
     try {
+        const existingUser = await database.user.findUnique({
+            where: {
+                username: user.username,
+            },
+        });
+
+        if (existingUser) {
+            return null;  
+        }
+
         const result = await database.user.create({
             data: {
                 username: user.username,
                 firstname: user.firstname,
                 lastname: user.lastname,
-                password: user.password,
+                password: user.password, 
                 role: user.role,
             },
         });
-        
-        return User.from(result);
+
+        return User.from(result);  
     } catch (error) {
+        console.error('Error creating user:', error);
         throw new Error('Database error. Failed to create user. See server log for details.');
     }
-}
+};
+
 
 
 // const userLogin = (username: string, password: string) => {

@@ -228,15 +228,19 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
  */
 userRouter.post('/users', async (req: Request, res: Response, next: NextFunction) => {
     const userinput: UserInput = req.body;
-    try{
-        userService.createUser(userinput);
-        return res.status(200).json("user created succesfully");
+    try {
+        const user = await userService.createUser(userinput);
 
-    }catch(error){
-        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+        if (!user) {
+            return res.status(409).json({ message: 'User already exists' });
+        }
+
+        return res.status(201).json({ message: 'User created successfully', user });
+    } catch (error) {
+        return res.status(500).json({ message: 'An error occurred, please try again later' });
     }
-    
 });
+
 
 
 

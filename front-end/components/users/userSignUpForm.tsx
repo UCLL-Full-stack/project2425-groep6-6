@@ -1,7 +1,6 @@
-// SignupForm.tsx
 import React, { useState } from "react";
 import LoginService from "@services/loginService";
-import styles from "/styles/userLoginForm.module.css"; 
+import styles from "/styles/userLoginForm.module.css";
 
 interface SignupFormProps {
   role: 'admin' | 'chef' | 'bartender' | 'customer';
@@ -13,7 +12,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
     firstname: "",
     lastname: "",
     password: "",
-    role: role,  // Stel de role in die we doorgeven
+    role: role,
   });
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
@@ -29,10 +28,15 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
 
     try {
       const result = await LoginService.signup(formData);
-      setStatusMessage(result);
+
+      setStatusMessage('User created successfully');
       setIsSuccess(true);
     } catch (error: any) {
-      setStatusMessage(error.message);
+      if (error.message === "User already exists") {
+        setStatusMessage("Username already exists");
+      } else {
+        setStatusMessage(error.message);
+      }
       setIsSuccess(false);
     }
   };
