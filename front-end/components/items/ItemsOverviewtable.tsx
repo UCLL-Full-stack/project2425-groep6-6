@@ -24,14 +24,14 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange }) 
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Price</th>
-              {isLoggedIn && <th scope="col">Quantity</th>} {/* Only show Quantity column if logged in */}
+              {isLoggedIn && <th scope="col">Quantity</th>} 
             </tr>
           </thead>
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
                 <td>{item.name}</td>
-                <td>${(item.price ?? 0).toFixed(2)}</td>
+                <td>€{(item.price ?? 0).toFixed(2)}</td>
                 {isLoggedIn ? (
                   <td>
                     <input

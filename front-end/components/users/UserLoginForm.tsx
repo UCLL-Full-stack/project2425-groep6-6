@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "/styles/userLoginForm.module.css";
 import LoginService from "@services/loginService";
+import { useTranslation } from "next-i18next"; 
 
 const UserLoginForm: React.FC = () => {
+  const { t } = useTranslation(); 
   const router = useRouter();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +26,7 @@ const UserLoginForm: React.FC = () => {
 
       return true;
     } catch (error: any) {
-      setNameError(error.message || "An unknown error occurred.");
+      setNameError(t("login.loginError")); 
       return false;
     }
   };
@@ -40,7 +42,7 @@ const UserLoginForm: React.FC = () => {
     }
     setStatusMessages([
       {
-        message: "Login successful. Redirecting to homepage...",
+        message: t("login.loginSuccess"), 
         type: "success",
       },
     ]);
@@ -56,7 +58,7 @@ const UserLoginForm: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.header}>Login</h3>
+      <h3 className={styles.header}>{t("login.title")}</h3> 
 
       {statusMessages.length > 0 && (
         <div>
@@ -76,7 +78,7 @@ const UserLoginForm: React.FC = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label htmlFor="nameInput" className="block mb-2 text-sm font-medium">
-            Username:
+            {t("login.username")} 
           </label>
           <input
             id="nameInput"
@@ -92,7 +94,7 @@ const UserLoginForm: React.FC = () => {
             htmlFor="passwordInput"
             className="block mb-2 text-sm font-medium"
           >
-            Password:
+            {t("login.password")} 
           </label>
           <input
             id="passwordInput"
@@ -106,7 +108,7 @@ const UserLoginForm: React.FC = () => {
         {nameError && <p className={styles.errorText}>{nameError}</p>}
 
         <button type="submit" className={styles.button}>
-          Login
+          {t("login.loginButton")} 
         </button>
       </form>
 
@@ -115,7 +117,7 @@ const UserLoginForm: React.FC = () => {
           onClick={navigateToSignup}
           className="px-4 py-2 bg-blue-500 text-black rounded hover:bg-blue-600 transition"
         >
-          Don't have an account? Sign up
+          {t("login.signupButton")}
         </button>
       </div>
     </div>

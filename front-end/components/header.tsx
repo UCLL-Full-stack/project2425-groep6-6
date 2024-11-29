@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Language from "./language/Language";
+import { useTranslation } from "next-i18next";
 
 const Header: React.FC = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
+  const { t } = useTranslation(); 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -31,27 +34,31 @@ const Header: React.FC = () => {
 
   return (
     <header className="p-3 mb-3 border-bottom bg-dark bg-gradient d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center text-white ms-auto">
+        {username && <span className="fs-5">{username}</span>}
+      </div> 
+
       <nav className="nav justify-content-center flex-grow-1">
         <Link href="/" className="nav-link px-4 fs-5 text-white">
-          Home
+          {t("header.home")}
         </Link>
 
         <Link href="/restaurants" className="nav-link px-4 fs-5 text-white">
-          Restaurants
+          {t("header.restaurants")}
         </Link>
 
         <Link href="/menu" className="nav-link px-4 fs-5 text-white">
-          Menu
+          {t("header.menu")}
         </Link>
 
         {role && (role === 'chef' || role === 'bartender') && (
           <Link href="/order/reservations" className="nav-link px-4 fs-5 text-white">
-            Reservations
+            {t("header.reservations")}
           </Link>
         )}
-          {role && (role === 'admin' ) && (
+        {role && (role === 'admin') && (
           <Link href="/admin" className="nav-link px-4 fs-5 text-white">
-            Admin
+            {t("header.admin")}
           </Link>
         )}
 
@@ -60,20 +67,18 @@ const Header: React.FC = () => {
             className="nav-link px-4 fs-5 text-white bg-transparent border-0"
             onClick={handleLogout}
           >
-            Logout
+            {t("header.logout")}
           </button>
         )}
 
         {!username && (
           <Link href="/login" className="nav-link px-4 fs-5 text-white">
-            Log in
+            {t("header.login")}
           </Link>
         )}
       </nav>
 
-      <div className="d-flex align-items-center text-white ms-auto">
-        {username && <span className="fs-5">{username}</span>}
-      </div>
+      <Language />
     </header>
   );
 };

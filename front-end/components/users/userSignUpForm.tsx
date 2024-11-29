@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "next-i18next"; 
 import LoginService from "@services/loginService";
 import styles from "/styles/userLoginForm.module.css";
 
@@ -7,6 +8,7 @@ interface SignupFormProps {
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
+  const { t } = useTranslation(); 
   const [formData, setFormData] = useState({
     username: "",
     firstname: "",
@@ -29,11 +31,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
     try {
       const result = await LoginService.signup(formData);
 
-      setStatusMessage('User created successfully');
+      setStatusMessage(t("signup.userCreatedSuccess"));
       setIsSuccess(true);
     } catch (error: any) {
       if (error.message === "User already exists") {
-        setStatusMessage("Username already exists");
+        setStatusMessage(t("signup.usernameExists"));
       } else {
         setStatusMessage(error.message);
       }
@@ -43,7 +45,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.header}>Sign Up as {role}</h3>
+      <h3 className={styles.header}>{t("signup.header", { role })}</h3> 
+
       {statusMessage && (
         <p className={`${styles.statusMessage} ${isSuccess ? styles.success : styles.error}`}>
           {statusMessage}
@@ -53,7 +56,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label htmlFor="username" className="block mb-2 text-sm font-medium">
-            Username
+            {t("signup.username")}
           </label>
           <input
             type="text"
@@ -68,7 +71,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
 
         <div>
           <label htmlFor="firstname" className="block mb-2 text-sm font-medium">
-            First Name
+            {t("signup.firstname")} 
           </label>
           <input
             type="text"
@@ -83,7 +86,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
 
         <div>
           <label htmlFor="lastname" className="block mb-2 text-sm font-medium">
-            Last Name
+            {t("signup.lastname")} 
           </label>
           <input
             type="text"
@@ -98,7 +101,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
 
         <div>
           <label htmlFor="password" className="block mb-2 text-sm font-medium">
-            Password
+            {t("signup.password")} 
           </label>
           <input
             type="password"
@@ -112,7 +115,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
         </div>
 
         <button type="submit" className={styles.button}>
-          Sign Up
+          {t("signup.signupButton")} 
         </button>
       </form>
     </div>

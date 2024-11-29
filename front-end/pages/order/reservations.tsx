@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '@components/header';
 import { getReservations } from '@services/orderService'; 
 import { Reservation } from '@types'; 
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ReservationsPage: React.FC = () => {
   const [reservations, setReservations] = useState<Array<Reservation>>([]);
@@ -89,5 +90,12 @@ const ReservationsPage: React.FC = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async (context: { locale: any; }) => {
+  const { locale } = context; 
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])), 
+    },
+  };
+};
 export default ReservationsPage;

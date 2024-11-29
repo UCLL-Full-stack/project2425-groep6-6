@@ -4,10 +4,12 @@ import Head from "next/head";
 import Header from "@components/header";
 import SignupForm from "@components/users/userSignUpForm"; 
 import styles from "/styles/userLoginForm.module.css"; 
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";  
 
 const AdminPage: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();  
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [selectedRole, setSelectedRole] = useState<'admin' | 'chef' | 'bartender' | null>(null);
 
@@ -30,29 +32,35 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    
-    <><Head>
-        <title>Admin Dashboard</title>
+    <>
+      <Head>
+        <title>{t('admin.dashboardTitle')}</title> 
       </Head>
       <Header />
-    <div className={styles.container}>
-      
-      <div>
-        <h1>Admin Dashboard</h1>
-        <p>Welcome, admin! You have access to the admin dashboard.</p>       
+      <div className={styles.container}>
         <div>
-          <button onClick={() => handleRoleSelection('admin')}>Add Admin</button>
-          <button onClick={() => handleRoleSelection('chef')}>Add Chef</button>
-          <button onClick={() => handleRoleSelection('bartender')}>Add Bartender</button>
+          <h1>{t('admin.dashboardTitle')}</h1>
+          <p>{t('admin.dashboardDescription')}</p>
+          <div>
+            <button onClick={() => handleRoleSelection('admin')}>{t('admin.addAdmin')}</button>
+            <button onClick={() => handleRoleSelection('chef')}>{t('admin.addChef')}</button>
+            <button onClick={() => handleRoleSelection('bartender')}>{t('admin.addBartender')}</button>
+          </div>
+
+          {selectedRole && <SignupForm role={selectedRole} />}
         </div>
-
-        {selectedRole && <SignupForm role={selectedRole} />}
       </div>
-    </div>
-
-     
     </>
   );
+};
+
+export const getServerSideProps = async (context: { locale: any; }) => {
+  const { locale } = context; 
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])), 
+    },
+  };
 };
 
 export default AdminPage;

@@ -1,0 +1,68 @@
+{
+  "header": {
+    "home": "Home",
+    "restaurants": "Restaurants",
+    "menu": "Menu",
+    "reservations": "Reserveringen",
+    "admin": "Admin",
+    "logout": "Uitloggen",
+    "login": "Inloggen"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "overview": "Restaurant Overzicht",
+    "details": "Details van {{restaurantName}}",
+    "name": "Naam",
+    "location": "Locatie",
+    "viewMenu": "Bekijk Menu",
+    "id": "ID"
+  },
+  "home": {
+    "title": "Home",
+    "metaDescription": "Restaurants app",
+    "welcome": "Welkom!",
+    "description": "Dit is onze restaurant app.",
+    "users": "Dit zijn 4 gebruikers met verschillende rollen in onze database."
+  },
+  "menu": {
+    "title": "Menu",
+    "loginAlert": "Wil je bestellen?",
+    "foodItems": "Eten ",
+    "drinkItems": "drinken ",
+    "order": "Bestellen",
+    "addFoodItem": "Voeg Eten Item Toe",
+    "addDrinkItem": "Voeg Drank Item Toe",
+    "login": "login"
+  },
+  "login": {
+    "title": "Inloggen",
+    "loginButton": "Inloggen",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "signupButton": "Heb je geen account? Meld je aan",
+    "loginSuccess": "Inloggen geslaagd. Wordt doorgestuurd naar de homepage...",
+    "loginError": "Er is een fout opgetreden tijdens het inloggen"
+  },
+  "signup": {
+    "header": "Aanmelden als {{role}}",
+    "username": "Gebruikersnaam",
+    "firstname": "Voornaam",
+    "lastname": "Achternaam",
+    "password": "Wachtwoord",
+    "signupButton": "Aanmelden",
+    "userCreatedSuccess": "Gebruiker succesvol aangemaakt",
+    "usernameExists": "Gebruikersnaam bestaat al"
+  },
+  "admin": {
+  "dashboardTitle": "Admin dashboard",
+  "dashboardDescription": "Welkom, admin! Je hebt toegang tot het beheerdersdashboard.",
+  "addAdmin": "Voeg admin Toe",
+  "addChef": "Voeg Chef Toe",
+  "addBartender": "Voeg Bartender Toe",
+  "selectRole": "Selecteer een rol om toe te voegen",
+  "roleSelection": {
+    "admin": "Beheerder",
+    "chef": "Chef",
+    "bartender": "Bartender"}
+  }
+}

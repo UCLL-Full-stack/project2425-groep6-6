@@ -7,6 +7,7 @@ import Header from '@components/header';
 import OrderTable from '@components/order/OrderTable';
 import ConfirmOrderButton from '@components/order/confirmbutton';
 import OrderSummary from '@components/order/ordersummary';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const OrderPage: React.FC = () => {
   const router = useRouter();
@@ -98,5 +99,12 @@ const OrderPage: React.FC = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async (context: { locale: any; }) => {
+  const { locale } = context; 
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])), 
+    },
+  };
+};
 export default OrderPage;

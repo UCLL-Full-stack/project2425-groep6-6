@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 import { Restaurant } from '@types';
 
 type Props = {
@@ -7,6 +8,8 @@ type Props = {
 };
 
 const RestaurantDetails: React.FC<Props> = ({ restaurant }: Props) => {
+  const { t } = useTranslation(); 
+
   return (
     <>
       {restaurant && (
@@ -14,22 +17,22 @@ const RestaurantDetails: React.FC<Props> = ({ restaurant }: Props) => {
           <table>
             <tbody>
               <tr>
-                <td>ID:</td>
+                <td>{t("restaurants.id")}:</td>
                 <td>{restaurant.id}</td>
               </tr>
               <tr>
-                <td>Name:</td>
+                <td>{t("restaurants.name")}:</td> 
                 <td>{restaurant.name}</td>
               </tr>
               <tr>
-                <td>Location:</td>
+                <td>{t("restaurants.location")}:</td> 
                 <td>{restaurant.address}</td>
               </tr>
             </tbody>
           </table>
           <div>
-          <Link href="/menu">
-          <button className="btn btn-primary">View Menu</button>
+            <Link href="/menu">
+              <button className="btn btn-primary">{t("restaurants.viewMenu")}</button>
             </Link>
           </div>
         </div>
