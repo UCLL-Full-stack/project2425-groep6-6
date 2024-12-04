@@ -1,50 +1,10 @@
+import { error } from "console";
 import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
 import { UserInput } from "../types";
 import database from "./database";
+import bcrypt from 'bcrypt';
 
-const users = [
-    new User({
-        id: 1,
-        username: 'GillesMuyshondt',
-        firstname: 'Gilles',
-        lastname: 'Muyshondt',
-        role: 'customer',
-        password: 'Password'
-    }),
-    new User({
-        id: 2,
-        username: 'Jolan',
-        firstname: 'Jolan',
-        lastname: 'Serruys',
-        role: 'customer',
-        password: 'Password'
-    }),
-    new User({
-        id: 2,
-        username: 'Remy',
-        firstname: 'Remy',
-        lastname: 'Muyshondt',
-        role: 'chef',
-        password: 'Password'
-    }),
-    new User({
-        id: 2,
-        username: 'Nathan',
-        firstname: 'Nathan',
-        lastname: 'Muyshondt',
-        role: 'bartender',
-        password: 'Password'
-    }),
-    new User({
-        id: 2,
-        username: 'Fleur',
-        firstname: 'Fleur',
-        lastname: 'Muyshondt',
-        role: 'admin',
-        password: 'Password'
-    })
-];
 
 // const getUserById = (id: number): User | null => {
 //     try {
@@ -167,7 +127,16 @@ const getAllUsers = async (): Promise<User[]> => {
 // }
 
 const createUser = async (user: UserInput): Promise<User> => {
-    try {
+    
+        const usercheck = await database.user.findUnique({
+            where: { username: user.username },
+        });
+        
+        if(usercheck){
+            throw new Error("User already exists");
+        }
+
+
         const result = await database.user.create({
             data: {
                 username: user.username,
@@ -179,11 +148,21 @@ const createUser = async (user: UserInput): Promise<User> => {
         });
         
         return User.from(result);
-    } catch (error) {
-        throw new Error('Database error. Failed to create user. See server log for details.');
-    }
+    
 }
 
+
+const existingUser = async (username:string): Promise<Boolean> => {
+    const usercheck = await database.user.findUnique({
+        where: { username: username },
+    });
+    
+    if(usercheck){
+        return true;
+    }
+
+    return false;
+}
 
 // const userLogin = (username: string, password: string) => {
 //     try {
@@ -200,20 +179,18 @@ const createUser = async (user: UserInput): Promise<User> => {
 //     }
 // }
 
-const userLogin = async (username: string, password: string): Promise<User> => {
-    try {
+const getUserByUsername = async (username: string): Promise<User> => {
+    
         const user = await database.user.findUnique({
             where: { username: username },
         });
 
-        if (user && user.password === password) {
+        if (user) {
             return User.from(user); 
         }
 
-        throw new Error('Wrong Credentials');
-    } catch (error) {
-        throw new Error('Wrong Credentials');
-    }
+        throw new Error('No user with this username found');
+   
 };
 
 export default {
@@ -224,5 +201,6 @@ export default {
     getBartenders,
     getChefs,
     createUser,
-    userLogin
+    getUserByUsername,
+    existingUser
 };

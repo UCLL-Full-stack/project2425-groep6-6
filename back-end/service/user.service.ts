@@ -1,6 +1,11 @@
 import { User } from "../model/user";
 import userDb from "../repository/user.db";
 import { LoginInput, Role, UserInput } from "../types";
+import bcrypt, { hash } from 'bcrypt';
+import * as jwtauth from '../util/jwt';
+
+
+
 
 const getUserById = (id: number): Promise<User> => {
     try{
@@ -57,31 +62,58 @@ const getAdmins = (): Promise <User[]> | null => {
     }
 }
 
-const createUser = ({ username, firstname, lastname, password, role }: UserInput ) => {
+const createUser = async ({ username, firstname, lastname, password, role }: UserInput ): Promise<User> => {
     try{
         if(role === 'admin' || role === 'customer' || role === 'chef' || role === 'bartender'){
+            const usernameCheck = await userDb.existingUser(username);
+            if(usernameCheck){
+                throw new Error("Username is already in use")
+            } else {
+                const hashedpassword = await bcrypt.hash(password, 10);
+
+                const createduser = userDb.createUser({ username, firstname, lastname, password: hashedpassword, role });
+                return createduser;
+            }
             
-            userDb.createUser({ username, firstname, lastname, password, role });
         } 
         else {
             throw new Error('The role was not found.')
         }
-        return null
+        
     } catch(error){
-        throw new Error('Creation of user failed')
+        throw new Error("Creation failed: " + error)
     }
 }
 
-const userLogin = ({ username, password }: LoginInput): Promise<User> => {
-    try{
-        
-        return userDb.userLogin(username, password);
-        
-    } catch(error){
-        throw new Error('Wrong Credentials')
-    }
-}
+const userLogin = async ({ username, password }: LoginInput): Promise<String> => {
+    try {
+        const user = await userDb.getUserByUsername(username);
 
+        return await authenticate({ username, password });
+    } catch (error) {
+        throw new Error("Wrong Credentials: " + error);
+    }
+};
+
+const authenticate = async (user: LoginInput) => {
+    
+    const account = await userDb.getUserByUsername(user.username);
+    if (!account) {
+        throw new Error("User does not exists")
+    }
+    const password = account.getPassword();
+    if( await bcrypt.compare(user.password, password)){
+        const token = jwtauth.generateSWTtoken(user.username);
+        return token;
+    }
+    else{
+        throw new Error("Password is not correct.")
+    }
+    
+
+    
+};
+    
 
 export default{createUser,
     getAdmins,
