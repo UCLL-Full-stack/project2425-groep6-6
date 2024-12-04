@@ -107,7 +107,7 @@ const authenticate = async (user: LoginInput) => {
         return token;
     }
     else{
-        throw new Error("Password is not correct.")
+        throw new Error("Password or username is not correct.")
     }
     
 

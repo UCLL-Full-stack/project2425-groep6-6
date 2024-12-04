@@ -122,6 +122,8 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /items:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new item.
  *     requestBody:
  *       description: item data needed to create a item.

@@ -82,6 +82,8 @@ restaurantRouter.get('/restaurants/:id', async (req: Request, res: Response, nex
  * @swagger
  * /restaurant:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new restaurant.
  *     requestBody:
  *       description: item data needed to create a restaurant

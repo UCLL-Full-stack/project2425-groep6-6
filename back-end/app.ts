@@ -9,6 +9,7 @@ import { restaurantRouter } from './controller/restaurants.routes';
 import { reservationRouter } from './controller/reservations.routes';
 import { itemRouter } from './controller/item.routes';
 import { userRouter } from './controller/user.routes';
+import { expressjwt } from 'express-jwt';
 
 const app = express();
 dotenv.config();
@@ -38,6 +39,28 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.listen(port || 3000, () => {
     console.log(`Back-end is running on port ${port}.`);
 });
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'default_secret',
+        algorithms: ['HS256'],
+    }).unless({
+        path: [
+            '/status', 
+            '/api-docs', 
+            '/users/login', 
+            '/users/signup', 
+            '/restaurants',
+            '/restaurants/id',
+            '/items/food',
+            '/items/drinks',
+            '/items'
+
+        ],
+    })
+);
+
+
 app.get('/restaurants', restaurantRouter);
 app.get('/restaurants/:id', restaurantRouter);
 app.get('/reservations', reservationRouter);
@@ -55,7 +78,7 @@ app.get('/users/chefs', userRouter);
 app.get('/users/bartenders', userRouter);
 app.get('/users/customers', userRouter);
 app.get('/users/:id', userRouter);
-app.post('/login', userRouter);
-app.post('/users', userRouter);
+app.post('/users/login', userRouter);
+app.post('/users/signup', userRouter);
 app.post('/restaurant', restaurantRouter);
 app.post('/reservations', reservationRouter);

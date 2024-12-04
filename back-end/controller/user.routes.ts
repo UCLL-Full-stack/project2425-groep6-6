@@ -48,6 +48,8 @@ const userRouter = express.Router();
  * @swagger
  * /users:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all users.
  *     responses:
  *      200:
@@ -67,6 +69,8 @@ userRouter.get('/users', async (req: Request, res: Response, next: NextFunction)
  * @swagger
  * /users/chefs:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all users with the role of chef.
  *     responses:
  *      200:
@@ -86,6 +90,8 @@ userRouter.get('/users/chefs', async (req: Request, res: Response, next: NextFun
  * @swagger
  * /users/customers:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all users with the role of customer.
  *     responses:
  *      200:
@@ -105,6 +111,8 @@ userRouter.get('/users/customers', async (req: Request, res: Response, next: Nex
  * @swagger
  * /users/bartenders:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all users with the role of bartender.
  *     responses:
  *      200:
@@ -124,6 +132,8 @@ userRouter.get('/users/bartenders', async (req: Request, res: Response, next: Ne
  * @swagger
  * /users/admins:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all users with the role of admin.
  *     responses:
  *      200:
@@ -150,6 +160,8 @@ userRouter.get('/users/admins', async (req: Request, res: Response, next: NextFu
  * @swagger
  * /users/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a certain user.
  *     parameters:
  *       - in: path
@@ -177,7 +189,7 @@ userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunct
 
 /**
  * @swagger
- * /login:
+ * /users/login:
  *   post:
  *     summary: Log a user in.
  *     requestBody:
@@ -195,7 +207,7 @@ userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunct
  *       404:
  *          description: User does not exist/Credentials are wrong. 
  */
-userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post('/users/login', async (req: Request, res: Response, next: NextFunction) => {
     const userinput: LoginInput = req.body;
     try{
     
@@ -211,6 +223,8 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /users:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a user
  *     requestBody:
  *       description: Create a user 
@@ -226,11 +240,10 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
  *         description: Bad request due to invalid input data.
  *        
  */
-userRouter.post('/users', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post('/users/signup', async (req: Request, res: Response, next: NextFunction) => {
     const userinput: UserInput = req.body;
     try{
         const user = await userService.createUser(userinput);
-        return res.status(200).json(user);
 
         if (!user) {
             return res.status(409).json({ message: 'User already exists' });

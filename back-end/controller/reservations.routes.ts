@@ -52,6 +52,8 @@ const reservationRouter = express.Router();
  * @swagger
  * /reservations:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all reservations.
  *     responses:
  *      200:
@@ -75,6 +77,8 @@ reservationRouter.get('/reservations', async (req: Request, res: Response) => {
  * @swagger
  * /reservations/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a certain reservation.
  *     parameters:
  *       - in: path
@@ -108,6 +112,8 @@ reservationRouter.get('/reservations/:id', async (req: Request, res: Response) =
  * @swagger
  * /reservations:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new reservation.
  *     requestBody:
  *       description: Reservation data needed to create a reservation.
