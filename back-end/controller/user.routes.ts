@@ -208,7 +208,7 @@ userRouter.get('/users/:id', async (req: Request, res: Response, next: NextFunct
  *          description: User does not exist/Credentials are wrong. 
  */
 userRouter.post('/users/login', async (req: Request, res: Response, next: NextFunction) => {
-    const userinput: LoginInput = req.body;
+    const userinput: UserInput = req.body;
     try{
     
         return res.status(200).json(await userService.userLogin(userinput));

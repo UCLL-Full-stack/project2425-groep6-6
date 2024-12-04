@@ -52,11 +52,11 @@ type ItemInput = {
 
 type UserInput = {
     id?: number;
-    firstname: string;
-    lastname: string;
-    role: Role;
-    password: string;
-    username: string;
+    firstname?: string;
+    lastname?: string;
+    role?: Role;
+    password?: string;
+    username?: string;
 
 }
 

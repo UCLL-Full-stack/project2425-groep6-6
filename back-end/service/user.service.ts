@@ -3,6 +3,7 @@ import userDb from "../repository/user.db";
 import { LoginInput, Role, UserInput } from "../types";
 import bcrypt, { hash } from 'bcrypt';
 import * as jwtauth from '../util/jwt';
+import { userInfo } from "os";
 
 
 
@@ -64,12 +65,12 @@ const getAdmins = (): Promise <User[]> | null => {
 
 const createUser = async ({ username, firstname, lastname, password, role }: UserInput ): Promise<User> => {
     try{
-        if(role === 'admin' || role === 'customer' || role === 'chef' || role === 'bartender'){
-            const usernameCheck = await userDb.existingUser(username);
+        if(role === 'admin' || role === 'customer' || role === 'chef' || role === 'bartender' ){
+            const usernameCheck = await userDb.existingUser(username!);
             if(usernameCheck){
                 throw new Error("Username is already in use")
             } else {
-                const hashedpassword = await bcrypt.hash(password, 10);
+                const hashedpassword = await bcrypt.hash(password!, 10);
 
                 const createduser = userDb.createUser({ username, firstname, lastname, password: hashedpassword, role });
                 return createduser;
@@ -85,30 +86,31 @@ const createUser = async ({ username, firstname, lastname, password, role }: Use
     }
 }
 
-const userLogin = async ({ username, password }: LoginInput): Promise<String> => {
+const userLogin = async ({ username, password }: UserInput): Promise<String | undefined> => {
     try {
-        const user = await userDb.getUserByUsername(username);
-
+        
         return await authenticate({ username, password });
     } catch (error) {
         throw new Error("Wrong Credentials: " + error);
     }
 };
 
-const authenticate = async (user: LoginInput) => {
+const authenticate = async (user: UserInput) => {
+    if(user.username && user.password){
+        const account = await userDb.getUserByUsername(user.username);
+        if (!account) {
+            throw new Error("User does not exists")
+        }
+        const password = account.getPassword();
+        if( await bcrypt.compare(user.password, password)){
+            const token = jwtauth.generateSWTtoken(user.username);
+            return token;
+        }
+        else{
+            throw new Error("Password or username is not correct.")
+        }
+    }
     
-    const account = await userDb.getUserByUsername(user.username);
-    if (!account) {
-        throw new Error("User does not exists")
-    }
-    const password = account.getPassword();
-    if( await bcrypt.compare(user.password, password)){
-        const token = jwtauth.generateSWTtoken(user.username);
-        return token;
-    }
-    else{
-        throw new Error("Password or username is not correct.")
-    }
     
 
     

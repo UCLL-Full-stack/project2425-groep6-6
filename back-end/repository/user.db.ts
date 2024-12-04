@@ -128,22 +128,14 @@ const getAllUsers = async (): Promise<User[]> => {
 
 const createUser = async (user: UserInput): Promise<User> => {
     
-        const usercheck = await database.user.findUnique({
-            where: { username: user.username },
-        });
-        
-        if(usercheck){
-            throw new Error("User already exists");
-        }
-
-
+    
         const result = await database.user.create({
             data: {
-                username: user.username,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                password: user.password, 
-                role: user.role,
+                username: user.username!,
+                firstname: user.firstname!,
+                lastname: user.lastname!,
+                password: user.password!, 
+                role: user.role!,
             },
         });
         
