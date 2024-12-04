@@ -1,0 +1,69 @@
+{
+  "header": {
+    "home": "Home",
+    "restaurants": "Restaurants",
+    "menu": "Menu",
+    "reservations": "Reserveringen",
+    "admin": "Admin",
+    "logout": "Uitloggen",
+    "login": "Inloggen"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "overview": "Overzicht van Restaurants",
+    "details": "Details van {{restaurantName}}",
+    "name": "Naam",
+    "location": "Locatie",
+    "viewMenu": "Bekijk het Menu",
+    "id": "ID"
+  },
+  "home": {
+    "title": "Home",
+    "metaDescription": "Restaurant-app",
+    "welcome": "Welkom!",
+    "description": "Dit is onze restaurant-app.",
+    "users": "Dit zijn 4 gebruikers met verschillende rollen in onze database."
+  },
+  "menu": {
+    "title": "Menu",
+    "loginAlert": "Wil je bestellen? Log in om door te gaan.",
+    "foodItems": "Eten",
+    "drinkItems": "Dranken",
+    "order": "Bestellen",
+    "addFoodItem": "Voeg een Eten Item Toe",
+    "addDrinkItem": "Voeg een Drank Item Toe",
+    "login": "Inloggen"
+  },
+  "login": {
+    "title": "Inloggen",
+    "loginButton": "Inloggen",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "signupButton": "Nog geen account? Meld je aan",
+    "loginSuccess": "Inloggen geslaagd. Je wordt doorgestuurd naar de homepage...",
+    "loginError": "Er is een fout opgetreden tijdens het inloggen"
+  },
+  "signup": {
+    "header": "Aanmelden als {{role}}",
+    "username": "Gebruikersnaam",
+    "firstname": "Voornaam",
+    "lastname": "Achternaam",
+    "password": "Wachtwoord",
+    "signupButton": "Aanmelden",
+    "userCreatedSuccess": "Gebruiker succesvol aangemaakt",
+    "usernameExists": "Deze gebruikersnaam bestaat al"
+  },
+  "admin": {
+    "dashboardTitle": "Admin Dashboard",
+    "dashboardDescription": "Welkom, admin! Je hebt toegang tot het beheerdersdashboard.",
+    "addAdmin": "Voeg een Admin Toe",
+    "addChef": "Voeg een Chef Toe",
+    "addBartender": "Voeg een Bartender Toe",
+    "selectRole": "Kies een rol om toe te voegen",
+    "roleSelection": {
+      "admin": "Admin",
+      "chef": "Chef",
+      "bartender": "Bartender"
+    }
+  }
+}

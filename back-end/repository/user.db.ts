@@ -142,7 +142,7 @@ const createUser = async (user: UserInput): Promise<User> => {
                 username: user.username,
                 firstname: user.firstname,
                 lastname: user.lastname,
-                password: user.password,
+                password: user.password, 
                 role: user.role,
             },
         });

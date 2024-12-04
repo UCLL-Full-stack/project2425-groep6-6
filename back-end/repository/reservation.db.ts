@@ -5,22 +5,7 @@ import { User } from "../model/user";
 import { ReservationInput } from "../types";
 import database from "./database";
 
-
-
-const reservations = [
-    new Reservation({
-        id: 1,
-        date: new Date(),
-        user: new User({
-            id: 1,
-            username: 'GillesMuyshondt',
-            firstname: 'Gilles',
-            lastname: 'Muyshondt',
-            role: 'customer',
-            password: 'Password'
-        })
-    })
-];
+const reservations: any[] = [];
 
 const getReservationById = async (id: number): Promise<Reservation> => {
     const result = await database.reservation.findUnique({
@@ -38,37 +23,72 @@ const getReservationById = async (id: number): Promise<Reservation> => {
 
 
 const getAllReservations = async (): Promise<Reservation[]> => {
-    const result = await database.reservation.findMany();
-    const reservations = await Promise.all(result.map((r) => Reservation.from(r)));
-    return reservations
-}
-
-const addItemsToReservation = (id: number, items: Item[]) => {
     try {
-        const reservation = reservations.find((reservation) => reservation.getId() === id) || null;
-        if(reservation){
-            items.forEach((item) => reservation.addItem(item));
-        }
-    } catch(error){
-        throw new Error('Database error. See server log for details.')
+        const result = await database.reservation.findMany({
+            include: {
+                user: true,
+                items: true,
+            },
+           
+        });
+
+        const reservations = await Promise.all(result.map((r) => Reservation.from(r)));
+
+        return reservations;
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        throw error;
     }
-}
+};
 
-const createReservation = async (reservation: ReservationInput) => {
+const addItemsToReservation = async (id: number, items: Item[]) => {
     try {
-        const result = await database.reservation.create({
+        const updatedReservation = await database.reservation.update({
+            where: {
+                id: id,
+            },
             data: {
-                date: reservation.date,
-                userId: reservation.userId,
-                
+                items: {
+                    connect: items.map((item) => ({ id: item.getId() })),
+                },
+            },
+            include: {
+                items: true,
             },
         });
-        
-        return Reservation.from(result);
+
+        return Reservation.from(updatedReservation);
     } catch (error) {
-        throw new Error('Database error. Failed to create reservation. See server log for details. ' + error);
+        console.error("Error adding items to reservation:", error);
+        throw new Error('Database error. See server log for details.');
     }
 }
+
+const createReservation = async (reservationInput: ReservationInput) => {
+    try {
+        console.log('Creating reservation with input:', reservationInput);  
+        const result = await database.reservation.create({
+            data: {
+                date: reservationInput.date,
+                userId: reservationInput.userId,
+                items: {
+                    connect: reservationInput.items.map(item => ({ id: item.itemId })),
+                },
+            },
+            include: {
+                items: true, 
+            },
+        });
+        console.log('Created reservation:', result);  
+        return Reservation.from(result);
+    } catch (error) {
+        console.error('Error during reservation creation:', error);  
+        throw new Error('Database error. Failed to create reservation. See server log for details. ' + error);
+    }
+};
+
+
+
 
 export default {
     addItemsToReservation,

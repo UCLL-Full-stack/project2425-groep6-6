@@ -14,14 +14,14 @@ export type User = {
   email?: string;
   username?: string;
   password?: string;
-  role?: 'admin' | 'cook' | 'bartender' | 'user'; 
+  role?: 'admin' | 'chef' | 'bartender' | 'customer'; 
 };
 
 export type Item = {
   id: number; 
   name: string;
   price: number;
-  category: string; // "Food" or "Drinks"
+  category: string; // "food" or "drinks"
 };
 
 export type StatusMessage = {

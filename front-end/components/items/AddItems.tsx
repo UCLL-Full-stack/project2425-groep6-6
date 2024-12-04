@@ -11,14 +11,13 @@ type AddItemProps = {
 
 const AddItem: React.FC<AddItemProps> = ({ type }) => {
     const [newItem, setNewItem] = useState<Item>({
-        id: undefined,
+        id: 0,  
         name: '',
         price: 0,
         category: type
     });
     
     const router = useRouter();
-
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
         try {

@@ -1,8 +1,8 @@
 import userDb from "../repository/user.db";
 import { Item } from "./item";
 import { User } from "./user";
-import {Reservation as ReservationPrisma} from  '@prisma/client'
-
+import { Reservation as ReservationPrisma } from '@prisma/client';
+import itemDb from "../repository/item.db";
 
 export class Reservation {
     private id?: number;
@@ -10,17 +10,15 @@ export class Reservation {
     private user: User;
     private items: Array<Item>;
 
-    constructor(Reservation: { id?:number, date: Date, user: User }){
-        this.validate(Reservation.date, Reservation.user, Reservation.id);
-
-        this.id = Reservation.id;
-        this.date = Reservation.date;
-        this.user = Reservation.user;
-        this.items = []
+    constructor(reservationData: { id?: number, date: Date, user: User, items?: Array<Item> }) {
+        this.validate(reservationData.date, reservationData.user, reservationData.id);
+        this.id = reservationData.id;
+        this.date = reservationData.date;
+        this.user = reservationData.user;
+        this.items = reservationData.items || [];
     }
 
-
-    private validate( date: Date, user: User, id?: number): boolean {
+    private validate(date: Date, user: User, id?: number): boolean {
         if (id !== undefined && (!Number.isInteger(id) || id <= 0)) {
             throw new Error("ID, if provided, must be a positive integer.");
         }
@@ -40,30 +38,35 @@ export class Reservation {
         return true; 
     }
 
-
     getDate(): Date {
         return this.date;
     }
+
     getUser(): User {
         return this.user;
     }
-    addItem(item: Item){
+
+    addItem(item: Item) {
         this.items.push(item);
     }
-    getItems(){
+
+    getItems() {
         return this.items;
     }
-    getId(){
+
+    getId() {
         return this.id;
     }
 
     static async from(reservationPrisma: ReservationPrisma): Promise<Reservation> {
         const user = await userDb.getUserById(reservationPrisma.userId);
-        return new Reservation({
-          id: reservationPrisma.id,
-          date: reservationPrisma.date,
-          user: user
+        const items = await itemDb.getItemsByReservationId(reservationPrisma.id);
 
+        return new Reservation({
+            id: reservationPrisma.id,
+            date: reservationPrisma.date,
+            user: user,
+            items: items,
         });
-      }
+    }
 }

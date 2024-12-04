@@ -1,0 +1,70 @@
+{
+  "header": {
+    "home": "Home",
+    "restaurants": "Restaurants",
+    "menu": "Menu",
+    "reservations": "Reservations",
+    "admin": "Admin",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "overview": "Restaurant Overview",
+    "details": "Details of {{restaurantName}}",
+    "name": "Name",
+    "location": "Location",
+    "id": "ID",
+    "viewMenu": "View Menu"
+  },
+  "home": {
+    "title": "Home",
+    "metaDescription": "Restaurants app",
+    "welcome": "Welcome!",
+    "description": "This is our restaurant app.",
+    "users": "These are 4 users with different roles in our database."
+  },
+  "menu": {
+      "title": "Menu",
+      "loginAlert": "If you want to order, please ",
+      "foodItems": "Food ",
+      "drinkItems": "Drinks ",
+      "order": "Order",
+      "addFoodItem": "Add Food Item",
+      "addDrinkItem": "Add Drink Item",
+      "login": "login"
+
+    },
+  "login": {
+      "title": "User Login",
+      "loginButton": "Login",
+      "username": "Username",
+      "password": "Password",
+      "signupButton": "Don't have an account? Sign up",
+      "loginSuccess": "Login successful. Redirecting to homepage...",
+      "loginError": "An error occurred during login"
+    },
+    "signup": {
+      "header": "Sign Up as {{role}}",
+      "username": "Username",
+      "firstname": "First Name",
+      "lastname": "Last Name",
+      "password": "Password",
+      "signupButton": "Sign Up",
+      "userCreatedSuccess": "User created successfully",
+      "usernameExists": "Username already exists"
+    },
+    "admin": {
+      "dashboardTitle": "Admin Dashboard",
+      "dashboardDescription": "Welcome, admin! You have access to the admin dashboard.",
+      "addAdmin": "Add Admin",
+      "addChef": "Add Chef",
+      "addBartender": "Add Bartender",
+      "selectRole": "Select a role to add",
+      "roleSelection": {
+        "admin": "Admin",
+        "chef": "Chef",
+        "bartender": "Bartender"
+      }
+    }
+}
