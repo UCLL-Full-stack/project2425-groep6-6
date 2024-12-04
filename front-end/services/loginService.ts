@@ -21,9 +21,11 @@ const login = async (username: string, password: string) => {
   }
 
   const data = await response.json();
+
   return {
     username: data.username,
     role: data.role,
+    id: data.id,
   };
 };
 

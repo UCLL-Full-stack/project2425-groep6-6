@@ -19,58 +19,55 @@ const OrderPage: React.FC = () => {
     const fetchOrderedItems = async () => {
       const { order } = router.query;
       if (!order) return;
-  
+
       const parsedOrder = JSON.parse(order as string);
-      console.log("Parsed Order: ", parsedOrder);
-  
       const items: Array<{ item: Item; quantity: number }> = [];
-  
+
       try {
         const response = await MenuService.getMenuItems();
         const menuItems: Item[] = await response.json();
-  
+
         for (const [id, quantity] of Object.entries(parsedOrder)) {
           const quantityNumber = Number(quantity);
           const foundItem = menuItems.find((item) => item.id === parseInt(id));
-  
+
           if (foundItem) {
             items.push({ item: foundItem, quantity: quantityNumber });
           }
         }
-  
+
         setOrderedItems(items);
-  
+
         const total = items.reduce((sum, { item, quantity }) => sum + item.price * quantity, 0);
         setTotalPrice(total);
       } catch (error) {
         console.error('Error fetching ordered items:', error);
       }
     };
-  
+
     fetchOrderedItems();
   }, [router.query]);
 
   const handleConfirmOrder = async () => {
-    const userId = sessionStorage.getItem('username');
+    const userId = sessionStorage.getItem('userId');
     if (!userId) {
       alert('You need to be logged in to confirm the order.');
       return;
     }
-
+  
     const orderData = {
-      date: new Date().toISOString(),  
-      userId,
+      date: new Date().toISOString(),
+      userId: parseInt(userId),
       items: orderedItems.map(({ item, quantity }) => ({
-        item,
-        quantity,
+        itemId: item.id,
       })),
     };
-
+  
     try {
-      await OrderService.createReservation(orderData);  
+      await OrderService.createReservation(orderData);
       setIsOrderConfirmed(true);
       alert('Order confirmed successfully!');
-      router.push('/'); 
+      router.push('/');
     } catch (error) {
       console.error('Error confirming order:', error);
       alert('Failed to confirm order');
@@ -99,6 +96,7 @@ const OrderPage: React.FC = () => {
     </div>
   );
 };
+
 export const getServerSideProps = async (context: { locale: any; }) => {
   const { locale } = context; 
   return {
@@ -107,4 +105,5 @@ export const getServerSideProps = async (context: { locale: any; }) => {
     },
   };
 };
+
 export default OrderPage;

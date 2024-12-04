@@ -10,37 +10,37 @@
   },
   "restaurants": {
     "title": "Restaurants",
-    "overview": "Restaurant Overzicht",
+    "overview": "Overzicht van Restaurants",
     "details": "Details van {{restaurantName}}",
     "name": "Naam",
     "location": "Locatie",
-    "viewMenu": "Bekijk Menu",
+    "viewMenu": "Bekijk het Menu",
     "id": "ID"
   },
   "home": {
     "title": "Home",
-    "metaDescription": "Restaurants app",
+    "metaDescription": "Restaurant-app",
     "welcome": "Welkom!",
-    "description": "Dit is onze restaurant app.",
+    "description": "Dit is onze restaurant-app.",
     "users": "Dit zijn 4 gebruikers met verschillende rollen in onze database."
   },
   "menu": {
     "title": "Menu",
-    "loginAlert": "Wil je bestellen?",
-    "foodItems": "Eten ",
-    "drinkItems": "drinken ",
+    "loginAlert": "Wil je bestellen? Log in om door te gaan.",
+    "foodItems": "Eten",
+    "drinkItems": "Dranken",
     "order": "Bestellen",
-    "addFoodItem": "Voeg Eten Item Toe",
-    "addDrinkItem": "Voeg Drank Item Toe",
-    "login": "login"
+    "addFoodItem": "Voeg een Eten Item Toe",
+    "addDrinkItem": "Voeg een Drank Item Toe",
+    "login": "Inloggen"
   },
   "login": {
     "title": "Inloggen",
     "loginButton": "Inloggen",
     "username": "Gebruikersnaam",
     "password": "Wachtwoord",
-    "signupButton": "Heb je geen account? Meld je aan",
-    "loginSuccess": "Inloggen geslaagd. Wordt doorgestuurd naar de homepage...",
+    "signupButton": "Nog geen account? Meld je aan",
+    "loginSuccess": "Inloggen geslaagd. Je wordt doorgestuurd naar de homepage...",
     "loginError": "Er is een fout opgetreden tijdens het inloggen"
   },
   "signup": {
@@ -51,18 +51,19 @@
     "password": "Wachtwoord",
     "signupButton": "Aanmelden",
     "userCreatedSuccess": "Gebruiker succesvol aangemaakt",
-    "usernameExists": "Gebruikersnaam bestaat al"
+    "usernameExists": "Deze gebruikersnaam bestaat al"
   },
   "admin": {
-  "dashboardTitle": "Admin dashboard",
-  "dashboardDescription": "Welkom, admin! Je hebt toegang tot het beheerdersdashboard.",
-  "addAdmin": "Voeg admin Toe",
-  "addChef": "Voeg Chef Toe",
-  "addBartender": "Voeg Bartender Toe",
-  "selectRole": "Selecteer een rol om toe te voegen",
-  "roleSelection": {
-    "admin": "Beheerder",
-    "chef": "Chef",
-    "bartender": "Bartender"}
+    "dashboardTitle": "Admin Dashboard",
+    "dashboardDescription": "Welkom, admin! Je hebt toegang tot het beheerdersdashboard.",
+    "addAdmin": "Voeg een Admin Toe",
+    "addChef": "Voeg een Chef Toe",
+    "addBartender": "Voeg een Bartender Toe",
+    "selectRole": "Kies een rol om toe te voegen",
+    "roleSelection": {
+      "admin": "Admin",
+      "chef": "Chef",
+      "bartender": "Bartender"
+    }
   }
 }

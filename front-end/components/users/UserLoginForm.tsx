@@ -20,10 +20,15 @@ const UserLoginForm: React.FC = () => {
   const validate = async (): Promise<boolean> => {
     try {
       const response = await LoginService.login(name, password);
+      console.log(response);  
 
       sessionStorage.setItem("username", response.username);
       sessionStorage.setItem("role", response.role);
-
+      if (response.id) {
+        sessionStorage.setItem('userId', response.id.toString()); 
+      } else {
+        console.error("id not found in the response");
+      }
       return true;
     } catch (error: any) {
       setNameError(t("login.loginError")); 

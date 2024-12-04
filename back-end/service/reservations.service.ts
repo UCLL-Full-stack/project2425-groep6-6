@@ -18,7 +18,7 @@ const getReservationById = (id: number): Promise<Reservation>  => {
     }
 }
 
-    const getAllReservations = (): Promise<Reservation[]> => {
+const getAllReservations = (): Promise<Reservation[]> => {
     try{
         const reservations = reservationDb.getAllReservations();
         return reservations;
@@ -27,21 +27,16 @@ const getReservationById = (id: number): Promise<Reservation>  => {
     }
 }
 
-const addItemsToReservation = (id: number, items: Item[]) => {
-    try{
-        reservationDb.addItemsToReservation(id, items);
-    } catch(error){
-        throw new Error('Restaurant with id ' + id + ' does not exist.')
-    }
-}
+
 
 const createReservation = async (reservationInput: ReservationInput): Promise<Reservation> => {
-    try{
-        return reservationDb.createReservation(reservationInput);
-    }catch(error){
-        throw new Error("Creation of object failed.")
-    }
+    try {
+        return await reservationDb.createReservation(reservationInput);
+              
 
+    } catch (error) {
+        throw new Error("Creation of reservation failed: " );
+    }
 }
 
 const convertToDTO = (reservation: Reservation): ReservationDTO => {
@@ -50,7 +45,7 @@ const convertToDTO = (reservation: Reservation): ReservationDTO => {
             id: reservation.getId(),
             date: reservation.getDate(),
             user: reservation.getUser(),
-            items: reservation.getItems()
+            items: reservation.getItems(),  
         };
         return reservationDTO;
     } catch (error) {
@@ -59,8 +54,7 @@ const convertToDTO = (reservation: Reservation): ReservationDTO => {
 };
 
 export default { 
-    addItemsToReservation,
     getAllReservations,
     getReservationById,
     createReservation
- };
+};

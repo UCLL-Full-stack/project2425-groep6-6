@@ -10,6 +10,8 @@ export class Item{
     private category: Category;
     private price: number;
     private reservations: Array<Reservation>
+    itemId: any;
+    quantity: any;
 
     constructor(Item: {id?: number, name: string, category: Category, price: number, reservations: Array<Reservation>}){
         this.validate( Item.name, Item.category, Item.price, Item.id);
@@ -17,7 +19,7 @@ export class Item{
         this.category = Item.category;
         this.name = Item.name;
         this.price = Item.price;
-        this.reservations = Item.reservations;
+        this.reservations = Item.reservations || [];  
     }
 
     validate(name: string, category: Category, price: number, id?: number): boolean {
@@ -63,7 +65,7 @@ export class Item{
           name: itemPrisma.name,
           category: itemPrisma.category as Category,  
           price: itemPrisma.price,
-          reservations: []
+          reservations: []  
         });
       }
 
