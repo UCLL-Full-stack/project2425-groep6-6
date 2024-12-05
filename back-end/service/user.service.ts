@@ -88,8 +88,7 @@ const createUser = async ({ username, firstname, lastname, password, role }: Use
 
 const userLogin = async ({ username, password }: UserInput): Promise<String | undefined> => {
     try {
-        
-        return await authenticate({ username, password });
+           return await authenticate({ username, password });
     } catch (error) {
         throw new Error("Wrong Credentials: " + error);
     }
@@ -104,6 +103,7 @@ const authenticate = async (user: UserInput) => {
         const password = account.getPassword();
         if( await bcrypt.compare(user.password, password)){
             const token = jwtauth.generateSWTtoken(user.username);
+            // hier nog meer returnen zoals username en role en id
             return token;
         }
         else{
@@ -111,9 +111,7 @@ const authenticate = async (user: UserInput) => {
         }
     }
     
-    
-
-    
+        
 };
     
 

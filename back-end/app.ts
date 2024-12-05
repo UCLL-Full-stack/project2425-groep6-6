@@ -40,6 +40,8 @@ app.listen(port || 3000, () => {
     console.log(`Back-end is running on port ${port}.`);
 });
 
+app.post('/users/login', userRouter);
+app.post('/users/signup', userRouter);
 app.use(
     expressjwt({
         secret: process.env.JWT_SECRET || 'default_secret',
@@ -49,16 +51,17 @@ app.use(
             '/status', 
             '/api-docs', 
             '/users/login', 
-            '/users/signup', 
+            '/users/signup',
+            '/users', 
             '/restaurants',
             '/restaurants/id',
             '/items/food',
             '/items/drinks',
             '/items'
-
         ],
     })
 );
+
 
 
 app.get('/restaurants', restaurantRouter);

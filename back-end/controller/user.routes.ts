@@ -221,10 +221,8 @@ userRouter.post('/users/login', async (req: Request, res: Response, next: NextFu
 
 /**
  * @swagger
- * /users:
+ * /users/signup:
  *   post:
- *     security:
- *       - bearerAuth: []
  *     summary: Create a user
  *     requestBody:
  *       description: Create a user 
