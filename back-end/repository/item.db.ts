@@ -131,6 +131,21 @@ const getItemById = async (id: number): Promise<Item> => {
 
 
 
+const deleteItemById = async (id: number) => {
+    const result = await database.item.delete({
+        where: {
+            id: id,
+        },
+    });
+    
+    if (!result) {
+        throw new Error(`Item with id ${id} not found`);
+    }
+
+    return Item.from(result);
+};
+
+
 // const getAllItems = () => {
 //     try {
 //         return items;
@@ -172,4 +187,5 @@ export default {
     getDrinks,
     createItem,
     getItemById,
+    deleteItemById
 };

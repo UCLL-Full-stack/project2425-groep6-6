@@ -111,6 +111,36 @@ restaurantRouter.post('/restaurant', async (req: Request, res: Response, next: N
 });
 
 
+/**
+ * @swagger
+ * /restaurants/{id}:
+ *   delete:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Delete a certain restaurant.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: number
+ *         required: true
+ *         description: Numeric ID of the restaurant to delete.
+ *     responses:
+ *       200:
+ *              description: OK
+ *       404:
+ *              description: restaurant Not Found
+ */
+restaurantRouter.delete('/restaurants/:id', async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id, 10); 
+    try{
+        const restaurant = await restaurantService.deleteRestaurantById(id);
+        return res.status(200).json(restaurant);
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+    }
+    
+});
+
 
 
 

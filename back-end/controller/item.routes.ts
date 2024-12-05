@@ -152,4 +152,36 @@ itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction
 
 
 
+/**
+ * @swagger
+ * /items/{id}:
+ *   delete:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: delete a certain item.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: number
+ *         required: true
+ *         description: Numeric ID of the item to delete.
+ *     responses:
+ *       200:
+ *              description: OK
+ *       404:
+ *              description: item Not Found
+ */
+itemRouter.delete('/items/:id', async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id, 10); 
+    try{
+        const item = await itemService.deleteItemById(id);
+        return res.status(200).json(item);
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+    }
+    
+});
+
+
+
 export { itemRouter };

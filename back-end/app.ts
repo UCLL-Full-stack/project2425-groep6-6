@@ -54,7 +54,8 @@ app.use(
             '/restaurants/id',
             '/items/food',
             '/items/drinks',
-            '/items'
+            '/items',
+            '/items/:id',
 
         ],
     })
@@ -68,6 +69,8 @@ app.get('/reservations/:id', reservationRouter);
 app.post('/reservations/:id', reservationRouter);
 app.get('/items', itemRouter);
 app.get('/items/:id', itemRouter);
+app.delete('/items/:id', itemRouter);
+
 app.get('/items/food', itemRouter);
 app.get('/items/drinks', itemRouter);
 app.post('/items', itemRouter);
@@ -82,3 +85,4 @@ app.post('/users/login', userRouter);
 app.post('/users/signup', userRouter);
 app.post('/restaurant', restaurantRouter);
 app.post('/reservations', reservationRouter);
+app.delete('/restaurants/:id', restaurantRouter)

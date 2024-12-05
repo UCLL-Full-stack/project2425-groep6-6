@@ -51,8 +51,24 @@ const createRestaurant = async (restaurant: RestaurantInput) => {
 }
 
 
+const deleteRestaurantById = async (id: number): Promise<Restaurant>  => {
+    const result = await database.restaurant.delete({
+        where: {
+            id: id,
+        },
+    });
+
+    if (!result) {
+        throw new Error(`Restaurant with id ${id} not found`);
+    }
+
+    return Restaurant.from(result);
+}
+
+
 export default {
     getRestaurantById,
     getAllRestaurants,
-    createRestaurant
+    createRestaurant,
+    deleteRestaurantById
 };

@@ -32,8 +32,22 @@ const createRestaurant = (restaurant: RestaurantInput) => {
     }
 }
 
+
+const deleteRestaurantById = (id: number): Promise<Restaurant> => {
+    try{
+        const restaurant = restaurantDb.deleteRestaurantById(id);
+        if (restaurant){
+            return restaurant;
+        } 
+        throw new Error
+    } catch(error){
+        throw new Error('Restaurant with id ' + id + ' does not exist.')
+    }
+}
+
 export default { 
     getRestaurantById,
     getAllRestaurants,
-    createRestaurant
+    createRestaurant,
+    deleteRestaurantById
  };

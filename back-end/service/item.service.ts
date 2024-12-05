@@ -48,13 +48,13 @@ const getDrinks = (): Promise<Item[]> => {
 
 const createItem = ({category, name, price}: ItemInput): Promise<Item> => {
     try{
-    if (category === 'food') {
+    if (category === 'food' && price < 0) {
         return itemDb.createItem({category, name, price})
     } 
-    else if (category === 'drinks') {
+    else if (category === 'drinks'  && price < 0) {
         return itemDb.createItem({category, name, price})
     } else {
-        throw new Error('Category is not a category (drinks, food)')
+        throw new Error('Category is not a category (drinks, food) and price must be 0 or more')
 
     }
     }
@@ -65,10 +65,22 @@ const createItem = ({category, name, price}: ItemInput): Promise<Item> => {
 
 
 
+const deleteItemById = (id: number) => {
+    try{
+        const item = itemDb.deleteItemById(id);
+        
+        return item;
+    } catch(error){
+        throw new Error('Item with id ' + id + ' does not exist.')
+    }
+}
+
+
 export default { 
     createItem, 
     getAllItems,
     getFood, 
     getDrinks,
-    getItemById
+    getItemById,
+    deleteItemById
  };
