@@ -126,7 +126,7 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
  *       - bearerAuth: []
  *     summary: Create a new item.
  *     requestBody:
- *       description: item data needed to create a item.
+ *       description: item data needed to create an item.
  *       required: true
  *       content:
  *         application/json:
@@ -180,6 +180,45 @@ itemRouter.delete('/items/:id', async (req: Request, res: Response, next: NextFu
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
     
+});
+
+
+
+/**
+ * @swagger
+ * /items/update/{id}:
+ *   put:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Update item.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: number
+ *         required: true
+ *     requestBody:
+ *       description: item data needed to update an item.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Item'
+ *     responses:
+ *       200:
+ *         description: item created successfully.
+ *       400:
+ *         description: Bad request due to invalid input data.
+ */
+itemRouter.put('/items/update/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const item: ItemInput = req.body;
+        const id = parseInt(req.params.id, 10); 
+        item.id = id;
+        return res.status(200).json(await itemService.updateItem(item));
+    }catch(error){
+        return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+
+    }
 });
 
 

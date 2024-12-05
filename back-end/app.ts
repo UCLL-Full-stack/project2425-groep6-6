@@ -10,8 +10,10 @@ import { reservationRouter } from './controller/reservations.routes';
 import { itemRouter } from './controller/item.routes';
 import { userRouter } from './controller/user.routes';
 import { expressjwt } from 'express-jwt';
+import helmet from 'helmet';
 
 const app = express();
+app.use(helmet());
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
 
@@ -90,3 +92,4 @@ app.post('/users/signup', userRouter);
 app.post('/restaurant', restaurantRouter);
 app.post('/reservations', reservationRouter);
 app.delete('/restaurants/:id', restaurantRouter)
+app.put('/items/update/:id', itemRouter)

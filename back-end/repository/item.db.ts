@@ -179,6 +179,27 @@ const createItem = async (item: ItemInput): Promise<Item> =>{
 
 
 
+const updateItem = async (item: ItemInput): Promise<Item> => {
+    try {
+        const updatedItem = await database.item.update({
+            where: {
+                id: item.id,
+            },
+            data: {
+                name: item.name,
+                category: item.category,
+                price: item.price
+            }
+        });
+
+        return Item.from(updatedItem);
+    } catch (error) {
+        console.error("Error updating item:", error);
+        throw new Error('Database error. See server log for details.' + error);
+    }
+}
+
+
 
 export default {
     getItemsByReservationId,
@@ -187,5 +208,6 @@ export default {
     getDrinks,
     createItem,
     getItemById,
-    deleteItemById
+    deleteItemById,
+    updateItem
 };

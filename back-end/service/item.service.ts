@@ -76,11 +76,40 @@ const deleteItemById = (id: number) => {
 }
 
 
+const updateItem = ({category, name, price, id}: ItemInput): Promise<Item> => {
+    try{
+    if (category === 'food') {
+        if(price > 0){
+            return itemDb.updateItem({category, name, price, id})
+        }
+        else {
+            throw new Error("price must be higher than 0 or more")
+        }
+    } 
+    else if (category === 'drinks') {
+        if(price > 0){
+
+        return itemDb.updateItem({category, name, price, id})
+    }
+    else {
+        throw new Error("price must be higher than 0 or more")
+    }
+    } else {
+        throw new Error('Category is not a category (drinks, food)')
+
+    }
+    }
+    catch(error){
+        throw new Error('Updating item failed: ' + error)
+    }
+}
+
 export default { 
     createItem, 
     getAllItems,
     getFood, 
     getDrinks,
     getItemById,
-    deleteItemById
+    deleteItemById,
+    updateItem
  };

@@ -35,23 +35,23 @@ const createReservation = async (reservationInput: ReservationInput): Promise<Re
               
 
     } catch (error) {
-        throw new Error("Creation of reservation failed: " );
+        throw new Error("Creation of reservation failed: " + error );
     }
 }
 
-const convertToDTO = (reservation: Reservation): ReservationDTO => {
-    try {
-        const reservationDTO: ReservationDTO = {
-            id: reservation.getId(),
-            date: reservation.getDate(),
-            user: reservation.getUser(),
-            items: reservation.getItems(),  
-        };
-        return reservationDTO;
-    } catch (error) {
-        throw new Error("Converting to DTO error");
-    }
-};
+// const convertToDTO = (reservation: Reservation): ReservationDTO => {
+//     try {
+//         const reservationDTO: ReservationDTO = {
+//             id: reservation.getId(),
+//             date: reservation.getDate(),
+//             user: reservation.getUser(),
+//             items: reservation.getItems(),  
+//         };
+//         return reservationDTO;
+//     } catch (error) {
+//         throw new Error("Converting to DTO error");
+//     }
+// };
 
 export default { 
     getAllReservations,
