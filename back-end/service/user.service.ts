@@ -1,73 +1,68 @@
 import { User } from "../model/user";
 import userDb from "../repository/user.db";
 import { LoginInput, Role, UserInput } from "../types";
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import * as jwtauth from '../util/jwt';
-import { userInfo } from "os";
-
-
-
 
 const getUserById = (id: number): Promise<User> => {
-    try{
+    try {
         const user = userDb.getUserById(id);
         return user;
-         
-    } catch(error){
+    } catch (error) {
         throw new Error('User with id ' + id + ' does not exist.')
     }
 }
 
 const getAllUsers = async (): Promise<User[]> => {
-    try{
+    try {
         const users = userDb.getAllUsers();
         return users;
-    } catch(error){
+    } catch (error) {
         throw new Error('There are no users found.')
     }
 }
 
-const getCustomers = (): Promise <User[]> | null => {
-    try{
+const getCustomers = (): Promise<User[]> | null => {
+    try {
         const customers = userDb.getCustomers();
         return customers;
-    } catch(error){
+    } catch (error) {
         throw new Error('There are no customers found.')
     }
 }
 
 const getChefs = (): Promise<User[]> | null => {
-    try{
+    try {
         const chefs = userDb.getChefs();
         return chefs;
-    } catch(error){
+    } catch (error) {
         throw new Error('There are no chefs found.')
     }
 }
 
-const getBartenders = (): Promise <User[]> | null => {
-    try{
+const getBartenders = (): Promise<User[]> | null => {
+    try {
         const bartender = userDb.getBartenders();
         return bartender;
-    } catch(error){
+    } catch (error) {
         throw new Error('There are no bartenders found.')
     }
 }
 
-const getAdmins = (): Promise <User[]> | null => {
-    try{
+const getAdmins = (): Promise<User[]> | null => {
+    try {
         const admins = userDb.getAdmins();
         return admins;
-    } catch(error){
+    } catch (error) {
         throw new Error('There are no admins found.')
     }
 }
 
-const createUser = async ({ username, firstname, lastname, password, role }: UserInput ): Promise<User> => {
-    try{
-        if(role === 'admin' || role === 'customer' || role === 'chef' || role === 'bartender' ){
+const createUser = async ({ username, firstname, lastname, password, role }: UserInput): Promise<User> => {
+    try {
+        if (role === 'admin' || role === 'customer' || role === 'chef' || role === 'bartender') {
             const usernameCheck = await userDb.existingUser(username!);
-            if(usernameCheck){
+            if (usernameCheck) {
                 throw new Error("Username is already in use")
             } else {
                 const hashedpassword = await bcrypt.hash(password!, 10);
@@ -75,53 +70,60 @@ const createUser = async ({ username, firstname, lastname, password, role }: Use
                 const createduser = userDb.createUser({ username, firstname, lastname, password: hashedpassword, role });
                 return createduser;
             }
-            
-        } 
-        else {
+        } else {
             throw new Error('The role was not found.')
         }
-        
-    } catch(error){
+    } catch (error) {
         throw new Error("Creation failed: " + error)
     }
 }
 
-const userLogin = async ({ username, password }: UserInput): Promise<String | undefined> => {
+interface LoginResponse {
+    token: string;
+    id: number;
+    username: string;
+    role: string;
+}
+
+const userLogin = async ({ username, password }: UserInput): Promise<LoginResponse | undefined> => {
     try {
-        
         return await authenticate({ username, password });
     } catch (error) {
         throw new Error("Wrong Credentials: " + error);
     }
 };
 
-const authenticate = async (user: UserInput) => {
-    if(user.username && user.password){
+const authenticate = async (user: UserInput): Promise<LoginResponse> => {
+    if (user.username && user.password) {
         const account = await userDb.getUserByUsername(user.username);
         if (!account) {
-            throw new Error("User does not exists")
+            throw new Error("User does not exist")
         }
         const password = account.getPassword();
-        if( await bcrypt.compare(user.password, password)){
+        if (await bcrypt.compare(user.password, password)) {
             const token = jwtauth.generateSWTtoken(user.username);
-            return token;
+            const id = account.getId() ?? 0;  
+            return {
+                token,
+                id,  
+                username: account.getUsername(),
+                role: account.getRole()
+            };
+        } else {
+            throw new Error("Password or username is incorrect.")
         }
-        else{
-            throw new Error("Password or username is not correct.")
-        }
+    } else {
+        throw new Error("Username and password are required.")
     }
-    
-    
-
-    
 };
-    
 
-export default{createUser,
+
+export default {
+    createUser,
     getAdmins,
     getChefs,
     getCustomers,
-    getBartenders, 
+    getBartenders,
     getAllUsers,
     getUserById,
     userLogin

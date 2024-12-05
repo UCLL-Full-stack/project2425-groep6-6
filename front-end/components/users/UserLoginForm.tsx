@@ -24,6 +24,8 @@ const UserLoginForm: React.FC = () => {
 
       sessionStorage.setItem("username", response.username);
       sessionStorage.setItem("role", response.role);
+      sessionStorage.setItem("token", response.token);
+
       if (response.id) {
         sessionStorage.setItem('userId', response.id.toString()); 
       } else {

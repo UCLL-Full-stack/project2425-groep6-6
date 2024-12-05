@@ -2,7 +2,7 @@ const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 
 const login = async (username: string, password: string) => {
-  const response = await fetch(`${API_URL}/login`, {
+  const response = await fetch(`${API_URL}/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26,6 +26,7 @@ const login = async (username: string, password: string) => {
     username: data.username,
     role: data.role,
     id: data.id,
+    token: data.token
   };
 };
 
@@ -36,7 +37,7 @@ const signup = async (userData: {
   password: string;
   role: string;
 }) => {
-  const response = await fetch(`${API_URL}/users`, {
+  const response = await fetch(`${API_URL}/users/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
