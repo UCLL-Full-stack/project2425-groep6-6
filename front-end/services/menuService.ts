@@ -23,12 +23,22 @@ const getDrinkItems = async () => {
     });
 };
 
-
+const getToken = (): string | null => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("token");
+    }
+    return null; 
+  };
+  
+  const token = getToken();
+  
 const addItem = async (item: Item, type: 'food' | 'drinks') => {
     const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+
         },
         body: JSON.stringify({
             name: item.name,
