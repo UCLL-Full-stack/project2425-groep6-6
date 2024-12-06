@@ -4,19 +4,20 @@ import UserLoginForm from "@components/users/UserLoginForm";
 import { useRouter } from "next/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next"; 
+import UserTable from "@components/homepage/usertable";
 
 const Login: React.FC = () => {
   const { t } = useTranslation(); 
-
   return (
     <>
       <Head>
         <title>{t("login.title")}</title> 
       </Head>
-      <Header />
+      <Header />  
       <main className="d-flex flex-column justify-content-center align-items-center">
         <section className="p-6 min-h-screen flex flex-col items-center">
           <h1>{t("login.title")}</h1> 
+          <UserTable />
           <UserLoginForm />
         </section>
       </main>

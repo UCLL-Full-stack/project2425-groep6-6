@@ -11,12 +11,16 @@ import { useTranslation } from 'next-i18next';
 const Restaurants: React.FC = () => {
     const [restaurants, setRestaurants] = useState<Array<Restaurant>>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const getRestaurants = async () => {
         const response = await RestaurantService.getAllRestaurants();
         const restaurantData = await response.json();
         setRestaurants(restaurantData);
+    };
+
+    const updateRestaurants = (updatedRestaurants: Array<Restaurant>) => {
+        setRestaurants(updatedRestaurants);
     };
 
     useEffect(() => {
@@ -35,9 +39,10 @@ const Restaurants: React.FC = () => {
                 <h1>{t("restaurants.title")}</h1>
                 <section>
                     <h2>{t("restaurants.overview")}</h2>
-                    <RestaurantOverviewTable 
-                        restaurants={restaurants} 
-                        selectRestaurant={setSelectedRestaurant} 
+                    <RestaurantOverviewTable
+                        restaurants={restaurants}
+                        selectRestaurant={setSelectedRestaurant}
+                        updateRestaurants={updateRestaurants}  
                     />
                 </section>
 

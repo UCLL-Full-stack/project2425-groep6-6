@@ -4,7 +4,7 @@ import { useState } from "react";
 import MenuService from "@services/menuService";
 import { useRouter } from "next/router";
 import { Item } from "@types";
-
+import { useTranslation } from 'next-i18next';
 type AddItemProps = {
     type: 'food' | 'drinks';
 };

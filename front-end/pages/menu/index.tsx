@@ -15,7 +15,7 @@ const Menu: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [order, setOrder] = useState<{ [key: number]: number }>({});
   const router = useRouter();
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
   const fetchMenuItems = async () => {
     try {
@@ -25,10 +25,10 @@ const Menu: React.FC = () => {
       ]);
       const foodData = await foodResponse.json();
       const drinkData = await drinkResponse.json();
-  
+
       console.log("Food Items: ", foodData);
       console.log("Drink Items: ", drinkData);
-  
+
       setFoodItems(foodData);
       setDrinkItems(drinkData);
     } catch (error) {
@@ -37,10 +37,14 @@ const Menu: React.FC = () => {
       setLoading(false);
     }
   };
-  
-  useEffect(() => {
-    fetchMenuItems();
-  }, []);
+
+  const updateItems = (updatedItems: Array<Item>, type: 'food' | 'drinks') => {
+    if (type === 'food') {
+      setFoodItems(updatedItems);
+    } else {
+      setDrinkItems(updatedItems);
+    }
+  };
 
   const handleQuantityChange = (id: number, quantity: number) => {
     setOrder((prevOrder) => ({
@@ -58,10 +62,14 @@ const Menu: React.FC = () => {
 
   const isLoggedIn = typeof window !== 'undefined' && sessionStorage.getItem('username') !== null;
 
+  useEffect(() => {
+    fetchMenuItems();
+  }, []);
+
   return (
     <>
       <Head>
-        <title>{t("menu.title")}</title> 
+        <title>{t("menu.title")}</title>
         <meta name="description" content="Restaurant Menu" />
       </Head>
       <Header />
@@ -71,7 +79,7 @@ const Menu: React.FC = () => {
 
         {!isLoggedIn && (
           <p className="alert alert-warning">
-            {t("menu.loginAlert")} {' '} 
+            {t("menu.loginAlert")} {' '}
             <Link href="/login">
               {t("menu.login")}
             </Link>
@@ -83,23 +91,25 @@ const Menu: React.FC = () => {
         ) : (
           <>
             <section>
-              <h2>{t("menu.foodItems")}</h2> 
-              <ItemOverviewTable 
-                items={foodItems} 
-                onQuantityChange={handleQuantityChange} 
-                order={order} 
+              <h2>{t("menu.foodItems")}</h2>
+              <ItemOverviewTable
+                items={foodItems}
+                onQuantityChange={handleQuantityChange}
+                order={order}
+                updateItems={(updatedItems) => updateItems(updatedItems, 'food')}
               />
 
               <h2>{t("menu.drinkItems")}</h2>
-              <ItemOverviewTable 
-                items={drinkItems} 
-                onQuantityChange={handleQuantityChange} 
-                order={order} 
+              <ItemOverviewTable
+                items={drinkItems}
+                onQuantityChange={handleQuantityChange}
+                order={order}
+                updateItems={(updatedItems) => updateItems(updatedItems, 'drinks')}
               />
             </section>
             {isLoggedIn && (
               <button onClick={handleOrder} className="btn btn-primary">
-                {t("menu.order")} 
+                {t("menu.order")}
               </button>
             )}
           </>
@@ -108,7 +118,7 @@ const Menu: React.FC = () => {
         {isLoggedIn && sessionStorage.getItem("role") === "chef" && (
           <div>
             <Link href="/menu/addFoodItem">
-              {t("menu.addFoodItem")} 
+              {t("menu.addFoodItem")}
             </Link>
           </div>
         )}
@@ -116,7 +126,7 @@ const Menu: React.FC = () => {
         {isLoggedIn && sessionStorage.getItem("role") === "bartender" && (
           <div>
             <Link href="/menu/addDrinkItem">
-              {t("menu.addDrinkItem")} 
+              {t("menu.addDrinkItem")}
             </Link>
           </div>
         )}
@@ -126,10 +136,10 @@ const Menu: React.FC = () => {
 };
 
 export const getServerSideProps = async (context: { locale: any; }) => {
-  const { locale } = context; 
+  const { locale } = context;
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "en", ["common"])), 
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
     },
   };
 };

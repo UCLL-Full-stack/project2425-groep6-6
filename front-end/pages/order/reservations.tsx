@@ -3,6 +3,7 @@ import Header from '@components/header';
 import { getReservations } from '@services/orderService'; 
 import { Reservation } from '@types'; 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import ReservationTable from '@components/reservations/reservationTable';
 
 const ReservationsPage: React.FC = () => {
   const [reservations, setReservations] = useState<Array<Reservation>>([]);
@@ -38,58 +39,16 @@ const ReservationsPage: React.FC = () => {
       {loading ? (
         <p>Loading reservations...</p>
       ) : error ? (
-        <p className="alert alert-danger">{error}</p> 
+        <p className="alert alert-danger">{error}</p>
       ) : reservations.length === 0 ? (
         <p>No reservations found.</p>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Date</th>
-              {role === 'cook' && <th>Food</th>}
-              {role === 'barman' && <th>Drinks</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {reservations.map((reservation) => (
-              <tr key={reservation.id}>
-                <td>{reservation.user.fullname || reservation.user.username}</td>
-                <td>{new Date(reservation.date).toLocaleString()}</td> 
-                {role === 'cook' && (
-                  <td>
-                    <ul>
-                      {reservation.items
-                        .filter((item) => item.item.category.toLowerCase() === 'food')
-                        .map((item, index) => (
-                          <li key={index}>
-                            {item.item.name} - Quantity: {item.quantity}
-                          </li>
-                        ))}
-                    </ul>
-                  </td>
-                )}
-                {role === 'barman' && (
-                  <td>
-                    <ul>
-                      {reservation.items
-                        .filter((item) => item.item.category.toLowerCase() === 'drinks')
-                        .map((item, index) => (
-                          <li key={index}>
-                            {item.item.name} - Quantity: {item.quantity}
-                          </li>
-                        ))}
-                    </ul>
-                  </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ReservationTable reservations={reservations} role={role} />
       )}
     </div>
   );
 };
+
 export const getServerSideProps = async (context: { locale: any; }) => {
   const { locale } = context; 
   return {
@@ -98,4 +57,5 @@ export const getServerSideProps = async (context: { locale: any; }) => {
     },
   };
 };
+
 export default ReservationsPage;

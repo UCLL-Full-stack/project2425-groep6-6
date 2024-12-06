@@ -51,7 +51,7 @@ const Header: React.FC = () => {
           {t("header.menu")}
         </Link>
 
-        {role && (role === 'chef' || role === 'bartender') && (
+        {role && (role === 'chef' || role === 'bartender' || role =='admin') && (
           <Link href="/order/reservations" className="nav-link px-4 fs-5 text-white">
             {t("header.reservations")}
           </Link>
