@@ -61,11 +61,8 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
                   </td>
                 )}
                 {isAdmin && (
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(item.id)}
-                    >
+                  <td className="d-flex">
+                    <button className="btn btn-danger" onClick={() => handleDelete(item.id)}>
                       Delete
                     </button>
                     <Link href={`/menu/update/${item.id}`} passHref>
@@ -73,7 +70,6 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
                         Update
                       </button>
                     </Link>
-
                   </td>
                 )}
               </tr>

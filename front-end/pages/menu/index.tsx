@@ -89,8 +89,8 @@ const Menu: React.FC = () => {
         {loading ? (
           <p>Loading menu items...</p>
         ) : (
-          <>
-            <section>
+          <section style={{ display: 'flex', gap: '10rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ flex: 1, minWidth: '300px' }}>
               <h2>{t("menu.foodItems")}</h2>
               <ItemOverviewTable
                 items={foodItems}
@@ -98,7 +98,8 @@ const Menu: React.FC = () => {
                 order={order}
                 updateItems={(updatedItems) => updateItems(updatedItems, 'food')}
               />
-
+            </div>
+            <div style={{ flex: 1, minWidth: '300px' }}>
               <h2>{t("menu.drinkItems")}</h2>
               <ItemOverviewTable
                 items={drinkItems}
@@ -106,16 +107,17 @@ const Menu: React.FC = () => {
                 order={order}
                 updateItems={(updatedItems) => updateItems(updatedItems, 'drinks')}
               />
-            </section>
-            {isLoggedIn && (
-              <button onClick={handleOrder} className="btn btn-primary">
-                {t("menu.order")}
-              </button>
-            )}
-          </>
+            </div>
+          </section>
         )}
 
-        {isLoggedIn && sessionStorage.getItem("role") === "chef" && (
+        {isLoggedIn && (
+          <button onClick={handleOrder} className="btn btn-primary mt-10">
+            {t("menu.order")}
+          </button>
+        )}
+
+        {isLoggedIn && sessionStorage.getItem("role") === "chef" || sessionStorage.getItem("role") === "admin" && (
           <div>
             <Link href="/menu/addFoodItem">
               {t("menu.addFoodItem")}
@@ -123,7 +125,7 @@ const Menu: React.FC = () => {
           </div>
         )}
 
-        {isLoggedIn && sessionStorage.getItem("role") === "bartender" && (
+        {isLoggedIn && sessionStorage.getItem("role") === "bartender" || sessionStorage.getItem("role") === "admin" && (
           <div>
             <Link href="/menu/addDrinkItem">
               {t("menu.addDrinkItem")}
