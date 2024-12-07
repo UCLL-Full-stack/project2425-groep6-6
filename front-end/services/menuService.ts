@@ -32,28 +32,22 @@ const getToken = (): string | null => {
   
   const token = getToken();
   
-const addItem = async (item: Item, type: 'food' | 'drinks') => {
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
+const addItem = async (item: Item, type: 'food' | 'drinks'): Promise<Item> => {
+  const response = await fetch(`${API_URL}`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+      },
+      body: JSON.stringify({
+          name: item.name,
+          category: type, 
+          price: item.price, 
+      }),
+  });
 
-        },
-        body: JSON.stringify({
-            name: item.name,
-            category: type,  
-            price: item.price,
-        }),
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to add item');
-    }
-
-    return response.json();
+  return response.json();
 };
-
 
 
 const deleteItem = async (id: string) => {

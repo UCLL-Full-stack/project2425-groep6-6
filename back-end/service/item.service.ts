@@ -48,10 +48,10 @@ const getDrinks = (): Promise<Item[]> => {
 
 const createItem = ({category, name, price}: ItemInput): Promise<Item> => {
     try{
-    if (category === 'food' && price < 0) {
+    if (category === 'food' && price > 0) {
         return itemDb.createItem({category, name, price})
     } 
-    else if (category === 'drinks'  && price < 0) {
+    else if (category === 'drinks'  && price > 0) {
         return itemDb.createItem({category, name, price})
     } else {
         throw new Error('Category is not a category (drinks, food) and price must be 0 or more')

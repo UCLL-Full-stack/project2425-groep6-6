@@ -10,20 +10,30 @@ const AdminPage: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();  
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [notAuthorized, setNotAuthorized] = useState<boolean>(false);
 
   useEffect(() => {
     const role = sessionStorage.getItem("role");
     if (role !== "admin") {
-      router.push("/login");
+      setNotAuthorized(true);
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
     } else {
       setIsAdmin(true);
     }
   }, [router]);
 
-  if (!isAdmin) {
-    return null; 
+  if (notAuthorized) {
+    return (
+      <>  
+       <Header />
+      <div>you are not Authorized to see this page you are directed to the login page</div>
+      </>
+    );
   }
 
+ 
   return (
     <>
       <Head>

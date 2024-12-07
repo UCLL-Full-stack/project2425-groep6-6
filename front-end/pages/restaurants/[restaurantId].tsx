@@ -8,7 +8,7 @@ import { Restaurant } from '@types';
 
 const RestaurantPage: React.FC = () => {
     const router = useRouter();
-    const { restaurantId } = router.query; // Get restaurantId from the URL
+    const { restaurantId } = router.query; 
     const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
     useEffect(() => {

@@ -141,8 +141,7 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
 itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const item: ItemInput = req.body;
-        
-        
+               
         return res.status(200).json(await itemService.createItem(item));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
