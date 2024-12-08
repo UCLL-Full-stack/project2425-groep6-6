@@ -141,9 +141,10 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
 itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const item: ItemInput = req.body;
+        //get role and add it to function
+        const role = "admin";
         
-        
-        return res.status(200).json(await itemService.createItem(item));
+        return res.status(200).json(await itemService.createItem(item, role));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
 
@@ -174,7 +175,9 @@ itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction
 itemRouter.delete('/items/:id', async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10); 
     try{
-        const item = await itemService.deleteItemById(id);
+        //get role and add it to function
+        const role = "admin";
+        const item = await itemService.deleteItemById(id, role);
         return res.status(200).json(item);
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
@@ -214,7 +217,11 @@ itemRouter.put('/items/update/:id', async (req: Request, res: Response, next: Ne
         const item: ItemInput = req.body;
         const id = parseInt(req.params.id, 10); 
         item.id = id;
-        return res.status(200).json(await itemService.updateItem(item));
+
+        //get role and add it to function
+        const role = "admin";
+
+        return res.status(200).json(await itemService.updateItem(item, role));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
 

@@ -40,6 +40,10 @@ import reservationDb from '../repository/reservation.db';
 import reservationsService from '../service/reservations.service';
 import { UserInput, LoginInput, ReservationDTO, ReservationInput } from '../types';
 import userService from '../service/user.service';
+import jwt from 'jsonwebtoken';
+import  expressjwt, {}  from 'express-jwt';
+
+
 
 const userRouter = express.Router();
 
@@ -59,7 +63,8 @@ const userRouter = express.Router();
  */
 userRouter.get('/users', async (req: Request, res: Response, next: NextFunction) => {
     try{
-        res.status(200).json( await userService.getAllUsers());
+        //const {username, role } = req.auth;
+        res.status(200).json( await userService.getAllUsers("role"));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
@@ -78,8 +83,9 @@ userRouter.get('/users', async (req: Request, res: Response, next: NextFunction)
  *      404:
  *              description: Not Found
  */
-userRouter.get('/users/chefs', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/users/chefs', async (req: Request , res: Response, next: NextFunction) => {
     try{
+        //const {username, role} = req.auth;
         res.status(200).json(await userService.getChefs());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
@@ -141,8 +147,9 @@ userRouter.get('/users/bartenders', async (req: Request, res: Response, next: Ne
  *      404:
  *              description: Not Found
  */
-userRouter.get('/users/admins', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/users/admins', async (req: Request , res: Response, next: NextFunction) => {
     try{
+        //const {username, role} = req.auth
         res.status(200).json(await userService.getAdmins());
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });

@@ -33,6 +33,7 @@ model Item {
   name         String
   category     Category
   price        Float
+  amount       Int
   reservations Reservation[] @relation("ReservationItems")
 }
 

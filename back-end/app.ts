@@ -54,7 +54,6 @@ app.use(
             '/api-docs', 
             '/users/login', 
             '/users/signup',
-            '/users', 
             '/restaurants',
             '/restaurants/id',
             '/items/food',

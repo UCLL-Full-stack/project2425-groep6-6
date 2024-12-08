@@ -13,12 +13,15 @@ const getUserById = (id: number): Promise<User> => {
     }
 }
 
-const getAllUsers = async (): Promise<User[]> => {
+const getAllUsers = async (role: string): Promise<User[]> => {
     try {
-        const users = userDb.getAllUsers();
-        return users;
+        if(role === "admin"){
+            const users = userDb.getAllUsers();
+            return users;
+        }
+        throw new Error("Access denied")
     } catch (error) {
-        throw new Error('There are no users found.')
+        throw new Error('There are no users found.' + error)
     }
 }
 
@@ -101,7 +104,7 @@ const authenticate = async (user: UserInput): Promise<LoginResponse> => {
         }
         const password = account.getPassword();
         if (await bcrypt.compare(user.password, password)) {
-            const token = jwtauth.generateSWTtoken(user.username);
+            const token = jwtauth.generateSWTtoken(user.username, user.role!);
             const id = account.getId() ?? 0;  
             return {
                 token,

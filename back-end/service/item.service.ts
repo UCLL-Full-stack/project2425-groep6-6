@@ -46,8 +46,12 @@ const getDrinks = (): Promise<Item[]> => {
     }
 }
 
-const createItem = ({category, name, price}: ItemInput): Promise<Item> => {
+const createItem = ({category, name, price}: ItemInput, role: string): Promise<Item> => {
     try{
+
+    if(role === "customer"){
+        throw new Error("Unauthorized!");
+    }
     if (category === 'food' && price < 0) {
         return itemDb.createItem({category, name, price})
     } 
@@ -65,8 +69,11 @@ const createItem = ({category, name, price}: ItemInput): Promise<Item> => {
 
 
 
-const deleteItemById = (id: number) => {
+const deleteItemById = (id: number, role: string) => {
     try{
+        if(role === "customer"){
+            throw new Error("Unauthorized!");
+        }
         const item = itemDb.deleteItemById(id);
         
         return item;
@@ -76,8 +83,13 @@ const deleteItemById = (id: number) => {
 }
 
 
-const updateItem = ({category, name, price, id}: ItemInput): Promise<Item> => {
+const updateItem = ({category, name, price, id}: ItemInput, role: string): Promise<Item> => {
     try{
+
+        if(role === "customer"){
+            throw new Error("Unauthorized!");
+        }
+        
     if (category === 'food') {
         if(price > 0){
             return itemDb.updateItem({category, name, price, id})
