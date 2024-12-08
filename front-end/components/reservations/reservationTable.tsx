@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Reservation } from '@types';
-import { getReservationById } from '@services/orderService';
-import ReservationDetails from './ReservationDetails'; 
 
 interface ReservationTableProps {
   reservations: Reservation[];
@@ -9,77 +7,86 @@ interface ReservationTableProps {
 }
 
 const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role }) => {
-  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleRowClick = async (id: number) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getReservationById(id); 
-      setSelectedReservation(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while fetching reservation details');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Filter the food and drink items
-  const filterFoodItems = (reservation: Reservation) => 
-    reservation.items.filter(item => item.category.toLowerCase() === 'food');
-
-  const filterDrinkItems = (reservation: Reservation) => 
-    reservation.items.filter(item => item.category.toLowerCase() === 'drinks');
-
-  const filteredReservations = reservations.filter((reservation) => {
-    if (role === 'chef') {
-      return filterFoodItems(reservation).length > 0;
-    }
-    if (role === 'bartender') {
-      return filterDrinkItems(reservation).length > 0;
-    }
-    return true;  
-  });
-
   return (
-    <div>
-      <table className="table">
-        <thead>
+    <div className="table-responsive">
+      <table className="table table-striped table-bordered table-hover">
+        <thead className="thead-dark">
           <tr>
-            <th>Username</th> 
+            <th>Username</th>
             <th>Date</th>
+            {role === 'chef' || role === 'bartender' || role === 'admin' ? <th>Type</th> : null}
             {role === 'chef' && <th>Food</th>}
             {role === 'bartender' && <th>Drinks</th>}
+            {role === 'admin' && <th>Items</th>} 
           </tr>
         </thead>
         <tbody>
-          {filteredReservations.map((reservation) => (
-            <tr
-              key={reservation.id}
-              onClick={() => handleRowClick(reservation.id)} 
-              style={{ cursor: 'pointer' }}
-            >
-              <td>{reservation.user.username}</td> 
-              <td>{new Date(reservation.date).toLocaleString()}</td>
-              {role === 'chef' && filterFoodItems(reservation).length > 0 && (
-                <td>Food</td> 
-              )}
-              {role === 'bartender' && filterDrinkItems(reservation).length > 0 && (
-                <td>Drinks</td>  
-              )}
-            </tr>
-          ))}
+          {reservations.map((reservation) => {
+            const sortedItems = reservation.items.sort((a, b) => {
+              const categoryA = a.category.toLowerCase();
+              const categoryB = b.category.toLowerCase();
+              if (categoryA === 'drinks' && categoryB !== 'drinks') return -1; 
+              if (categoryA === 'food' && categoryB !== 'food') return 1; 
+              return 0;
+            });
+
+            return (
+              <tr key={reservation.id}>
+                <td>{reservation.user.firstName || reservation.user.username}</td>
+                <td>{new Date(reservation.date).toLocaleString()}</td>
+                {role === 'chef' || role === 'bartender' || role === 'admin' ? (
+                  <td>
+                    <ul className="list-unstyled">
+                      {sortedItems.map((item, index) => (
+                        (role === 'chef' && item.category.toLowerCase() === 'food') || 
+                        (role === 'bartender' && item.category.toLowerCase() === 'drinks') ||
+                        role === 'admin' ? (
+                          <li key={index}>
+                            <strong>{item.category.charAt(0).toUpperCase() + item.category.slice(1)}:</strong> 
+                          </li>
+                        ) : null
+                      ))}
+                    </ul>
+                  </td>
+                ) : null}
+                {role === 'chef' && (
+                  <td>
+                    <ul className="list-unstyled">
+                      {sortedItems
+                        .filter((item) => item.category.toLowerCase() === 'food')
+                        .map((item, index) => (
+                          <li key={index}>{item.name}</li>
+                        ))}
+                    </ul>
+                  </td>
+                )}
+                {role === 'bartender' && (
+                  <td>
+                    <ul className="list-unstyled">
+                      {sortedItems
+                        .filter((item) => item.category.toLowerCase() === 'drinks')
+                        .map((item, index) => (
+                          <li key={index}>{item.name}</li>
+                        ))}
+                    </ul>
+                  </td>
+                )}
+                {role === 'admin' && ( 
+                  <td>
+                    <ul className="list-unstyled">
+                      {sortedItems.map((item, index) => (
+                        <li key={index}>
+                          {item.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-
-      {loading && <p>Loading reservation details...</p>}
-      {error && <p className="alert alert-danger">{error}</p>}
-
-      {selectedReservation && (
-        <ReservationDetails reservation={selectedReservation} role={role} />
-      )}
     </div>
   );
 };

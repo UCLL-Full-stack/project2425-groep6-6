@@ -34,8 +34,6 @@ const Home: React.FC = () => {
           <p>{t("home.description")}</p>
         </div>
         
-        <p>{t("home.users")}</p>
-        <UserTable />
       </main>
     </>
   );

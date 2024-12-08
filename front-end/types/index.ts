@@ -34,6 +34,8 @@ export type Reservation = {
   date: string; 
   user: User; 
   items: Array<{
+    category: any;
+    name: ReactI18NextChildren | Iterable<ReactI18NextChildren>;
     item: Item; 
     quantity: number; 
   }>;

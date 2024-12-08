@@ -41,7 +41,30 @@ const getAllReservations = async (): Promise<Reservation[]> => {
     }
 };
 
-const addItemsToReservation = async (id: number, items: Item[]) => {
+const createReservation = async (reservationInput: ReservationInput) => {
+    try {
+        console.log('Creating reservation with input:', reservationInput);  
+        const result = await database.reservation.create({
+            data: {
+                date: reservationInput.date,
+                userId: reservationInput.userId,
+            },
+            include: {
+                items: true, 
+            },
+        });
+        console.log('Created reservation:', result);  
+
+        await addItemsToReservation(result.id, reservationInput.items);
+
+        return Reservation.from(result);
+    } catch (error) {
+        console.error('Error during reservation creation:', error);  
+        throw new Error('Database error. Failed to create reservation. See server log for details. ' + error);
+    }
+}
+
+const addItemsToReservation = async (id: number, items: { itemId: number }[]) => {
     try {
         const updatedReservation = await database.reservation.update({
             where: {
@@ -49,7 +72,9 @@ const addItemsToReservation = async (id: number, items: Item[]) => {
             },
             data: {
                 items: {
-                    connect: items.map((item) => ({ id: item.getId() })),
+                    connect: items.map((item) => ({
+                        id: item.itemId, 
+                    })),
                 },
             },
             include: {
@@ -63,31 +88,6 @@ const addItemsToReservation = async (id: number, items: Item[]) => {
         throw new Error('Database error. See server log for details.');
     }
 }
-
-const createReservation = async (reservationInput: ReservationInput) => {
-    try {
-        console.log('Creating reservation with input:', reservationInput);  
-        const result = await database.reservation.create({
-            data: {
-                date: reservationInput.date,
-                userId: reservationInput.userId,
-                items: {
-                    connect: reservationInput.items.map(item => ({ id: item.itemId })),
-                },
-            },
-            include: {
-                items: true, 
-            },
-        });
-        console.log('Created reservation:', result);  
-        return Reservation.from(result);
-    } catch (error) {
-        console.error('Error during reservation creation:', error);  
-        throw new Error('Database error. Failed to create reservation. See server log for details. ' + error);
-    }
-};
-
-
 
 
 export default {

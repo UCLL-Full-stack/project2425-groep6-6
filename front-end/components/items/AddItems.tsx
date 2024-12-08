@@ -1,9 +1,9 @@
-import Header from "@components/header"; 
-import Head from "next/head";
 import { useState } from "react";
 import MenuService from "@services/menuService";
 import { useRouter } from "next/router";
 import { Item } from "@types";
+import { useTranslation } from 'next-i18next';
+import styles from "/styles/userLoginForm.module.css";
 
 type AddItemProps = {
     type: 'food' | 'drinks';
@@ -30,45 +30,42 @@ const AddItem: React.FC<AddItemProps> = ({ type }) => {
     };
 
     return (
-        <>
-            <Head>
-                <title>Add {type.charAt(0).toUpperCase() + type.slice(1)} Item</title>
-                <meta name="description" content={`Add a new ${type} item to the menu`} />
-            </Head>
-
-            <Header />
-
-            <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '40vh' }}>
-                <h1>Add New {type.charAt(0).toUpperCase() + type.slice(1)} Item</h1>
-                <form onSubmit={handleAddItem} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <label htmlFor="itemName">
+        <div className={styles.container}>
+            <h1>Add New {type.charAt(0).toUpperCase() + type.slice(1)} Item</h1>
+            <form onSubmit={handleAddItem} className={styles.form}>
+                <div>
+                    <label htmlFor="itemName" className="block mb-2 text-sm font-medium">
                         Name:
                     </label>
                     <input
-                        type="text"
                         id="itemName"
+                        type="text"
                         value={newItem.name}
                         onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
                         required
-                        style={{ marginBottom: '1rem' }}
+                        className={styles.inputField}
                     />
-                    
-                    <label htmlFor="itemPrice">
+                </div>
+
+                <div>
+                    <label htmlFor="itemPrice" className="block mb-2 text-sm font-medium">
                         Price:
                     </label>
                     <input
-                        type="number"
                         id="itemPrice"
+                        type="number"
                         value={newItem.price}
                         onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })}
                         required
-                        style={{ marginBottom: '1rem' }}
+                        className={styles.inputField}
                     />
+                </div>
 
-                    <button type="submit" style={{ marginTop: '1rem' }}>Add Item</button>
-                </form>
-            </main>
-        </>
+                <button type="submit" className={styles.button}>
+                    Add Item
+                </button>
+            </form>
+        </div>
     );
 };
 

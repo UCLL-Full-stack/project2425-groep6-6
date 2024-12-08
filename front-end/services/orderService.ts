@@ -1,15 +1,14 @@
 import { Reservation } from "@types";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/reservations`;
-
 const getToken = (): string | null => {
   if (typeof window !== "undefined") {
     return sessionStorage.getItem("token");
   }
   return null; 
 };
-const token = getToken();
 
+const token = getToken();
 const createReservation = async (reservation: { date: string; userId: number; items: Array<{ itemId: number }> }): Promise<any> => {
   try {
     const response = await fetch(API_URL, {

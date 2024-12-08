@@ -55,7 +55,7 @@ const createItem = ({category, name, price}: ItemInput, role: string): Promise<I
     if (category === 'food' && price < 0) {
         return itemDb.createItem({category, name, price})
     } 
-    else if (category === 'drinks'  && price < 0) {
+    else if (category === 'drinks'  && price > 0) {
         return itemDb.createItem({category, name, price})
     } else {
         throw new Error('Category is not a category (drinks, food) and price must be 0 or more')
