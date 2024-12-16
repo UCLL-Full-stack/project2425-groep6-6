@@ -45,6 +45,7 @@ const addItem = async (item: Item, type: 'food' | 'drinks'): Promise<Item> => {
           price: item.price, 
       }),
   });
+  console.log("Adding item:", item, "Type:", type);
 
   return response.json();
 };
