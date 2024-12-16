@@ -69,11 +69,11 @@ const deleteItem = async (id: string) => {
   };
 
   const updateItem = async (id: string, item: Item) => {
-    const response = await fetch(`http://localhost:3000/items/update/${id}`, {
+    const response = await fetch(`${API_URL}/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        "Authorization": `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
         name: item.name,
@@ -89,6 +89,7 @@ const deleteItem = async (id: string) => {
   
     return response.json();
   };
+  
   
   const getItemById = async (id: string) => {
     try {

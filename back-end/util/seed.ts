@@ -93,7 +93,7 @@ const main = async () => {
         { name: 'Pina Colada', category: Category.drinks, price: 9.99 },
         { name: 'Lemonade', category: Category.drinks, price: 4.99 },
         { name: 'Iced Tea', category: Category.drinks, price: 3.99 },
-        { name: 'Old Fashioned', category: Category.drinks, price: 10.99 },
+        { name: 'Fanta', category: Category.drinks, price: 2.00},
         { name: 'Margarita', category: Category.drinks, price: 9.99 },
         { name: 'Cappuccino', category: Category.drinks, price: 4.49 },
         { name: 'Green Tea', category: Category.drinks, price: 2.99 },
