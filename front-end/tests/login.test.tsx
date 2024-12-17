@@ -8,6 +8,9 @@ test('dit is de eerste test vul  later aan', async () => {
 render(<UserLoginForm />)
 
 expect(screen.getByText('username'))
+expect(screen.getByLabelText(/username/i))
+expect(screen.getByLabelText(/password/i))
+
 
 })
 

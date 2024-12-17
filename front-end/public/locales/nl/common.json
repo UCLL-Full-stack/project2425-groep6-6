@@ -3,7 +3,7 @@
     "home": "Home",
     "restaurants": "Restaurants",
     "menu": "Menu",
-    "reservations": "Reserveringen",
+    "reservations": "Reservaties",
     "admin": "Admin",
     "logout": "Uitloggen",
     "login": "Inloggen"
@@ -15,7 +15,9 @@
     "name": "Naam",
     "location": "Locatie",
     "viewMenu": "Bekijk het Menu",
-    "id": "ID"
+    "id": "ID",
+    "addRestaurantButton":"Voeg een restaurant toe"
+
   },
   "home": {
     "title": "Home",
@@ -32,7 +34,11 @@
     "order": "Bestellen",
     "addFoodItem": "Voeg een Eten Item Toe",
     "addDrinkItem": "Voeg een Drank Item Toe",
-    "login": "Inloggen"
+    "login": "Inloggen",
+    "name": "Naam",
+    "price": "Prijs",
+    "quantity": "Hoeveelheid",
+    "actions":"Acties"
   },
   "login": {
     "title": "Inloggen",
@@ -65,5 +71,16 @@
       "chef": "Chef",
       "bartender": "Bartender"
     }
+  },
+  "reservations":{
+    "reservations": "Reservaties",
+    "username":"Gebruikersnaam",
+    "date": "Datum",
+    "type": "Type",
+    "items": "Items",
+    "food": "Eten",
+    "drinks": "Drinken",
+    "warning": "Geen reservaties gevonden.",
+    "loading": "Reservaties laden..."
   }
 }

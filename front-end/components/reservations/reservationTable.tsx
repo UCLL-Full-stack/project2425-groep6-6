@@ -1,5 +1,6 @@
 import React from 'react';
 import { Reservation } from '@types';
+import { useTranslation } from 'next-i18next';
 
 interface ReservationTableProps {
   reservations: Reservation[];
@@ -7,17 +8,19 @@ interface ReservationTableProps {
 }
 
 const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="table-responsive">
       <table className="table table-striped table-bordered table-hover">
         <thead className="thead-dark">
           <tr>
-            <th>Username</th>
-            <th>Date</th>
-            {role === 'chef' || role === 'bartender' || role === 'admin' ? <th>Type</th> : null}
-            {role === 'chef' && <th>Food</th>}
-            {role === 'bartender' && <th>Drinks</th>}
-            {role === 'admin' && <th>Items</th>} 
+          <th>{t('reservations.username')}</th>
+          <th>{t('reservations.date')}</th>
+            {role === 'chef' || role === 'bartender' || role === 'admin' ? <th>{t('reservations.type')}</th> : null}
+            {role === 'chef' && <th>{t('reservations.food')}</th>}
+            {role === 'bartender' && <th>{t('reservations.drinks')}</th>}
+            {role === 'admin' && <th>{t('reservations.items')}</th>} 
           </tr>
         </thead>
         <tbody>

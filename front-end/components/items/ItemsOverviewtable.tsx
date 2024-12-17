@@ -2,6 +2,7 @@ import React from 'react';
 import { Item } from '@types';
 import Link from 'next/link';
 import MenuService from '@services/menuService';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
   items: Item[];
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, updateItems }) => {
+  const { t } = useTranslation();
   const isLoggedIn = typeof window !== 'undefined' && sessionStorage.getItem('username') !== null;
   const isAdmin = sessionStorage.getItem('role') === 'admin';
 
@@ -38,10 +40,10 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
         <table className="table table-hover">
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              {isLoggedIn && <th scope="col">Quantity</th>}
-              {isAdmin && <th scope="col">Actions</th>}
+              <th scope="col">{t('menu.name')}</th>
+              <th scope="col">{t('menu.price')}</th>
+              {isLoggedIn && <th scope="col">{t('menu.quantity')}</th>}
+              {isAdmin && <th scope="col">{t('menu.actions')}</th>}
             </tr>
           </thead>
           <tbody>

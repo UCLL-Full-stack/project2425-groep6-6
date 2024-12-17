@@ -36,13 +36,29 @@ const deleteRestaurant = async (id: String) => {
   return await response.json();
 };
 
+const addRestaurant = async (name: string, address: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/restaurant`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, 
+    },
+    body: JSON.stringify({ name, address }),
+  });
 
+  if (!response.ok) {
+    throw new Error("Failed to add restaurant");
+  }
+
+  return await response.json();
+};
 
 
 const RestaurantService = {
   getAllRestaurants,
   getRestaurantById,
-  deleteRestaurant
+  deleteRestaurant,
+  addRestaurant
 };
 
 export default RestaurantService;
