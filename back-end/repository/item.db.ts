@@ -63,19 +63,22 @@ const items: Item[] = [
 // }
 
 const getItemsByReservationId = async (reservationId: number): Promise<Item[]> => {
-    const itemsFromDb = await database.item.findMany({
+    const reservationItems = await database.reservationItem.findMany({
         where: {
-            reservations: {
-                some: {
-                    id: reservationId,  
-                }
-            }
+            reservationId: reservationId,
+        },
+        include: {
+            item: true, 
         },
     });
 
-    return itemsFromDb.map((itemPrisma) => Item.from(itemPrisma)); 
+    return reservationItems.map((reservationItem) => 
+        Item.from({
+            ...reservationItem.item,
+            
+        }, reservationItem.amount,)
+    );
 };
-
 const getFood = async (): Promise<Item[]> => {
     const result = await database.item.findMany({
         where: {

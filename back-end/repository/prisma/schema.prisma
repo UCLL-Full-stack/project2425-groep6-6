@@ -22,19 +22,29 @@ model User {
 }
 
 model Reservation {
-  id     Int       @id @default(autoincrement())
+  id     Int                @id @default(autoincrement())
   date   DateTime
-  user   User      @relation(fields: [userId], references: [id])
+  user   User               @relation(fields: [userId], references: [id])
   userId Int
-  items  Item[]    @relation("ReservationItems")
+  items  ReservationItem[]  
 }
+
 model Item {
-  id           Int           @id @default(autoincrement())
+  id           Int                @id @default(autoincrement())
   name         String
   category     Category
   price        Float
-  amount       Int
-  reservations Reservation[] @relation("ReservationItems")
+  reservations ReservationItem[]  
+}
+
+//relatie om amount er in te zetten.
+model ReservationItem { 
+  id             Int           @id @default(autoincrement())
+  reservation    Reservation   @relation(fields: [reservationId], references: [id])
+  reservationId  Int
+  item           Item          @relation(fields: [itemId], references: [id])
+  itemId         Int
+  amount         Int           
 }
 
 

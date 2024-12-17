@@ -24,9 +24,12 @@
  *           items:
  *             type: object
  *             properties:
- *               itemId:
+ *               id:
  *                 type: number
  *                 format: int64
+ *                 description: The ID of the reserved item. It must exist in the menu. Duplicates will be removed if applicable.
+ *               amount:
+ *                 type: number
  *                 description: The ID of the reserved item. It must exist in the menu. Duplicates will be removed if applicable.
  *       required:
  *         - date
@@ -37,7 +40,7 @@
  *         userId: 2
  *         items:
  *           - itemId: 1
- *           - itemId: 1  # Example of duplicate itemId
+ *           - itemId: 1 
  *           - itemId: 2
  */
 
@@ -162,6 +165,8 @@ reservationRouter.get('/reservations/:id', async (req: Request, res: Response) =
  *                         type: number
  *                         format: float
  *                         description: The price of the reserved item.
+ *                       amount:
+ *                         type: number          
  *       400:
  *         description: Bad request due to invalid input data.
  *       404:

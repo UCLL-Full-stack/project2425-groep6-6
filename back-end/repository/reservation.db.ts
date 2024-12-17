@@ -2,7 +2,7 @@ import { Item } from "../model/item";
 import { Reservation } from "../model/reservation";
 import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
-import { ReservationInput } from "../types";
+import { ItemInput, ReservationInput } from "../types";
 import database from "./database";
 
 const reservations: any[] = [];
@@ -27,7 +27,11 @@ const getAllReservations = async (): Promise<Reservation[]> => {
         const result = await database.reservation.findMany({
             include: {
                 user: true,
-                items: true,
+                items: {
+                    include: {
+                        item: true, 
+                    },
+                },
             },
            
         });
@@ -48,6 +52,12 @@ const createReservation = async (reservationInput: ReservationInput) => {
             data: {
                 date: reservationInput.date,
                 userId: reservationInput.userId,
+                items: {
+                    create: reservationInput.items.map((item) => ({
+                        item: { connect: { id: item.id } }, 
+                        amount: item.amount!, 
+                    })),
+                },
             },
             include: {
                 items: true, 
@@ -64,7 +74,7 @@ const createReservation = async (reservationInput: ReservationInput) => {
     }
 }
 
-const addItemsToReservation = async (id: number, items: { itemId: number }[]) => {
+const addItemsToReservation = async (id: number, items: ItemInput[]) => {
     try {
         const updatedReservation = await database.reservation.update({
             where: {
@@ -73,7 +83,7 @@ const addItemsToReservation = async (id: number, items: { itemId: number }[]) =>
             data: {
                 items: {
                     connect: items.map((item) => ({
-                        id: item.itemId, 
+                        id: item.id, 
                     })),
                 },
             },

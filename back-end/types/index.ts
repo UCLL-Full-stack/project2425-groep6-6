@@ -40,7 +40,7 @@ type ReservationInput = {
     id?: number;
     date: string;
     userId: number;      
-    items: Array<Item>;    
+    items: Array<ItemInput>;    
 };
 
 type ItemInput = {
@@ -48,6 +48,8 @@ type ItemInput = {
     name: string;
     category: Category;
     price: number;
+    amount?: number;
+
 }
 
 type UserInput = {

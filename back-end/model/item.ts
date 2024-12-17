@@ -10,16 +10,18 @@ export class Item{
     private category: Category;
     private price: number;
     private reservations: Array<Reservation>
+    private amount: number;
     itemId: any;
     quantity: any;
 
-    constructor(Item: {id?: number, name: string, category: Category, price: number, reservations: Array<Reservation>}){
+    constructor(Item: {id?: number, name: string, category: Category, price: number, reservations: Array<Reservation>, amount: number}){
         this.validate( Item.name, Item.category, Item.price, Item.id);
         this.id = Item.id;
         this.category = Item.category;
         this.name = Item.name;
         this.price = Item.price;
         this.reservations = Item.reservations || [];  
+        this.amount = Item.amount;
     }
 
     validate(name: string, category: Category, price: number, id?: number): boolean {
@@ -59,13 +61,15 @@ export class Item{
     }
 
 
-    static from(itemPrisma: itemsPrisma): Item {
+    static from(itemPrisma: itemsPrisma, amount?: number): Item {
         return new Item({
           id: itemPrisma.id,
           name: itemPrisma.name,
           category: itemPrisma.category as Category,  
           price: itemPrisma.price,
-          reservations: []  
+          reservations: [],
+          amount: amount?? 0
+            
         });
       }
 
