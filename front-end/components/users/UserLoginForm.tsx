@@ -23,18 +23,14 @@ const UserLoginForm: React.FC = () => {
     clearErrors();
 
     if (!name.trim()) {
-      setNameError(t("login.usernameRequired"));
+      setNameError("Username Required");
       return false;
     }
     if (!password.trim()) {
-      setPasswordError(t("login.passwordRequired"));
+      setPasswordError("password Required");
       return false;
     }
-    if (password.length < 6) {
-      setPasswordError(t("login.passwordStrength"));
-      return false;
-    }
-
+   
     try {
       const response = await LoginService.login(name, password);
       console.log(response);  
@@ -51,9 +47,9 @@ const UserLoginForm: React.FC = () => {
       return true;
     } catch (error: any) {
       if (error.response?.status === 401) {
-        setNameError(t("login.invalidCredentials")); 
+        setNameError("invalid Credentials"); 
       } else {
-        setNameError(t("login.loginError"));
+        setNameError("invalid Credentials");
       }
       return false;
     }
@@ -112,7 +108,6 @@ const UserLoginForm: React.FC = () => {
             onChange={(event) => setName(event.target.value)}
             className={styles.inputField}
           />
-          {nameError && <p className={styles.errorText}>{nameError}</p>}
         </div>
 
         <div>
@@ -127,6 +122,8 @@ const UserLoginForm: React.FC = () => {
             className={styles.inputField}
           />
           {passwordError && <p className={styles.errorText}>{passwordError}</p>}
+          {nameError && <p className={styles.errorText}>{nameError}</p>}
+
         </div>
 
         <button type="submit" className={styles.button}>
