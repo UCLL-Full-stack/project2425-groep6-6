@@ -39,9 +39,12 @@
  *         date: "2023-12-31T19:00:00Z"
  *         userId: 2
  *         items:
- *           - itemId: 1
- *           - itemId: 1 
- *           - itemId: 2
+ *           - id: 1
+ *             amount: 3
+ *           - id: 1
+ *             amount: 3
+ *           - id: 2
+ *             amount: 3
  */
 
 
