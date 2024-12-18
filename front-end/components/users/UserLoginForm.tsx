@@ -11,13 +11,30 @@ const UserLoginForm: React.FC = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [nameError, setNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]);
 
   const clearErrors = () => {
     setNameError("");
+    setPasswordError("");
   };
 
   const validate = async (): Promise<boolean> => {
+    clearErrors();
+
+    if (!name.trim()) {
+      setNameError(t("login.usernameRequired"));
+      return false;
+    }
+    if (!password.trim()) {
+      setPasswordError(t("login.passwordRequired"));
+      return false;
+    }
+    if (password.length < 6) {
+      setPasswordError(t("login.passwordStrength"));
+      return false;
+    }
+
     try {
       const response = await LoginService.login(name, password);
       console.log(response);  
@@ -33,20 +50,23 @@ const UserLoginForm: React.FC = () => {
       }
       return true;
     } catch (error: any) {
-      setNameError(t("login.loginError")); 
+      if (error.response?.status === 401) {
+        setNameError(t("login.invalidCredentials")); 
+      } else {
+        setNameError(t("login.loginError"));
+      }
       return false;
     }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    clearErrors();
-
     const isValid = await validate();
 
     if (!isValid) {
       return;
     }
+
     setStatusMessages([
       {
         message: t("login.loginSuccess"), 
@@ -72,9 +92,7 @@ const UserLoginForm: React.FC = () => {
           {statusMessages.map(({ message, type }, index) => (
             <div
               key={index}
-              className={`${styles.statusMessage} ${
-                type === "error" ? styles.error : styles.success
-              }`}
+              className={`${styles.statusMessage} ${type === "error" ? styles.error : styles.success}`}
             >
               {message}
             </div>
@@ -94,13 +112,11 @@ const UserLoginForm: React.FC = () => {
             onChange={(event) => setName(event.target.value)}
             className={styles.inputField}
           />
+          {nameError && <p className={styles.errorText}>{nameError}</p>}
         </div>
 
         <div>
-          <label
-            htmlFor="passwordInput"
-            className="block mb-2 text-sm font-medium"
-          >
+          <label htmlFor="passwordInput" className="block mb-2 text-sm font-medium">
             {t("login.password")} 
           </label>
           <input
@@ -110,9 +126,8 @@ const UserLoginForm: React.FC = () => {
             onChange={(event) => setPassword(event.target.value)}
             className={styles.inputField}
           />
+          {passwordError && <p className={styles.errorText}>{passwordError}</p>}
         </div>
-
-        {nameError && <p className={styles.errorText}>{nameError}</p>}
 
         <button type="submit" className={styles.button}>
           {t("login.loginButton")} 
