@@ -3,6 +3,11 @@ import SignupForm from '@components/users/userSignUpForm';
 import { useTranslation } from 'next-i18next';
 import LoginService from '@services/loginService';
 import '@testing-library/jest-dom';
+import { useRouter } from 'next/router';
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 
 jest.mock('next-i18next', () => ({
   useTranslation: jest.fn(),
@@ -15,10 +20,15 @@ jest.mock('@services/loginService', () => ({
 describe('SignupForm', () => {
   const mockSignup = LoginService.signup as jest.Mock;
   const mockUseTranslation = useTranslation as jest.Mock;
+  const mockUseRouter = useRouter as jest.Mock;
 
   beforeEach(() => {
     mockUseTranslation.mockReturnValue({
       t: (key: string) => key, 
+    });
+
+    mockUseRouter.mockReturnValue({
+      push: jest.fn(),
     });
 
     mockSignup.mockClear();
@@ -64,5 +74,30 @@ describe('SignupForm', () => {
     fireEvent.click(screen.getByText('signup.signupButton'));
 
     await waitFor(() => expect(screen.getByText('signup.usernameExists')).toBeInTheDocument());
+  });
+
+  test('displays validation errors when fields are empty or invalid', async () => {
+    render(<SignupForm role="admin" />);
+  
+    fireEvent.click(screen.getByText('signup.signupButton'));
+  
+    expect(await screen.findByLabelText('signup.username'));
+    expect(await screen.findByLabelText('signup.firstname'));
+    expect(await screen.findByLabelText('signup.lastname'));
+    expect(await screen.findByLabelText('signup.password'));
+  });
+  
+
+  test('displays password validation error when password is too short', async () => {
+    render(<SignupForm role="admin" />);
+
+    fireEvent.change(screen.getByLabelText('signup.username'), { target: { value: 'shortpassworduser' } });
+    fireEvent.change(screen.getByLabelText('signup.firstname'), { target: { value: 'Short' } });
+    fireEvent.change(screen.getByLabelText('signup.lastname'), { target: { value: 'Password' } });
+    fireEvent.change(screen.getByLabelText('signup.password'), { target: { value: 'short' } });
+
+    fireEvent.click(screen.getByText('signup.signupButton'));
+
+    await waitFor(() => expect(screen.getByText('password needs to be at least 6 characters')).toBeInTheDocument());
   });
 });
