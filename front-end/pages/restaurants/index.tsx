@@ -7,11 +7,17 @@ import RestaurantService from "@services/restaurantService";
 import Header from "@components/header";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from 'next-i18next';
+import AddRestaurant from "@components/restaurants/AddRestaurant";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
 
 const Restaurants: React.FC = () => {
     const [restaurants, setRestaurants] = useState<Array<Restaurant>>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
     const { t } = useTranslation();
+    const router = useRouter();
+
 
     const getRestaurants = async () => {
         const response = await RestaurantService.getAllRestaurants();
@@ -45,10 +51,20 @@ const Restaurants: React.FC = () => {
                         updateRestaurants={updateRestaurants}  
                     />
                 </section>
-
+            
+                {sessionStorage.getItem("role") === "admin" && (
+                <Link href={`restaurants/addRestaurantPage`} passHref>
+                <button  className="btn btn-primary ml-2">
+                Add Restaurant
+                </button>
+                </Link>
+                )}
+       
                 {selectedRestaurant && (
                     <section>
-                        <h2>{t("restaurants.details", { restaurantName: selectedRestaurant.name })}</h2>
+                    <br />
+                    <br />
+                    <h2>{t("restaurants.details", { restaurantName: selectedRestaurant.name })}</h2>
                         <RestaurantDetails restaurant={selectedRestaurant} />
                     </section>
                 )}

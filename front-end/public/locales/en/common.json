@@ -15,7 +15,8 @@
     "name": "Name",
     "location": "Location",
     "id": "ID",
-    "viewMenu": "View Menu"
+    "viewMenu": "View Menu",
+    "addRestaurantButton":"Add a restaurant"
   },
   "home": {
     "title": "Home",
@@ -32,7 +33,11 @@
       "order": "Order",
       "addFoodItem": "Add Food Item",
       "addDrinkItem": "Add Drink Item",
-      "login": "login"
+      "login": "login",
+      "name": "Name",
+      "price": "Price",
+      "quantity": "Quantity",
+      "actions":"Actions"
 
     },
   "login": {
@@ -66,5 +71,16 @@
         "chef": "Chef",
         "bartender": "Bartender"
       }
+    },
+    "reservations":{
+      "reservations": "Reservations",
+      "username":"Username",
+      "date": "Date",
+      "type": "Type",
+      "items": "Items",
+      "food": "Food",
+      "drinks": "Drinks",
+      "warning": "No reservations found.",
+      "loading": "Loading reservations..."
     }
 }

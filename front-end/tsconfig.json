@@ -5,7 +5,8 @@
       "@components/*": ["components/*"],
       "@services/*": ["services/*"],
       "@types": ["types/index.ts"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "types": ["@types/estree"],
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

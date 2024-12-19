@@ -2,7 +2,6 @@ import { useState } from "react";
 import MenuService from "@services/menuService";
 import { useRouter } from "next/router";
 import { Item } from "@types";
-import { useTranslation } from 'next-i18next';
 import styles from "/styles/userLoginForm.module.css";
 
 type AddItemProps = {
@@ -16,26 +15,38 @@ const AddItem: React.FC<AddItemProps> = ({ type }) => {
         price: 0,
         category: type
     });
-    
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);  
+
     const router = useRouter();
+
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (newItem.price <= 0) {
+            setErrorMessage("Price must be larger then 0.");
+            return;  
+        }
         try {
             const addedItem = await MenuService.addItem(newItem, type);
-            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} item added successfully!`);
+            alert("Adding item succeed");
             router.push('/menu');
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error adding item:", error);
+            setErrorMessage("Error adding item");
         }
     };
 
     return (
         <div className={styles.container}>
-            <h1>Add New {type.charAt(0).toUpperCase() + type.slice(1)} Item</h1>
+            <h1>Add Item</h1>
+            
+            {errorMessage && (
+                <p className={`${styles.statusMessage} ${styles.error}`}>{errorMessage}</p>
+            )}
+
             <form onSubmit={handleAddItem} className={styles.form}>
                 <div>
                     <label htmlFor="itemName" className="block mb-2 text-sm font-medium">
-                        Name:
+                       Name
                     </label>
                     <input
                         id="itemName"
@@ -49,7 +60,7 @@ const AddItem: React.FC<AddItemProps> = ({ type }) => {
 
                 <div>
                     <label htmlFor="itemPrice" className="block mb-2 text-sm font-medium">
-                        Price:
+                        Price
                     </label>
                     <input
                         id="itemPrice"

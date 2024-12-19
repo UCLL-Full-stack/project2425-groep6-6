@@ -5,6 +5,7 @@ import { Reservation } from '@types';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ReservationTable from '@components/reservations/reservationTable';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 const ReservationsPage: React.FC = () => {
   const [reservations, setReservations] = useState<Array<Reservation>>([]);
@@ -13,6 +14,8 @@ const ReservationsPage: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
+  const { t } = useTranslation();
+  
 
   const fetchReservations = async () => {
     try {
@@ -45,18 +48,18 @@ const ReservationsPage: React.FC = () => {
     <>
       <Header />
       <main className="d-flex flex-column justify-content-center align-items-center">
-        <h1>Reservations</h1>
+        <h1>{t('reservations.reservations')}</h1>
         {message && <p className="alert alert-warning">{message}</p>}
       </main>
       <div>
         {!message && (
           <>
             {loading ? (
-              <p>Loading reservations...</p>
+              <p>{t('reservations.loading')}</p>
             ) : error ? (
               <p className="alert alert-danger">{error}</p>
             ) : reservations.length === 0 ? (
-              <p>No reservations found.</p>
+              <p>{t('reservations.warning')}</p>
             ) : (
               <ReservationTable reservations={reservations} role={role} />
             )}

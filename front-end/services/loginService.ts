@@ -52,7 +52,7 @@ const signup = async (userData: {
     if (response.status === 409) {
       throw new Error("User already exists");
     }
-    throw new Error("Failed to create user");
+    throw new Error("Username already exists");
   }
 
   const data = await response.json();
