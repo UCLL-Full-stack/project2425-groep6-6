@@ -71,7 +71,7 @@ const createReservation = async (reservationInput: ReservationInput) => {
         throw new Error('Database error. ' + error);
     }
 }
-
+//verwijder
 // const addItemsToReservation = async (id: number, items: ItemInput[]) => {
 //     try {
 //         const updatedReservation = await database.reservation.update({
