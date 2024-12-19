@@ -27,6 +27,7 @@ import reservationDb from '../repository/reservation.db';
 import reservationsService from '../service/reservations.service';
 import { ItemInput, ReservationDTO, ReservationInput } from '../types';
 import itemService from '../service/item.service';
+import { expressjwt } from 'express-jwt';
 
 const itemRouter = express.Router();
 
@@ -138,12 +139,14 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
  *       400:
  *         description: Bad request due to invalid input data.
  */
-itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction) => {
+itemRouter.post('/items', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
     try {
+        const {username, role} = req.auth;
         const item: ItemInput = req.body;
-        const role = "admin";
+        //get role and add it to function
+        const role1 = "admin";
         
-        return res.status(200).json(await itemService.createItem(item, role));
+        return res.status(200).json(await itemService.createItem(item, role1));
     }catch(error){
         return res.status(404).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
 
