@@ -33,7 +33,7 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
       alert("Item successfully deleted.");
     } catch (error) {
       console.error(error);
-      alert("Error occurred while deleting the item.");
+      alert("Failed to delete item, because item is ordered");
     }
   };
 

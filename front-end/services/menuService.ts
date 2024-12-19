@@ -63,7 +63,7 @@ const deleteItem = async (id: string) => {
   
     if (!response.ok) {
       console.error(`Failed to delete item with ID ${id}: ${response.statusText}`);
-      throw new Error('Failed to delete item');
+      throw new Error('Failed to delete item, because item is ordered');
     }
   
     return response.json();
