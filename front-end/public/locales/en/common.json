@@ -81,6 +81,7 @@
       "food": "Food",
       "drinks": "Drinks",
       "warning": "No reservations found.",
-      "loading": "Loading reservations..."
+      "loading": "Loading reservations...",
+      "amount":"Amount"
     }
 }
