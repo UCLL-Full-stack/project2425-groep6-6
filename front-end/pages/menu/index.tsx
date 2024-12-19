@@ -8,7 +8,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from 'next-i18next';
-import useSWR from 'swr';
 
 const Menu: React.FC = () => {
   const [foodItems, setFoodItems] = useState<Array<Item>>([]);
@@ -117,22 +116,23 @@ const Menu: React.FC = () => {
             {t("menu.order")}
           </button>
         )}
+  
+{isLoggedIn && (sessionStorage.getItem("role") === "chef" || sessionStorage.getItem("role") === "admin") && (
+  <div>
+    <Link href="/menu/addFoodItem">
+      {t("menu.addFoodItem")}
+    </Link>
+  </div>
+)}
 
-        {isLoggedIn && sessionStorage.getItem("role") === "chef" || sessionStorage.getItem("role") === "admin" && (
-          <div>
-            <Link href="/menu/addFoodItem">
-              {t("menu.addFoodItem")}
-            </Link>
-          </div>
-        )}
+{isLoggedIn && (sessionStorage.getItem("role") === "bartender" || sessionStorage.getItem("role") === "admin") && (
+  <div>
+    <Link href="/menu/addDrinkItem">
+      {t("menu.addDrinkItem")}
+    </Link>
+  </div>
+)}
 
-        {isLoggedIn && sessionStorage.getItem("role") === "bartender" || sessionStorage.getItem("role") === "admin" && (
-          <div>
-            <Link href="/menu/addDrinkItem">
-              {t("menu.addDrinkItem")}
-            </Link>
-          </div>
-        )}
       </main>
     </>
   );

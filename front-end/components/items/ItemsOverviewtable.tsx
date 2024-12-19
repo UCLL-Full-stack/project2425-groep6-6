@@ -8,13 +8,16 @@ type Props = {
   items: Item[];
   order: { [key: number]: number };
   onQuantityChange: (id: number, quantity: number) => void;
-  updateItems: (updatedItems: Item[]) => void; 
+  updateItems: (updatedItems: Item[]) => void;
 };
 
 const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, updateItems }) => {
   const { t } = useTranslation();
   const isLoggedIn = typeof window !== 'undefined' && sessionStorage.getItem('username') !== null;
+
   const isAdmin = sessionStorage.getItem('role') === 'admin';
+  const isChef = sessionStorage.getItem('role') === 'chef';
+  const isBartender = sessionStorage.getItem('role') === 'bartender';
 
   const handleQuantityChange = (id: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const quantity = parseInt(event.target.value, 10) || 0;
@@ -30,7 +33,7 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
       alert("Item successfully deleted.");
     } catch (error) {
       console.error(error);
-      alert("Error occurred while deleting the item.");
+      alert("Failed to delete item, because item is ordered");
     }
   };
 
@@ -43,7 +46,7 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
               <th scope="col">{t('menu.name')}</th>
               <th scope="col">{t('menu.price')}</th>
               {isLoggedIn && <th scope="col">{t('menu.quantity')}</th>}
-              {isAdmin && <th scope="col">{t('menu.actions')}</th>}
+              {(isAdmin || isChef || isBartender) && <th scope="col">{t('menu.actions')}</th>}
             </tr>
           </thead>
           <tbody>
@@ -62,7 +65,7 @@ const ItemOverviewTable: React.FC<Props> = ({ items, order, onQuantityChange, up
                     />
                   </td>
                 )}
-                {isAdmin && (
+                {(isAdmin || (isChef && item.category === 'food') || (isBartender && item.category === 'drinks')) && (
                   <td className="d-flex">
                     <button className="btn btn-danger" onClick={() => handleDelete(item.id)}>
                       Delete
