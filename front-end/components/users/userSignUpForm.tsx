@@ -55,23 +55,27 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
     setErrors(newErrors);
     return valid;
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatusMessage(null);
     setIsSuccess(null);
-
+  
     if (!validate()) {
       return;
     }
-
+  
     try {
       const result = await LoginService.signup(formData);
       setStatusMessage(t("signup.userCreatedSuccess"));
       setIsSuccess(true);
+  
+      if (formData.role === 'admin'||formData.role === 'chef'||formData.role === 'bartender') {
+         router.push('/admin');
 
-      router.push('/login'); 
-
+      } 
+      else {
+        router.push('/login'); 
+      }
     } catch (error: any) {
       if (error.message === "User already exists") {
         setStatusMessage(t("signup.usernameExists"));
@@ -81,6 +85,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ role }) => {
       setIsSuccess(false);
     }
   };
+  
 
   return (
     <div className={styles.container}>

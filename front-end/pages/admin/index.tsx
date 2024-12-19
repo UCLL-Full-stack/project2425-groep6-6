@@ -27,20 +27,20 @@ const AdminPage: React.FC = () => {
   if (notAuthorized) {
     return (
       <>  
-       <Header />
-      <div>you are not Authorized to see this page you are directed to the login page</div>
+        <Header />
+        <div> You are not Authorized to see this page. You are directed to the login page.</div>
       </>
     );
   }
 
- 
   return (
     <>
       <Head>
         <title>{t('admin.dashboardTitle')}</title> 
       </Head>
       <Header />
-      <RoleSelection onRoleSelect={() => {}} />
+      <RoleSelection onRoleSelect={function (role: "admin" | "chef" | "bartender"): void {
+      } } />
     </>
   );
 };

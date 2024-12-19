@@ -141,7 +141,6 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
 itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const item: ItemInput = req.body;
-        //get role and add it to function
         const role = "admin";
         
         return res.status(200).json(await itemService.createItem(item, role));

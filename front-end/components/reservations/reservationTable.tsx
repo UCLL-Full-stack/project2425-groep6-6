@@ -86,9 +86,17 @@ const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role 
                 )}
                 <td>
                   <ul className="list-unstyled">
-                    {sortedItems.map((item, index) => (
-                      <li key={index}>{item.amount}</li>
-                    ))}
+                    {sortedItems.map((item, index) => {
+                      // Only show amount for items that match the user's role
+                      if (
+                        (role === 'chef' && item.category.toLowerCase() === 'food') ||
+                        (role === 'bartender' && item.category.toLowerCase() === 'drinks') ||
+                        role === 'admin'
+                      ) {
+                        return <li key={index}>{item.amount}</li>;
+                      }
+                      return null;
+                    })}
                   </ul>
                 </td>
               </tr>
