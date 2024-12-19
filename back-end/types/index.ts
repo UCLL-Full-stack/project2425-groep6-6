@@ -32,7 +32,7 @@ type ReservationDTO = {
     id?: number;
     date: Date;
     user: User;      
-    items: Array<Item>;    
+    items: Array<ItemInput>;    
 };
 
 
