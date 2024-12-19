@@ -65,43 +65,41 @@ const createReservation = async (reservationInput: ReservationInput) => {
         });
         console.log('Created reservation:', result);  
 
-        await addItemsToReservation(result.id, reservationInput.items);
-
+        //await addItemsToReservation(result.id, reservationInput.items);
         return Reservation.from(result);
     } catch (error) {
-        console.error('Error during reservation creation:', error);  
-        throw new Error('Database error. Failed to create reservation. See server log for details. ' + error);
+        throw new Error('Database error. ' + error);
     }
 }
 
-const addItemsToReservation = async (id: number, items: ItemInput[]) => {
-    try {
-        const updatedReservation = await database.reservation.update({
-            where: {
-                id: id,
-            },
-            data: {
-                items: {
-                    connect: items.map((item) => ({
-                        id: item.id, 
-                    })),
-                },
-            },
-            include: {
-                items: true,
-            },
-        });
+// const addItemsToReservation = async (id: number, items: ItemInput[]) => {
+//     try {
+//         const updatedReservation = await database.reservation.update({
+//             where: {
+//                 id: id,
+//             },
+//             data: {
+//                 items: {
+//                     connect: items.map((item) => ({
+//                         id: item.id, 
+//                         amount: item.amount
+//                     })),
+//                 },
+//             },
+//             include: {
+//                 items: true,
+//             },
+//         });
 
-        return Reservation.from(updatedReservation);
-    } catch (error) {
-        console.error("Error adding items to reservation:", error);
-        throw new Error('Database error. See server log for details.');
-    }
-}
+//         return Reservation.from(updatedReservation);
+//     } catch (error) {
+//         throw new Error('Database error. See server log for details. ' + error);
+//     }
+// }
 
 
 export default {
-    addItemsToReservation,
+    //addItemsToReservation,
     getAllReservations,
     getReservationById,
     createReservation
