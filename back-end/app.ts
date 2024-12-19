@@ -44,6 +44,7 @@ app.listen(port || 3000, () => {
 
 app.post('/users/login', userRouter);
 app.post('/users/signup', userRouter);
+
 app.use(
     expressjwt({
         secret: process.env.JWT_SECRET || 'default_secret',
@@ -52,6 +53,7 @@ app.use(
         path: [
             '/status', 
             '/api-docs', 
+            /^\/api-docs\/.*/,
             '/users/login', 
             '/users/signup',
             '/restaurants',
@@ -59,7 +61,6 @@ app.use(
             '/items/food',
             '/items/drinks',
             '/items',
-            '/items/:id',
 
         ],
     })

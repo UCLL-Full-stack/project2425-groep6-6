@@ -78,7 +78,7 @@ const deleteItemById = (id: number, role: string) => {
         
         return item;
     } catch(error){
-        throw new Error('Item with id ' + id + ' does not exist.')
+        throw new Error('error: ' + error)
     }
 }
 

@@ -67,7 +67,7 @@ const reservationRouter = express.Router();
  *      404:
  *        description: Not Found
  */
-reservationRouter.get('/reservations', async (req: Request, res: Response) => {
+reservationRouter.get('/reservations', async (req: Request , res: Response) => {
     try {
         const reservations = await reservationsService.getAllReservations();
         res.status(200).json(reservations);

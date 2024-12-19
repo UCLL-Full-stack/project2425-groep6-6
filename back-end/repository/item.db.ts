@@ -135,6 +135,16 @@ const getItemById = async (id: number): Promise<Item> => {
 
 
 const deleteItemById = async (id: number) => {
+    try{
+
+    const reservation = await database.reservationItem.findFirst({
+        where: {
+            itemId: id,
+        },
+    });
+    if (reservation){
+        throw new Error("Item with ID " + id + " cannot be deleted because it is part of a reservation.")
+    }
     const result = await database.item.delete({
         where: {
             id: id,
@@ -146,6 +156,9 @@ const deleteItemById = async (id: number) => {
     }
 
     return Item.from(result);
+}catch(error){
+    throw new Error("error: " + error)
+}
 };
 
 

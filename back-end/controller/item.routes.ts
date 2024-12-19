@@ -173,8 +173,9 @@ itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction
  *       404:
  *              description: item Not Found
  */
-itemRouter.delete('/items/:id', async (req: Request, res: Response, next: NextFunction) => {
+itemRouter.delete('/items/:id', async (req: Request , res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10); 
+    
     try{
         //get role and add it to function
         const role = "admin";
