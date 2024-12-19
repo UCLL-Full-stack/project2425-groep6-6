@@ -8,7 +8,7 @@ const first = 'Gilles';
 const last = 'Muyshondt';
 const rol = 'customer';
 const user = new User({username: userna, password: pass, firstname: first, lastname: last, role: rol});
-const restaurant = new Restaurant({name: 'restaurantname', address: 'restaurantaddress'});
+const restaurant = new Restaurant({name: 'restaurantname', address: 'restaurantaddress', users: []});
 const date = set(new Date(), {hours:8, minutes: 59});
 const reservation = new Reservation({date: date, user});
 

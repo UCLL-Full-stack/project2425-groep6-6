@@ -59,6 +59,9 @@ export class Item{
     getReservations(){
         return this.reservations;
     }
+    getAmount(){
+        return this.amount;
+    }
 
 
     static from(itemPrisma: itemsPrisma, amount?: number): Item {
