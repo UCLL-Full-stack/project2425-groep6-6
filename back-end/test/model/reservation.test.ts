@@ -11,8 +11,8 @@ const rol = 'customer';
 const user = new User({username: userna, password: pass, firstname: first, lastname: last, role: rol});
 const date = set(new Date(), {hours:8, minutes: 59});
 const reservation = new Reservation({date: date, user});
-const item1 = new Item({name: 'spaghetti', category: 'food', price: 14});
-const item2 = new Item({name: 'water', category: 'drinks', price: 2});
+const item1 = new Item({name: 'spaghetti', category: 'food', price: 14, reservations: [], amount: 1});
+const item2 = new Item({name: 'water', category: 'drinks', price: 2, reservations: [], amount: 1});
 
 test( 'given: valid values for Reservation, when: reservation is created, then: Reservation  is created with those values', () => {
     expect(reservation.getDate()).toEqual(date);

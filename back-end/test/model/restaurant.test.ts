@@ -3,7 +3,7 @@ import { User } from "../../model/user";
 
 const restaurantname = 'GiJo';
 const restaurantaddress = 'Tiensestraat 25, Leuven'
-const restaurant = new Restaurant({name: restaurantname, address: restaurantaddress});
+const restaurant = new Restaurant({name: restaurantname, address: restaurantaddress, users: []});
 const user = new User({username: 'Gilles', password: 'Password', firstname: 'Gilles', lastname: 'Muyshondt', role: 'customer'})
 test( 'given: valid values for restaurant, when: restaurant is created, then: restaurant is created with those values', () => {
     expect(restaurant.getAddress()).toEqual(restaurantaddress);
