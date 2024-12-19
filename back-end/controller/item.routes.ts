@@ -139,9 +139,9 @@ itemRouter.get('/items/:id', async (req: Request, res: Response, next: NextFunct
  *       400:
  *         description: Bad request due to invalid input data.
  */
-itemRouter.post('/items', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
+itemRouter.post('/items', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {username, role} = req.auth;
+        //const {username, role} = req.auth;
         const item: ItemInput = req.body;
         //get role and add it to function
         const role1 = "admin";
