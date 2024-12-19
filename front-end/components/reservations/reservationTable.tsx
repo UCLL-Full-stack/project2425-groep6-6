@@ -15,12 +15,13 @@ const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role 
       <table className="table table-striped table-bordered table-hover">
         <thead className="thead-dark">
           <tr>
-          <th>{t('reservations.username')}</th>
-          <th>{t('reservations.date')}</th>
+            <th>{t('reservations.username')}</th>
+            <th>{t('reservations.date')}</th>
             {role === 'chef' || role === 'bartender' || role === 'admin' ? <th>{t('reservations.type')}</th> : null}
             {role === 'chef' && <th>{t('reservations.food')}</th>}
             {role === 'bartender' && <th>{t('reservations.drinks')}</th>}
-            {role === 'admin' && <th>{t('reservations.items')}</th>} 
+            {role === 'admin' && <th>{t('reservations.items')}</th>}
+            <th>{t('reservations.amount')}</th> 
           </tr>
         </thead>
         <tbody>
@@ -28,8 +29,8 @@ const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role 
             const sortedItems = reservation.items.sort((a, b) => {
               const categoryA = a.category.toLowerCase();
               const categoryB = b.category.toLowerCase();
-              if (categoryA === 'drinks' && categoryB !== 'drinks') return -1; 
-              if (categoryA === 'food' && categoryB !== 'food') return 1; 
+              if (categoryA === 'drinks' && categoryB !== 'drinks') return -1;
+              if (categoryA === 'food' && categoryB !== 'food') return 1;
               return 0;
             });
 
@@ -41,11 +42,11 @@ const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role 
                   <td>
                     <ul className="list-unstyled">
                       {sortedItems.map((item, index) => (
-                        (role === 'chef' && item.category.toLowerCase() === 'food') || 
+                        (role === 'chef' && item.category.toLowerCase() === 'food') ||
                         (role === 'bartender' && item.category.toLowerCase() === 'drinks') ||
                         role === 'admin' ? (
                           <li key={index}>
-                            <strong>{item.category.charAt(0).toUpperCase() + item.category.slice(1)}:</strong> 
+                            <strong>{item.category.charAt(0).toUpperCase() + item.category.slice(1)}:</strong>
                           </li>
                         ) : null
                       ))}
@@ -74,17 +75,22 @@ const ReservationTable: React.FC<ReservationTableProps> = ({ reservations, role 
                     </ul>
                   </td>
                 )}
-                {role === 'admin' && ( 
+                {role === 'admin' && (
                   <td>
                     <ul className="list-unstyled">
                       {sortedItems.map((item, index) => (
-                        <li key={index}>
-                          {item.name}
-                        </li>
+                        <li key={index}>{item.name}</li>
                       ))}
                     </ul>
                   </td>
                 )}
+                <td>
+                  <ul className="list-unstyled">
+                    {sortedItems.map((item, index) => (
+                      <li key={index}>{item.amount}</li>
+                    ))}
+                  </ul>
+                </td>
               </tr>
             );
           })}

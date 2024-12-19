@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '@components/header';
-import { getReservations } from '@services/orderService'; 
-import { Reservation } from '@types'; 
+import { getReservations } from '@services/orderService';
+import { Reservation } from '@types';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ReservationTable from '@components/reservations/reservationTable';
 import { useRouter } from 'next/router';
@@ -15,11 +15,10 @@ const ReservationsPage: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
   const { t } = useTranslation();
-  
 
   const fetchReservations = async () => {
     try {
-      const data: Reservation[] = await getReservations(); 
+      const data: Reservation[] = await getReservations();
       setReservations(data);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An unknown error occurred');
@@ -71,10 +70,10 @@ const ReservationsPage: React.FC = () => {
 };
 
 export const getServerSideProps = async (context: { locale: any; }) => {
-  const { locale } = context; 
+  const { locale } = context;
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "en", ["common"])), 
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
     },
   };
 };

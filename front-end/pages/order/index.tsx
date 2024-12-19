@@ -69,7 +69,8 @@ const OrderPage: React.FC = () => {
       date: new Date().toISOString(),
       userId: parseInt(userId),
       items: orderedItems.map(({ item, quantity }) => ({
-        itemId: item.id,
+        id: item.id,
+        amount: quantity, 
       })),
     };
 
@@ -88,34 +89,32 @@ const OrderPage: React.FC = () => {
     <>
       <Header />
       <main className="d-flex flex-column justify-content-center align-items-center">
-      <h1>Your Order</h1>
-
+        <h1>Your Order</h1>
       </main>
 
-    <div>
-      {message ? (
-        <div style={{ color: 'red', textAlign: 'center' }}>{message}</div>
-      ) : (
-        <>
-          {orderedItems.length === 0 ? (
-            <p>No items in your order.</p>
-          ) : (
-            <>
-              <OrderTable orderedItems={orderedItems} />
-              <OrderSummary totalPrice={totalPrice} />
-            </>
-          )}
+      <div>
+        {message ? (
+          <div style={{ color: 'red', textAlign: 'center' }}>{message}</div>
+        ) : (
+          <>
+            {orderedItems.length === 0 ? (
+              <p>No items in your order.</p>
+            ) : (
+              <>
+                <OrderTable orderedItems={orderedItems} />
+                <OrderSummary totalPrice={totalPrice} />
+              </>
+            )}
 
-          {orderedItems.length > 0 && (
-            <ConfirmOrderButton handleConfirmOrder={handleConfirmOrder} />
-          )}
+            {orderedItems.length > 0 && (
+              <ConfirmOrderButton handleConfirmOrder={handleConfirmOrder} />
+            )}
 
-          {isOrderConfirmed && <p>Your order has been confirmed!</p>}
-        </>
-      )}
-    </div>
+            {isOrderConfirmed && <p>Your order has been confirmed!</p>}
+          </>
+        )}
+      </div>
     </>
-    
   );
 };
 

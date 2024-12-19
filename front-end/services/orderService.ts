@@ -8,15 +8,18 @@ const getToken = (): string | null => {
   return null; 
 };
 
-const token = getToken();
-const createReservation = async (reservation: { date: string; userId: number; items: Array<{ itemId: number }> }): Promise<any> => {
+const createReservation = async (reservation: { 
+  date: string; 
+  userId: number; 
+  items: Array<{ id: number; amount: number }> 
+}): Promise<any> => {
+  const token = getToken();
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         "Authorization": `Bearer ${token}`
-
       },
       body: JSON.stringify(reservation),
     });
@@ -34,13 +37,13 @@ const createReservation = async (reservation: { date: string; userId: number; it
 
 
 export const getReservations = async (): Promise<Reservation[]> => {
+  const token = getToken();
   try {
     const response = await fetch(API_URL, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         "Authorization": `Bearer ${token}`
-
       },
     });
 

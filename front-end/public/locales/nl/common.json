@@ -81,6 +81,8 @@
     "food": "Eten",
     "drinks": "Drinken",
     "warning": "Geen reservaties gevonden.",
-    "loading": "Reservaties laden..."
+    "loading": "Reservaties laden...",
+    "amount":"Aantal"
+
   }
 }

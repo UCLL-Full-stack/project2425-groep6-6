@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 const main = async () => {
+    await prisma.reservationItem.deleteMany();
     await prisma.reservation.deleteMany();
     await prisma.item.deleteMany();
     await prisma.restaurant.deleteMany();
@@ -107,61 +108,56 @@ const main = async () => {
         drinkItems.map((drink) => prisma.item.create({ data: drink }))
     );
 
-
-    await prisma.reservation.create({
+    const reservation1 = await prisma.reservation.create({
         data: {
             date: new Date(),
             user: { connect: { id: customer1.id } },
-            items: {
-                connect: [
-                    { id: foodItemsCreated[0].id }, // Spaghetti Carbonara
-                    { id: foodItemsCreated[1].id }, // Margherita Pizza
-                    { id: drinkItemsCreated[0].id }, // Classic Mojito
-                    { id: drinkItemsCreated[1].id }, // Espresso Martini
-                ],
-            },
         },
     });
 
-    await prisma.reservation.create({
+    const reservation2 = await prisma.reservation.create({
         data: {
             date: new Date(),
             user: { connect: { id: customer2.id } },
-            items: {
-                connect: [
-                    { id: foodItemsCreated[1].id }, // Margherita Pizza
-                    { id: drinkItemsCreated[1].id }, // Espresso Martini
-                ],
-            },
         },
     });
-
-    await prisma.reservation.create({
+    const reservation3 = await prisma.reservation.create({
         data: {
             date: new Date(),
             user: { connect: { id: chef.id } },
-            items: {
-                connect: [
-                    { id: foodItemsCreated[2].id }, // Caesar Salad
-                    { id: drinkItemsCreated[9].id }, // Sparkling Water
-                ],
-            },
         },
     });
-
-    await prisma.reservation.create({
+    
+    const reservation4 = await prisma.reservation.create({
         data: {
             date: new Date(),
             user: { connect: { id: bartender.id } },
-            items: {
-                connect: [
-                    { id: foodItemsCreated[3].id }, // Beef Burger
-                    { id: drinkItemsCreated[5].id }, // Old Fashioned
-                ],
-            },
         },
     });
+    
+    const reservation5 = await prisma.reservation.create({
+        data: {
+            date: new Date(),
+            user: { connect: { id: customer1.id } }, 
+        },
+    });
+
+     await prisma.reservationItem.createMany({
+        data: [
+            { reservationId: reservation1.id, itemId: foodItemsCreated[0].id, amount: 2 },
+            { reservationId: reservation1.id, itemId: drinkItemsCreated[0].id, amount: 3 },
+            { reservationId: reservation2.id, itemId: foodItemsCreated[1].id, amount: 1 },
+            { reservationId: reservation2.id, itemId: drinkItemsCreated[1].id, amount: 2 },
+            { reservationId: reservation3.id, itemId: foodItemsCreated[2].id, amount: 2 },
+            { reservationId: reservation3.id, itemId: drinkItemsCreated[9].id, amount: 1 },
+            { reservationId: reservation4.id, itemId: foodItemsCreated[3].id, amount: 1 },
+            { reservationId: reservation4.id, itemId: drinkItemsCreated[5].id, amount: 4 },
+            { reservationId: reservation5.id, itemId: foodItemsCreated[4].id, amount: 1 },
+            { reservationId: reservation5.id, itemId: drinkItemsCreated[6].id, amount: 2 },
+        ],
+    });
 };
+
 
 (async () => {
     try {
