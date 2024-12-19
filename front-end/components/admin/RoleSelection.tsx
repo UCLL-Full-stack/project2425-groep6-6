@@ -1,19 +1,18 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import SignupForm from '@components/users/userSignUpForm';
 import styles from '/styles/userLoginForm.module.css';
 
 type Props = {
   onRoleSelect: (role: 'admin' | 'chef' | 'bartender') => void;
 };
 
-const RoleSelection: React.FC<Props> = ({ onRoleSelect }) => {
+const RoleSelection: React.FC<Props> = () => {
+  const router = useRouter();
   const { t } = useTranslation();
-  const [selectedRole, setSelectedRole] = useState<'admin' | 'chef' | 'bartender' | null>(null);
 
   const handleRoleSelection = (role: 'admin' | 'chef' | 'bartender') => {
-    setSelectedRole(role);
-    onRoleSelect(role);
+    router.push(`/admin/addUser?role=${role}`);
   };
 
   return (
@@ -26,8 +25,6 @@ const RoleSelection: React.FC<Props> = ({ onRoleSelect }) => {
           <button onClick={() => handleRoleSelection('chef')}>{t('admin.addChef')}</button>
           <button onClick={() => handleRoleSelection('bartender')}>{t('admin.addBartender')}</button>
         </div>
-
-        {selectedRole && <SignupForm role={selectedRole} />}
       </div>
     </div>
   );
