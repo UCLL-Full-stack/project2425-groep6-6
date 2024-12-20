@@ -105,7 +105,7 @@ const authenticate = async (user: UserInput): Promise<LoginResponse> => {
         const password = account.getPassword();
         if (await bcrypt.compare(user.password, password)) {
             
-            const token = jwtauth.generateSWTtoken(user.username, account.getRole());
+            const token = jwtauth.generateSWTtoken(account.getUsername(), account.getRole());
             const id = account.getId() ?? 0;  
             return {
                 token,

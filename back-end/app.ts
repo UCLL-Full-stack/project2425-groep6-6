@@ -20,9 +20,33 @@ const port = process.env.APP_PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'default_secret',
+        algorithms: ['HS256'],
+    }).unless({
+        path: [
+            '/status', 
+            '/api-docs', 
+            /^\/api-docs\/.*/,
+            '/users/login', 
+            '/users/signup',
+            '/restaurants',
+            '/restaurants/id',
+            '/items/food',
+            '/items/drinks',
+            '/items',
+
+        ],
+    })
+);
+
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
+
+
+
 
 
 const swaggerOpts = {
@@ -45,26 +69,7 @@ app.listen(port || 3000, () => {
 app.post('/users/login', userRouter);
 app.post('/users/signup', userRouter);
 
-app.use(
-    expressjwt({
-        secret: process.env.JWT_SECRET || 'default_secret',
-        algorithms: ['HS256'],
-    }).unless({
-        path: [
-            '/status', 
-            '/api-docs', 
-            /^\/api-docs\/.*/,
-            '/users/login', 
-            '/users/signup',
-            '/restaurants',
-            '/restaurants/id',
-            '/items/food',
-            '/items/drinks',
-            '/items',
 
-        ],
-    })
-);
 
 
 

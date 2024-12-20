@@ -89,7 +89,7 @@ export class User {
     getLastname(): string{
         return this.lastname;
     }
-    getRole(): string{
+    getRole(): Role{
         return this.role;
     }
     getPassword(): string{
