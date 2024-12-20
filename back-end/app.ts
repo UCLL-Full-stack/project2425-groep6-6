@@ -35,7 +35,6 @@ app.use(
             '/restaurants/id',
             '/items/food',
             '/items/drinks',
-            '/items',
 
         ],
     })
