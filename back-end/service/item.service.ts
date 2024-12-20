@@ -52,6 +52,16 @@ const createItem = ({category, name, price}: ItemInput, role: string): Promise<I
     if(role === "customer"){
         throw new Error("Unauthorized!");
     }
+    if (role === "chef"){
+        if (category === 'drinks') {
+            throw new Error("Unauthorized! Chef can only make food!");
+        } 
+    }
+    if (role === "bartender"){
+        if (category === 'food') {
+            throw new Error("Unauthorized! Chef can only make drinks!");
+        } 
+    }
     if (category === 'food' && price > 0) {
         return itemDb.createItem({category, name, price})
     } 
